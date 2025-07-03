@@ -1,0 +1,1 @@
+ curl -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzU4MzQ1MjIzNjBlZGIyMGUzMmQ0MWQiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTc0NDYyMzcxNywiZXhwIjoxNzQ0NjI3MzE3fQ.QO6pXV1TUwyZYim9N99ZRAhCSyjIQdEyTE-c6RtVeBw' http://localhost:8080/habits -v

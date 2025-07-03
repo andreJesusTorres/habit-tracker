@@ -1,0 +1,1 @@
+curl  -H "Authorization:  Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzU4MzQ1MjIzNjBlZGIyMGUzMmQ0MWQiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTc0MTY5NzE1MywiZXhwIjoxNzQxNzAwNzUzfQ.hl2lxvMd96C2f1TXx8tTQHv4jceAVWW-7oeIuEZ2VLE" http://localhost:8080/progress/ \
