@@ -7,7 +7,7 @@ export default (username, password) => {
     validate.password(password)
    
 
-   return fetch(`http://${import.meta.env.VITE_API_URL}/users/auth`, {
+   return fetch(`http://localhost:3000/users/auth`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })

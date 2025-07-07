@@ -10,10 +10,10 @@ export default (name, email, username, password, passwordRepeat) => {
     validate.passwordsMatch(password, passwordRepeat)
    
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/users`,{
-        metohd: 'POST',
+    return fetch(`http://localhost:3000/users`,{
+        method: 'POST',
         headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify({ name, email, username, password, 'password-repeat': passwordRepeat})
+        body: JSON.stringify({ name, email, username, password, passwordRepeat})
     })
         .catch(error => { throw new SystemError(error.message) })
         .then(res => {
