@@ -8,7 +8,7 @@ export default (name, category, subcategory, emoji) => {
     validate.text(subcategory);
     validate.text(emoji);
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/habits`, {
+    return fetch(`http://localhost:3000/habits`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${localStorage.token}`,

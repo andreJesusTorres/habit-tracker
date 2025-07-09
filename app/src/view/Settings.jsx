@@ -1,13 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logoutUser from '../logic/users/logoutUser';
 
 export default function Settings() {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
     const [theme, setTheme] = useState('light');
+    const navigate = useNavigate();
 
     const handleSave = () => {
         // Logica para guardar la configuración
         console.log('Settings saved:', { username, email, theme });
+    };
+
+    const handleLogout = () => {
+        logoutUser();
+        navigate('/login');
     };
 
     return (
@@ -47,9 +55,15 @@ export default function Settings() {
             </div>
             <button
                 onClick={handleSave}
-                className="w-full bg-blue-500 text-white p-2 rounded"
+                className="w-full bg-blue-500 text-white p-2 rounded mb-4"
             >
                 Save Settings
+            </button>
+            <button
+                onClick={handleLogout}
+                className="w-full bg-red-500 text-white p-2 rounded"
+            >
+                Cerrar Sesión
             </button>
         </div>
     );

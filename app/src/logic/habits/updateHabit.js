@@ -6,7 +6,7 @@ export default (habitId, updates) => {
     validate.id(habitId);
     validate.object(updates);
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/habits/${habitId}`, {
+    return fetch(`http://localhost:3000/habits/${habitId}`, {
         method: 'PATCH',
         headers: {
             Authorization: `Bearer ${localStorage.token}`,

@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import addHabit from "../../logic/habits/addHabit";
+import useContext from '../useContext';
 
 const habitsByCategory = {
     "salud-y-bienestar": [
@@ -33,56 +34,135 @@ const habitsByCategory = {
     ]
 };
 
+const categoryMap = {
+    "salud-y-bienestar": "salud y bienestar",
+    "actividad-física": "actividad física",
+    "desarrollo-personal": "desarrollo personal",
+    "hábitos-negativos": "negativos",
+    "finanzas": "finanzas",
+    "sociales": "sociales"
+};
 
 
 export default function HabitSelection() { 
     const { category } = useParams();
     const navigate = useNavigate()
+    const { alert } = useContext();
     const habits = habitsByCategory[category] || [];
     const habitsHandlers= {
         "desarrollo-personal": [
             ()=>{
                 try {
-                    return addHabit("leer un libro", category.split("-").join(" "), "text", "📖").then(()=>{navigate("/habits")}).catch(error=> alert(error))
+                    return addHabit("leer un libro", categoryMap[category], "text", "\ud83d\udcd6")
+                        .then(()=>{
+                            alert('¡Hábito agregado!');
+                            window.location.href = "/habits";
+                        })
+                        .catch(error=> alert(error.message || error))
                 } catch (error) {
                     alert(error.message)
                 }},
             ()=>{
                 try {
-                    return addHabit("aprender algo nuevo", category.split("-").join(" "), "text", "🎓").then(()=>{navigate("/habits")}).catch(error=> alert(error))
+                    return addHabit("aprender algo nuevo", categoryMap[category], "text", "\ud83c\udf93")
+                        .then(()=>{
+                            alert('¡Hábito agregado!');
+                            window.location.href = "/habits";
+                        })
+                        .catch(error=> alert(error.message || error))
                 } catch (error) {
                     alert(error.message)
                 }},
         ],
         "salud-y-bienestar": [
-            ()=>{ try { return addHabit("higiene personal", category.split("-").join(" "), "text", "🛁").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("comer saludable", category.split("-").join(" "), "text", "🥗").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("dormir bien", category.split("-").join(" "), "text", "😴").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("meditación", category.split("-").join(" "), "text", "🧘").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("beber agua", category.split("-").join(" "), "text", "💧").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("cuidado corporal", category.split("-").join(" "), "text", "💆").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
+            ()=>{ 
+                return addHabit("higiene personal", categoryMap[category], "text", "\ud83d\udec1")
+                    .then(()=>{
+                        alert('¡Hábito agregado!');
+                        window.location.href = "/habits";
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito');
+                    });
+            },
+            ()=>{ 
+                return addHabit("comer saludable", categoryMap[category], "text", "\ud83e\udd57")
+                    .then(()=>{
+                        alert('¡Hábito agregado!');
+                        window.location.href = "/habits";
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito');
+                    });
+            },
+            ()=>{ 
+                return addHabit("dormir bien", categoryMap[category], "text", "\ud83d\ude34")
+                    .then(()=>{
+                        alert('¡Hábito agregado!');
+                        window.location.href = "/habits";
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito');
+                    });
+            },
+            ()=>{ 
+                return addHabit("meditación", categoryMap[category], "text", "\ud83e\uddd8")
+                    .then(()=>{
+                        alert('¡Hábito agregado!');
+                        window.location.href = "/habits";
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito');
+                    });
+            },
+            ()=>{ 
+                return addHabit("beber agua", categoryMap[category], "text", "\ud83d\udca7")
+                    .then(()=>{
+                        alert('¡Hábito agregado!');
+                        window.location.href = "/habits";
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito');
+                    });
+            },
+            ()=>{ 
+                return addHabit("cuidado corporal", categoryMap[category], "text", "\ud83d\udc86")
+                    .then(()=>{
+                        alert('¡Hábito agregado!');
+                        window.location.href = "/habits";
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito');
+                    });
+            },
         ],
         "actividad-física": [
-            ()=>{ try { return addHabit("entrenamiento diario", category.split("-").join(" "), "text", "🏋️").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("caminar 10,000 pasos", category.split("-").join(" "), "text", "🚶").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("ejercicio de flexibilidad", category.split("-").join(" "), "text", "🧘‍♀️").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
+            ()=>{ return addHabit("entrenamiento diario", categoryMap[category], "text", "\ud83c\udfcb\ufe0f").then(()=>{window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("caminar 10,000 pasos", categoryMap[category], "text", "\ud83d\udeb6").then(()=>{window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("ejercicio de flexibilidad", categoryMap[category], "text", "\ud83e\uddd8\u200d\u2640\ufe0f").then(()=>{window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
         ],
         "hábitos-negativos": [
-            ()=>{ try { return addHabit("reducir tiempo en redes", category.split("-").join(" "), "text", "📱").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("no beber alcohol", category.split("-").join(" "), "text", "🚫").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
+            ()=>{ return addHabit("reducir tiempo en redes", categoryMap[category], "text", "\ud83d\udcf1").then(()=>{alert('¡Hábito agregado!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("no beber alcohol", categoryMap[category], "text", "\ud83d\udeab").then(()=>{alert('¡Hábito agregado!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
         ],
         "finanzas": [
-            ()=>{ try { return addHabit("ahorrar 10€", category.split("-").join(" "), "text", "💰").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("controlar gastos", category.split("-").join(" "), "text", "📊").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
+            ()=>{ return addHabit("ahorrar 10€", categoryMap[category], "text", "\ud83d\udcb0").then(()=>{window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("controlar gastos", categoryMap[category], "text", "\ud83d\udcca").then(()=>{window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
         ],
         "sociales": [
-            ()=>{ try { return addHabit("llamar a un amigo", category.split("-").join(" "), "text", "📞").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
-            ()=>{ try { return addHabit("pasar tiempo en familia", category.split("-").join(" "), "text", "👨‍👩‍👧‍👦").then(()=>{navigate("/habits")}).catch(error=> alert(error)) } catch (error) { alert(error.message) }},
+            ()=>{ return addHabit("llamar a un amigo", categoryMap[category], "text", "\ud83d\udcde").then(()=>{window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("pasar tiempo en familia", categoryMap[category], "text", "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d\udc66").then(()=>{window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
         ],
     }
     const handleClick = (index)=>{
+        console.log('Click en hábito:', index, 'categoría:', category);
+        console.log('Token presente:', !!localStorage.token);
+        
         if (habitsHandlers[category] && habitsHandlers[category][index]) {
+            console.log('Ejecutando handler para:', category, index);
             habitsHandlers[category][index]()
+        } else {
+            console.log('No hay handler para:', category, index);
         }
     }
     return (

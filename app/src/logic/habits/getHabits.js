@@ -3,7 +3,7 @@ import { errors } from 'com';
 const { SystemError } = errors;
 
 export default () => {
-    return fetch(`http://${import.meta.env.VITE_API_URL}/habits`, {
+    return fetch(`http://localhost:3000/habits`, {
         headers: {
             Authorization: `Bearer ${localStorage.token}`,
         },

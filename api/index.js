@@ -13,6 +13,7 @@ db.connect(process.env.MONGO_URL).then(() => {
     const server = express()
 
     server.use(cors())
+    server.use(express.json())
 
     server.get('/', (_, res) => res.send('Hello, API!'))
 

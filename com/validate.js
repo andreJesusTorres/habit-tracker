@@ -61,7 +61,7 @@ const validateCallback = (callback) => {
 
 const validateEmoji = (emoji) => {
   if (typeof emoji !== "string") throw new ValidationError("invalid emoji");
-  if (emoji.length > 4) throw new ValidationError("invalid emoji length");
+  if (emoji.length > 8) throw new ValidationError("invalid emoji length");
 };
 
 const validate = {

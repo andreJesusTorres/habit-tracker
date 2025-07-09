@@ -5,7 +5,7 @@ const { SystemError } = errors;
 export default (habitId) => {
     validate.id(habitId);
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/habits/${habitId}`, {
+    return fetch(`http://localhost:3000/habits/${habitId}`, {
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${localStorage.token}`,
