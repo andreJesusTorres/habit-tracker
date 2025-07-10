@@ -3,7 +3,6 @@
 - **Endpoints**: -registro
 - **Frontend**: -corregido error de tipeo en registerUser.js (metohd → method)
 - **Frontend**: -corregido campo password-repeat → passwordRepeat
-- **Frontend**: -hardcodeado URL de API a localhost:3000
 - **Frontend**: -corregido URL de API en loginUser.js
 - **Frontend**: -agregados emojis a todos los hábitos predefinidos
 - **Frontend**: -mejorada interfaz de selección de hábitos con emojis
@@ -17,3 +16,10 @@
 - **Frontend**: -ahora todas las categorías de hábitos se envían exactamente como espera el backend (usando un categoryMap)
 - **Frontend**: -mejorado el manejo de errores al agregar hábitos, mostrando siempre el mensaje real del backend
 - **Frontend**: -tras agregar un hábito, la app recarga la página para asegurar que la lista se actualiza correctamente 
+- **Backend**: -agregado límite máximo de 10 hábitos por usuario 
+- **Frontend**: -implementada funcionalidad de botones para completar (✔️) y eliminar (❌) hábitos 
+- **Frontend**: -corregida URL y parámetros de trackProgress para que funcione con el backend
+- **Frontend**: -mejorada actualización de lista de hábitos sin recargar toda la página 
+- **Frontend**: -corregida función addProgress para que coincida con la función del backend 
+- **Backend**: -corregido el endpoint DELETE de hábitos para que envíe respuesta HTTP tras eliminar, solucionando el bug de carga infinita en el frontend
+- **Backend**: -corregido el handler de progreso (POST /progress) para que envíe respuesta HTTP tras agregar progreso, solucionando el bug de carga infinita en el frontend

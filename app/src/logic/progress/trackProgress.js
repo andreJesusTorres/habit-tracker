@@ -1,4 +1,5 @@
 import { validate, errors } from 'com';
+import getUserId from '../users/getUserId.js';
 
 const { SystemError } = errors;
 
@@ -6,13 +7,20 @@ export default (habitId, progressDetails) => {
     validate.id(habitId);
     validate.object(progressDetails);
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/progress`, {
+    const userId = getUserId();
+
+    return fetch(`http://localhost:3000/progress`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${localStorage.token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ habitId, ...progressDetails }),
+        body: JSON.stringify({ 
+            userId, 
+            habitId, 
+            date: progressDetails.date || new Date().toISOString().split('T')[0],
+            status: progressDetails.status 
+        }),
     })
         .catch(error => { throw new SystemError(error.message); })
         .then(res => {

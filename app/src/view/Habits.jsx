@@ -26,6 +26,52 @@ export default function Habits() {
         }
     }, [selectedDate]);
 
+    const handleCompleteHabit = (habitId) => {
+        console.log('[DEBUG] handleCompleteHabit called', habitId);
+        try {
+            logic.addProgress(habitId, { status: 'done' })
+                .then((res) => {
+                    console.log('[DEBUG] addProgress response', res);
+                    alert('¡Hábito completado!');
+                    // Recargar solo la lista de hábitos
+                    logic.getHabits(selectedDate)
+                        .then(habits => setHabits(habits))
+                        .catch(error => {
+                            console.error('Error recargando hábitos:', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('[DEBUG] addProgress error', error);
+                    alert(error.message || 'Error al completar hábito');
+                });
+        } catch (error) {
+            console.error('[DEBUG] handleCompleteHabit catch', error);
+            alert(error.message);
+        }
+    };
+
+    const handleDeleteHabit = (habitId) => {
+        if (confirm('¿Estás seguro de que quieres eliminar este hábito?')) {
+            try {
+                logic.deleteHabit(habitId)
+                    .then(() => {
+                        alert('¡Hábito eliminado!');
+                        // Recargar solo la lista de hábitos
+                        logic.getHabits(selectedDate)
+                            .then(habits => setHabits(habits))
+                            .catch(error => {
+                                console.error('Error recargando hábitos:', error);
+                            });
+                    })
+                    .catch(error => {
+                        alert(error.message || 'Error al eliminar hábito');
+                    });
+            } catch (error) {
+                alert(error.message);
+            }
+        }
+    };
+
     const getDaysArray = () => {
         const days = [];
         for (let i = -3; i <= 3; i++) {
@@ -64,11 +110,21 @@ export default function Habits() {
                 <ul className="space-y-4">
                     {habits.length > 0 ? (
                         habits.map(habit => (
-                            <li key={habit.id} className="flex justify-between items-center bg-gray-100 px-4 py-2 rounded-lg">
+                            <li key={habit._id} className="flex justify-between items-center bg-gray-100 px-4 py-2 rounded-lg">
                                 <span>{habit.name}</span>
                                 <div className="flex gap-2">
-                                    <button className="text-green-500 text-xl">✔️</button>
-                                    <button className="text-red-500 text-xl">❌</button>
+                                    <button 
+                                        onClick={() => handleCompleteHabit(habit._id)}
+                                        className="text-green-500 text-xl hover:scale-110 transition-transform"
+                                    >
+                                        ✔️
+                                    </button>
+                                    <button 
+                                        onClick={() => handleDeleteHabit(habit._id)}
+                                        className="text-red-500 text-xl hover:scale-110 transition-transform"
+                                    >
+                                        ❌
+                                    </button>
                                 </div>
                             </li>
                         ))

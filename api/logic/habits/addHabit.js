@@ -1,7 +1,7 @@
 import { Habit, User } from 'dat'
 import { validate, errors } from "com";
 
-const { SystemError, NotFoundError } = errors;
+const { SystemError, NotFoundError, ValidationError } = errors;
 
 export default (userId, name, category, subcategory, emoji) => {
   validate.id(userId, "userId");
@@ -18,17 +18,24 @@ export default (userId, name, category, subcategory, emoji) => {
     .then((user) => {
       if (!user) throw new NotFoundError("user not found");
 
-      const habit = new Habit({
-        name,
-        emoji,
-        category,
-        subcategory,
-        user: userId,
-        createdAt: new Date(),
-      });
+      return Habit.countDocuments({ user: userId })
+        .then((habitCount) => {
+          if (habitCount >= 10) {
+            throw new ValidationError("Maximum 10 habits allowed per user");
+          }
 
-      return habit.save().catch((error) => {
-        throw new SystemError(error.message);
-      });
+          const habit = new Habit({
+            name,
+            emoji,
+            category,
+            subcategory,
+            user: userId,
+            createdAt: new Date(),
+          });
+
+          return habit.save().catch((error) => {
+            throw new SystemError(error.message);
+          });
+        });
     });
 };

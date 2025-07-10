@@ -13,7 +13,7 @@ import {
 } from './goals';
 
 import {
-    trackProgress,
+    addProgress,
     getProgress,
     deleteProgress
 } from './progress';
@@ -47,7 +47,7 @@ const logic = {
     deleteGoal,
 
     // Progress
-    trackProgress,
+    addProgress,
     getProgress,
     deleteProgress,
 
