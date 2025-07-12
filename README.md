@@ -44,3 +44,75 @@
 - **Frontend**: -mejorado diseño visual: botones deshabilitados en gris con opacidad reducida
 - **Frontend**: -los símbolos de los botones de hábitos ahora son siempre ✅ y ❌, y solo se muestra uno según el estado (pendiente: ambos activos, completado: solo ✅, fallido: solo ❌)
 - **Backend**: -mensaje de error de límite de hábitos actualizado a 'Solo puedes tener hasta 10 hábitos activos por día'
+- **Frontend**: -agregada validación de fechas pasadas: no se puede marcar progreso en fechas anteriores a hoy
+- **Frontend**: -implementada función isDateInPast() para verificar si una fecha es anterior a la fecha actual
+- **Frontend**: -modificadas funciones handleCompleteHabit y handleFailHabit para validar fechas antes de permitir marcar progreso
+- **Frontend**: -agregada indicación visual de fechas pasadas: botones de días anteriores se muestran en gris pero permiten navegación
+- **Frontend**: -agregado mensaje informativo cuando se visualiza una fecha pasada: "Modo de solo lectura: Estás viendo una fecha pasada. Puedes ver el historial pero no marcar progreso"
+- **Frontend**: -mejorada función getDaysArray para incluir información sobre fechas pasadas (isPast)
+- **Frontend**: -actualizada navegación de días: fechas pasadas permiten navegación pero se muestran visualmente diferentes (colores grises, hover suave)
+- **Frontend**: -enviada fecha específica seleccionada al backend en lugar de usar fecha por defecto
+- **Frontend**: -mejorada experiencia de usuario: fechas pasadas permiten ver historial pero no marcar progreso
+- **Frontend**: -actualizado componente Goals para mostrar todas las categorías de hábitos disponibles con emojis
+- **Frontend**: -mejorada interfaz de selección de hábitos en Goals con información visual del hábito seleccionado
+- **Frontend**: -agregada información de categoría en el selector de hábitos de Goals
+- **Backend**: -actualizado modelo Goal para incluir campos targetDays, startDate, endDate, completedCount
+- **Backend**: -creada función addGoal para crear metas con período personalizado y objetivo específico
+- **Backend**: -creada función getGoals para obtener metas con información de progreso calculada
+- **Backend**: -actualizados handlers de goals para manejar nuevas funcionalidades
+- **Frontend**: -implementado formulario completo para crear metas con nombre, días objetivo y veces a completar
+- **Frontend**: -agregada validación de formulario: objetivo no puede ser mayor que días, valores positivos
+- **Frontend**: -implementada lista de metas existentes con barras de progreso visuales
+- **Frontend**: -agregados indicadores de estado: Completada, Expirada, días restantes
+- **Frontend**: -barras de progreso con colores dinámicos según porcentaje (verde, amarillo, naranja, rojo)
+- **Frontend**: -integración completa entre metas y progreso de hábitos: las metas se actualizan automáticamente
+- **Backend**: -actualizado handler de autenticación para devolver token, userId y role en la respuesta
+- **Frontend**: -actualizada función loginUser para guardar userId y role en localStorage
+- **Frontend**: -actualizada función logoutUser para limpiar todos los datos de autenticación
+- **Frontend**: -actualizadas todas las funciones para usar localStorage.getItem('token') en lugar de localStorage.token
+- **Frontend**: -corregidas funciones de autenticación: isUserLoggedIn, getUserId, getUserRole, isUserRoleRegular, isUserRoleModerator
+- **Frontend**: -actualizadas funciones de hábitos y progreso para usar el nuevo formato de token
+- **Frontend**: -corregidas todas las funciones que usaban localStorage.token: deleteHabit, updateHabit, trackProgress, getProgress, deleteProgress, getUserName
+- **Frontend**: -actualizadas funciones para usar localStorage.getItem('token') consistentemente
+- **Frontend**: -corregido componente Goals para cargar hábitos dinámicamente desde la base de datos en lugar de usar array hardcodeado
+- **Frontend**: -eliminado array hardcodeado de hábitos en Goals.jsx que causaba errores de "Cast to ObjectId failed"
+- **Frontend**: -implementada carga dinámica de hábitos usando getHabits() en el componente Goals
+- **Frontend**: -corregida selección de hábitos para usar habit._id (ObjectId real) en lugar de habit.id (número)
+- **Frontend**: -agregada validación para asegurar que se seleccione un hábito antes de crear una meta
+- **Backend**: -sistema de metas ahora funciona correctamente con ObjectIds reales de hábitos
+- **Frontend**: -corregido error de "Cast to ObjectId failed for value '15'" al crear metas
+- **Sistema**: -integración completa entre progreso de hábitos y metas: marcar hábitos como "done" actualiza automáticamente el contador de metas relacionadas
+- **Backend**: -función getGoals calcula progreso en tiempo real contando registros de Progress con status 'done' dentro del período de la meta
+- **Frontend**: -contador de metas se actualiza automáticamente al recargar la página de Goals
+- **Sistema**: -metas ahora funcionan completamente: creación, visualización y seguimiento de progreso automático
+- **Frontend**: -agregado botón de eliminar hábito (🗑️) en la página de Habits
+- **Frontend**: -implementada función handleDeleteHabit con confirmación antes de eliminar
+- **Frontend**: -botón de eliminar disponible en todos los estados del hábito (pendiente, completado, fallido)
+- **Frontend**: -agregados tooltips (title) a todos los botones para mejor UX
+- **Frontend**: -confirmación de eliminación muestra el nombre del hábito para mayor claridad
+- **Frontend**: -botón de eliminar con hover effect que cambia a rojo para indicar acción destructiva
+- **Frontend**: -mejorada funcionalidad de eliminar hábitos: ahora ofrece dos opciones según el estado del hábito
+- **Frontend**: -si el hábito tiene progreso (completado/fallido): opción de eliminar solo el progreso de esa fecha
+- **Frontend**: -si el hábito no tiene progreso: opción de eliminar el hábito completamente
+- **Frontend**: -mensajes de confirmación más claros y específicos según la acción a realizar
+- **Backend**: -modificada función getHabits para incluir progressId en la respuesta cuando hay progreso
+- **Frontend**: -implementadas funciones handleDeleteProgress y handleDeleteHabitCompletely para manejar las dos opciones
+- **Sistema**: -eliminación inteligente: distingue entre eliminar progreso específico y eliminar hábito completo
+- **Frontend**: -mejorado diálogo de eliminación: ahora ofrece 3 opciones claras usando window.prompt
+- **Frontend**: -opciones de eliminación: 1) Eliminar solo progreso de fecha específica, 2) Eliminar hábito completamente, 3) Cancelar
+- **Frontend**: -validación de entrada: verifica que el usuario escriba 1, 2 o 3, muestra error si es inválido
+- **Frontend**: -confirmación adicional para eliminación completa: doble verificación antes de eliminar hábito
+- **UX**: -interfaz más clara y flexible para diferentes necesidades de eliminación
+- **Frontend**: -corregida función deleteProgress para enviar tanto progressId como habitId al backend
+- **Backend**: -función deleteProgress requiere validación de ownership entre progressId y habitId
+- **Sistema**: -eliminación de progreso específico ahora funciona correctamente con validación de seguridad
+- **Backend**: -corregida función getHabits para buscar progresos por habit en lugar de user, solucionando el problema de que no se encontraban los progresos
+- **Backend**: -implementada búsqueda de progresos por rango de fechas (todo el día) en lugar de coincidencia exacta
+- **Backend**: -corregida consulta de progresos para usar $in con habitIds del usuario en lugar de buscar por user
+- **Sistema**: -funcionalidades de marcar hábitos como hecho (✅), no hecho (❌) y eliminar (🗑️) ahora funcionan completamente
+- **Backend**: -agregados logs de debug detallados para facilitar el troubleshooting de problemas de progreso
+- **Sistema**: -integración completa entre frontend y backend: los cambios de estado de hábitos se reflejan inmediatamente en la interfaz
+- **Backend**: -corregida función getGoals para filtrar metas con hábitos válidos (no null), solucionando error "Cannot read properties of null"
+- **Frontend**: -corregida llamada a getHabits en Goals.jsx para incluir fecha como parámetro requerido
+- **Backend**: -mejorada función deleteHabit para devolver respuesta explícita tras eliminar hábito, asegurando actualización correcta del frontend
+- **Sistema**: -eliminación de hábitos ahora actualiza automáticamente la lista en el frontend sin necesidad de recargar la página

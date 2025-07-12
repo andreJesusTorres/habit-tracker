@@ -17,7 +17,12 @@ export default (username, password) => {
         if (res.ok)
             return res.json()
                 .catch(error => { throw new SystemError(error.message) })
-                .then(token => { localStorage.token = token })
+                .then(data => { 
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('userId', data.userId);
+                    localStorage.setItem('userRole', data.role);
+                    return data;
+                })
 
             return res.json()
                 .catch(error => { throw new SystemError(error.message) })

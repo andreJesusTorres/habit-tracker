@@ -63,10 +63,14 @@ const goalSchema = new Schema(
     name: { type: String, required: true },
     period: {
       type: String,
-      enum: ["weekly", "monthly", "yearly"],
+      enum: ["weekly", "monthly", "yearly", "custom"],
       required: true,
     },
     objective: { type: Number, required: true },
+    targetDays: { type: Number, required: true },
+    startDate: { type: Date, default: Date.now },
+    endDate: { type: Date, required: true },
+    completedCount: { type: Number, default: 0 },
   },
   { versionKey: false }
 );

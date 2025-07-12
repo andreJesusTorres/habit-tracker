@@ -1,46 +1,77 @@
-import { Habit, User, Progress } from 'dat'
-import { validate, errors } from 'com'
+import { Habit, Progress } from 'dat';
+import { validate, errors } from 'com';
 
-const { SystemError, NotFoundError } = errors
+const { SystemError, ValidationError } = errors;
 
-export default (userId, date) => {
-    validate.id(userId, 'userId')
-    console.log('Buscando hábitos para userId:', userId, 'fecha:', date)
+export default async (userId, date) => {
+    console.log('🔔 Debug - getHabits logic called with:', { userId, date });
+    
+    validate.id(userId, 'userId');
+    
+    // Validación simple para la fecha
+    if (typeof date !== 'string' && !(date instanceof Date)) {
+        throw new ValidationError('invalid date');
+    }
 
-    return User.findById(userId).lean()
-        .catch(error => { throw new SystemError(error.message) })
-        .then(user => {
-            if (!user) throw new NotFoundError('User not found')
+    // Calcular rango de fecha para todo el día (igual que en addProgress)
+    const targetDate = new Date(date);
+    const startOfDay = new Date(targetDate);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(targetDate);
+    endOfDay.setHours(23, 59, 59, 999);
 
-            return Habit.find({ user: userId }).lean()
-                .then(habits => {
-                    // Si no hay fecha específica, solo devolver hábitos
-                    if (!date) return habits;
+    console.log('🔔 Debug - Date range for progress search:', { startOfDay, endOfDay });
 
-                    // Buscar progreso para la fecha específica
-                    const startOfDay = new Date(date);
-                    startOfDay.setHours(0, 0, 0, 0);
-                    const endOfDay = new Date(date);
-                    endOfDay.setHours(23, 59, 59, 999);
+    console.log('🔔 Debug - Validation passed, fetching habits and progress...');
 
-                    return Progress.find({
-                        date: { $gte: startOfDay, $lte: endOfDay }
-                    }).lean()
-                        .then(progressEntries => {
-                            // Crear un mapa de progreso por habitId
-                            const progressMap = {};
-                            progressEntries.forEach(progress => {
-                                progressMap[progress.habit.toString()] = progress.status;
-                            });
+    try {
+        // Primero obtener los hábitos del usuario
+        const habits = await Habit.find({ user: userId }).lean();
+        console.log('🔔 Debug - Raw habits found:', habits.length);
+        
+        // Obtener los IDs de los hábitos
+        const habitIds = habits.map(habit => habit._id);
+        
+        // Buscar progresos para esos hábitos en el rango de fechas
+        const progresses = await Progress.find({
+            habit: { $in: habitIds },
+            date: { $gte: startOfDay, $lte: endOfDay }
+        }).lean();
 
-                            // Agregar información de estado a cada hábito
-                            return habits.map(habit => ({
-                                ...habit,
-                                isCompleted: progressMap[habit._id.toString()] === 'done',
-                                isFailed: progressMap[habit._id.toString()] === 'missed'
-                            }));
-                        });
-                });
-        })
-        .catch(error => { throw new SystemError(error.message) })
-}
+        console.log('🔔 Debug - Raw progresses found:', progresses.length);
+        console.log('🔔 Debug - Raw progresses:', progresses);
+        
+        // Crear un mapa de progresos por habitId para acceso rápido
+        const progressMap = {};
+        progresses.forEach(progress => {
+            progressMap[progress.habit.toString()] = progress;
+        });
+
+        console.log('🔔 Debug - Progress map:', progressMap);
+
+        // Combinar hábitos con su progreso correspondiente
+        const result = habits.map(habit => {
+            const progress = progressMap[habit._id.toString()];
+            const habitWithProgress = {
+                ...habit,
+                isCompleted: progress ? progress.status === 'done' : false,
+                isFailed: progress ? progress.status === 'missed' : false,
+                progressId: progress ? progress._id : null
+            };
+            console.log('🔔 Debug - Habit processed:', {
+                habitId: habit._id,
+                name: habit.name,
+                isCompleted: habitWithProgress.isCompleted,
+                isFailed: habitWithProgress.isFailed,
+                progressId: habitWithProgress.progressId
+            });
+            return habitWithProgress;
+        });
+
+        console.log('🔔 Debug - Final result:', result);
+        return result;
+    } catch (error) {
+        console.error('🔔 Debug - Error in getHabits:', error);
+        throw new SystemError(error.message);
+    }
+};

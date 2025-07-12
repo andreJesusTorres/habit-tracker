@@ -14,6 +14,6 @@ const progressesRouter = Router();
 progressesRouter.post('/', authorizationHandler, jsonBodyParser, addProgressHandler);
 progressesRouter.get('/', authorizationHandler, getProgressHandler);
 progressesRouter.put('/:progressId', authorizationHandler, jsonBodyParser, updateProgressHandler);
-progressesRouter.delete('/:progressId', authorizationHandler, deleteProgressHandler);
+progressesRouter.delete('/:progressId', authorizationHandler, jsonBodyParser, deleteProgressHandler);
 
 export default progressesRouter;

@@ -4,8 +4,7 @@ import { createFunctionalHandler } from '../../helpers/index.js'
 const getProgressHandler = createFunctionalHandler((req, res) => {
     const { userId } = req;
 
-  return logic.getProgress(userId).then((progress) => res.json(progress));
-  
+    return logic.getProgress(userId);
 });
 
 export default getProgressHandler;

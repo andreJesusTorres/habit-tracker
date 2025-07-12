@@ -1,29 +1,40 @@
-import { Goal, User } from 'dat';
-import { validate, errors } from 'com';
+import { Goal } from "../../../dat/models.js";
 
-const { SystemError, NotFoundError } = errors;
+export default async function addGoal(userId, habitId, goalData) {
+    try {
+        const { name, period, objective, targetDays } = goalData;
+        
+        // Validar datos requeridos
+        if (!name || !period || !objective || !targetDays) {
+            throw new Error("Todos los campos son requeridos: name, period, objective, targetDays");
+        }
 
-export default (userId, habitId, name, period, objective) => {
-    validate.id(userId, 'userId');
-    validate.id(habitId, 'habitId');
-   
-   
+        // Validar que objective sea un número positivo
+        if (objective <= 0) {
+            throw new Error("El objetivo debe ser un número positivo");
+        }
 
-    return User.findById(userId).lean()
-        .catch(error => { throw new SystemError(error.message); })
-        .then(user => {
-            if (!user) throw new NotFoundError('User not found');
+        // Validar que targetDays sea un número positivo
+        if (targetDays <= 0) {
+            throw new Error("El período de días debe ser un número positivo");
+        }
 
-            const goal = new Goal({
-                user: userId,
-                habit: habitId,
-                name: name,
-                period: period,
-                objective: objective
-            });
+        // Crear la meta
+        const goal = new Goal({
+            user: userId,
+            habit: habitId,
+            name,
+            period,
+            objective,
+            targetDays,
+            startDate: new Date(),
+            endDate: new Date(Date.now() + (targetDays * 24 * 60 * 60 * 1000)), // targetDays en milisegundos
+            completedCount: 0
+        });
 
-            return goal.save()
-                .catch(error => { throw new SystemError(error.message); });
-        })
-        .then(goal => goal._id);
-};
+        await goal.save();
+        return goal;
+    } catch (error) {
+        throw error;
+    }
+}

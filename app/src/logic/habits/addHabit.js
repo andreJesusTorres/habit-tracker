@@ -11,7 +11,7 @@ export default (name, category, subcategory, emoji) => {
     return fetch(`http://localhost:3000/habits`, {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, category, subcategory, emoji }),

@@ -5,7 +5,7 @@ const { SystemError } = errors;
 export default (habitId) => {
     return fetch(`http://${import.meta.env.VITE_API_URL}/progress/${habitId}`, {
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
     })
         .catch(error => { throw new SystemError(error.message); })

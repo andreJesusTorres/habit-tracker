@@ -4,8 +4,7 @@ import { createFunctionalHandler } from '../../helpers/index.js'
 const getEventsHandler = createFunctionalHandler((req, res) => {
     const { userId } = req;
 
- 
-   return logic.getEvents(userId).then((events) => res.json(events));
+    return logic.getEvents(userId);
 });
 
 export default getEventsHandler;

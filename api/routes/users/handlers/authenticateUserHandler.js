@@ -11,5 +11,9 @@ export default createFunctionalHandler(async (req, res) => {
     expiresIn: "7d",
   });
 
-  res.json(token);
+  return {
+    token,
+    userId: id,
+    role
+  };
 });

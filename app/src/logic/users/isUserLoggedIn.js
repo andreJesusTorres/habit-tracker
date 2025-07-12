@@ -1,1 +1,1 @@
-export default () => localStorage.token !== undefined
+export default () => localStorage.getItem('token') !== null

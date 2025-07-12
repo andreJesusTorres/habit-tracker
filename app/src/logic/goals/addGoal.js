@@ -2,28 +2,35 @@ import { validate, errors } from 'com';
 
 const { SystemError } = errors;
 
-export default (habitId, description, period, objective) => {
-    validate.id(habitId);
-    validate.text(description);
-    validate.text(period);
-    validate.number(objective);
+export default async function addGoal(habitId, goalData) {
+    try {
+        const userId = localStorage.getItem('userId');
+        
+        if (!userId) {
+            throw new Error('Usuario no autenticado');
+        }
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/goals`, {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${localStorage.token}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ habitId, description, period, objective }),
-    })
-        .catch(error => { throw new SystemError(error.message); })
-        .then(res => {
-            if (res.ok)
-                return res.json()
-                    .catch(error => { throw new SystemError(error.message); });
-
-            return res.json()
-                .catch(error => { throw new SystemError(error.message); })
-                .then(({ error, message }) => { throw new errors[error](message); });
+        const response = await fetch('http://localhost:3000/goals', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            },
+            body: JSON.stringify({
+                userId,
+                habitId,
+                ...goalData
+            })
         });
-};
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al crear meta');
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        throw error;
+    }
+}

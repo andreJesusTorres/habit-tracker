@@ -5,9 +5,8 @@ const addHabitHandler = createFunctionalHandler((req, res) => {
     const { name, emoji, category, subcategory } = req.body;
     const userId = req.userId;
    
-
-    return logic.addHabit( userId, name, category, subcategory, emoji )
-        .then(habit => res.status(201).json({ habitId: habit._id }));
+    return logic.addHabit(userId, name, category, subcategory, emoji)
+        .then(habit => ({ habitId: habit._id }));
 });
 
 export default addHabitHandler;

@@ -20,7 +20,9 @@ export default (userId, habitId) => {
             return Habit.findByIdAndDelete(habitId)
                 .catch(error => { throw new SystemError(error.message); });
         })
-        .then(() => { }); // Successful deletion
+        .then((deletedHabit) => { 
+            return { success: true, message: 'Hábito eliminado exitosamente' };
+        });
 };
 
       

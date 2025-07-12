@@ -12,11 +12,22 @@ export default (progressId, habitId) => {
     ])
         .catch(error => { throw new SystemError(error.message); })
         .then(([progress]) => {
-            if (!progress) throw new NotFoundError('Progress not found');
+            // Si el progreso no existe, considerarlo como ya eliminado (éxito)
+            if (!progress) {
+                return { success: true, message: 'Progress was already deleted or not found' };
+            }
+            
             if (progress.habit.toString() !== habitId) throw new OwnershipError('Progress does not belong to the given habit');
 
             return Progress.findByIdAndDelete(progressId)
                 .catch(error => { throw new SystemError(error.message); });
         })
-        .then(() => { }); // Successful deletion
+        .then((result) => {
+            // Si result ya es un objeto (caso de progreso no encontrado), devolverlo
+            if (result && typeof result === 'object' && result.success) {
+                return result;
+            }
+            // Si no, es el resultado de la eliminación exitosa
+            return { success: true, message: 'Progress deleted successfully' };
+        });
 };

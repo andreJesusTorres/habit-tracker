@@ -9,7 +9,7 @@ export default (habitId, updates) => {
     return fetch(`http://localhost:3000/habits/${habitId}`, {
         method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(updates),

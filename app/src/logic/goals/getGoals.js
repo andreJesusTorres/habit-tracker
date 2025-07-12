@@ -2,20 +2,29 @@ import { errors } from 'com';
 
 const { SystemError } = errors;
 
-export default () => {
-    return fetch(`http://${import.meta.env.VITE_API_URL}/goals`, {
-        headers: {
-            Authorization: `Bearer ${localStorage.token}`,
-        },
-    })
-        .catch(error => { throw new SystemError(error.message); })
-        .then(res => {
-            if (res.ok)
-                return res.json()
-                    .catch(error => { throw new SystemError(error.message); });
+export default async function getGoals() {
+    try {
+        const userId = localStorage.getItem('userId');
+        
+        if (!userId) {
+            throw new Error('Usuario no autenticado');
+        }
 
-            return res.json()
-                .catch(error => { throw new SystemError(error.message); })
-                .then(({ error, message }) => { throw new errors[error](message); });
+        const response = await fetch(`http://localhost:3000/goals?userId=${userId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }
         });
-};
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al obtener metas');
+        }
+
+        const data = await response.json();
+        return data.goals;
+    } catch (error) {
+        throw error;
+    }
+}
