@@ -13,14 +13,27 @@ export default (userId, habitId, date, status) => {
         .then(habit => {
             if (!habit) throw new NotFoundError('Habit not found');
 
-            const progress = new Progress({
-                user: userId,
-                habit: habitId,
-                date,
-                status,
-            });
+            // Buscar progreso existente para esta fecha y hábito
+            const startOfDay = new Date(date);
+            startOfDay.setHours(0, 0, 0, 0);
+            const endOfDay = new Date(date);
+            endOfDay.setHours(23, 59, 59, 999);
 
-            return progress.save()
+            return Progress.findOneAndUpdate(
+                {
+                    habit: habitId,
+                    date: { $gte: startOfDay, $lte: endOfDay }
+                },
+                {
+                    habit: habitId,
+                    date: new Date(date),
+                    status: status,
+                },
+                {
+                    upsert: true, // Crear si no existe, actualizar si existe
+                    new: true // Devolver el documento actualizado
+                }
+            )
                 .catch(error => { throw new SystemError(error.message); });
         })
         .then(progress => progress._id);

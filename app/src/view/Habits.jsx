@@ -27,12 +27,17 @@ export default function Habits() {
     }, [selectedDate]);
 
     const handleCompleteHabit = (habitId) => {
-        console.log('[DEBUG] handleCompleteHabit called', habitId);
+        // Verificar si el hábito ya está completado o fallido
+        const habit = habits.find(h => h._id === habitId);
+        if (habit && (habit.isCompleted || habit.isFailed)) {
+            window.alert('Este hábito ya tiene un estado asignado. No puedes cambiarlo.');
+            return;
+        }
+
         try {
             logic.addProgress(habitId, { status: 'done' })
                 .then((res) => {
-                    console.log('[DEBUG] addProgress response', res);
-                    alert('¡Hábito completado!');
+                    window.alert('¡Hábito completado exitosamente!');
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
                         .then(habits => setHabits(habits))
@@ -41,34 +46,37 @@ export default function Habits() {
                         });
                 })
                 .catch(error => {
-                    console.error('[DEBUG] addProgress error', error);
-                    alert(error.message || 'Error al completar hábito');
+                    window.alert(error.message || 'Error al completar hábito');
                 });
         } catch (error) {
-            console.error('[DEBUG] handleCompleteHabit catch', error);
-            alert(error.message);
+            window.alert(error.message);
         }
     };
 
-    const handleDeleteHabit = (habitId) => {
-        if (confirm('¿Estás seguro de que quieres eliminar este hábito?')) {
-            try {
-                logic.deleteHabit(habitId)
-                    .then(() => {
-                        alert('¡Hábito eliminado!');
-                        // Recargar solo la lista de hábitos
-                        logic.getHabits(selectedDate)
-                            .then(habits => setHabits(habits))
-                            .catch(error => {
-                                console.error('Error recargando hábitos:', error);
-                            });
-                    })
-                    .catch(error => {
-                        alert(error.message || 'Error al eliminar hábito');
-                    });
-            } catch (error) {
-                alert(error.message);
-            }
+    const handleFailHabit = (habitId) => {
+        // Verificar si el hábito ya está completado o fallido
+        const habit = habits.find(h => h._id === habitId);
+        if (habit && (habit.isCompleted || habit.isFailed)) {
+            window.alert('Este hábito ya tiene un estado asignado. No puedes cambiarlo.');
+            return;
+        }
+
+        try {
+            logic.addProgress(habitId, { status: 'missed' })
+                .then((res) => {
+                    window.alert('¡Hábito marcado como no completado!');
+                    // Recargar solo la lista de hábitos
+                    logic.getHabits(selectedDate)
+                        .then(habits => setHabits(habits))
+                        .catch(error => {
+                            console.error('Error recargando hábitos:', error);
+                        });
+                })
+                .catch(error => {
+                    window.alert(error.message || 'Error al marcar hábito como fallido');
+                });
+        } catch (error) {
+            window.alert(error.message);
         }
     };
 
@@ -110,21 +118,43 @@ export default function Habits() {
                 <ul className="space-y-4">
                     {habits.length > 0 ? (
                         habits.map(habit => (
-                            <li key={habit._id} className="flex justify-between items-center bg-gray-100 px-4 py-2 rounded-lg">
-                                <span>{habit.name}</span>
+                            <li key={habit._id} className={`flex justify-between items-center px-4 py-2 rounded-lg transition-colors duration-300 ${
+                                habit.isCompleted 
+                                    ? 'bg-green-100 border-2 border-green-300' 
+                                    : habit.isFailed
+                                    ? 'bg-red-100 border-2 border-red-300'
+                                    : 'bg-gray-100'
+                            }`}>
+                                <span className={`${
+                                    habit.isCompleted 
+                                        ? 'text-green-800 font-medium' 
+                                        : habit.isFailed
+                                        ? 'text-red-800 font-medium'
+                                        : ''
+                                }`}>
+                                    {habit.name}
+                                </span>
                                 <div className="flex gap-2">
-                                    <button 
-                                        onClick={() => handleCompleteHabit(habit._id)}
-                                        className="text-green-500 text-xl hover:scale-110 transition-transform"
-                                    >
-                                        ✔️
-                                    </button>
-                                    <button 
-                                        onClick={() => handleDeleteHabit(habit._id)}
-                                        className="text-red-500 text-xl hover:scale-110 transition-transform"
-                                    >
-                                        ❌
-                                    </button>
+                                    {habit.isCompleted ? (
+                                        <span className="text-green-600 text-2xl">✅</span>
+                                    ) : habit.isFailed ? (
+                                        <span className="text-red-600 text-2xl">❌</span>
+                                    ) : (
+                                        <>
+                                            <button
+                                                onClick={() => handleCompleteHabit(habit._id)}
+                                                className="text-green-600 text-2xl hover:scale-110 transition-transform"
+                                            >
+                                                ✅
+                                            </button>
+                                            <button
+                                                onClick={() => handleFailHabit(habit._id)}
+                                                className="text-red-600 text-2xl hover:scale-110 transition-transform"
+                                            >
+                                                ❌
+                                            </button>
+                                        </>
+                                    )}
                                 </div>
                             </li>
                         ))

@@ -16,10 +16,31 @@
 - **Frontend**: -ahora todas las categorías de hábitos se envían exactamente como espera el backend (usando un categoryMap)
 - **Frontend**: -mejorado el manejo de errores al agregar hábitos, mostrando siempre el mensaje real del backend
 - **Frontend**: -tras agregar un hábito, la app recarga la página para asegurar que la lista se actualiza correctamente 
-- **Backend**: -agregado límite máximo de 10 hábitos por usuario 
+- **Backend**: -agregado límite máximo de 10 hábitos por día (además del límite por usuario)
 - **Frontend**: -implementada funcionalidad de botones para completar (✔️) y eliminar (❌) hábitos 
 - **Frontend**: -corregida URL y parámetros de trackProgress para que funcione con el backend
 - **Frontend**: -mejorada actualización de lista de hábitos sin recargar toda la página 
 - **Frontend**: -corregida función addProgress para que coincida con la función del backend 
 - **Backend**: -corregido el endpoint DELETE de hábitos para que envíe respuesta HTTP tras eliminar, solucionando el bug de carga infinita en el frontend
 - **Backend**: -corregido el handler de progreso (POST /progress) para que envíe respuesta HTTP tras agregar progreso, solucionando el bug de carga infinita en el frontend
+- **Backend**: -aumentado límite de validación de emojis de 8 a 20 caracteres para permitir emojis compuestos
+- **Frontend**: -aumentado límite de entrada de emojis de 4 a 10 caracteres en el formulario
+- **Frontend**: -agregados mensajes de éxito consistentes "¡Hábito agregado exitosamente!" para todas las categorías de hábitos usando window.alert()
+- **Backend**: -corregido el handler de agregar hábitos (POST /habits) para que envíe respuesta HTTP con habitId, solucionando el problema de que no aparecían mensajes de éxito
+- **Frontend**: -removidos logs de debug del componente HabitSelection para limpiar la consola
+- **Backend**: -modificada función getHabits para incluir información de progreso y estado de completado por fecha
+- **Frontend**: -actualizada función getHabits para enviar fecha como parámetro de consulta
+- **Frontend**: -implementado sistema visual de hábitos completados: fondo verde, borde verde, texto verde y checkmark ✅
+- **Frontend**: -botón de completar se deshabilita cuando el hábito ya está completado
+- **Frontend**: -mejorados mensajes de alerta usando window.alert() para mayor confiabilidad
+- **Backend**: -agregado soporte para estado "missed" en la función getHabits
+- **Frontend**: -removida funcionalidad de eliminar hábitos
+- **Frontend**: -botón X ahora marca hábitos como "fallidos" (rojo) en lugar de eliminarlos
+- **Frontend**: -implementado sistema de tres estados: normal (gris), completado (verde), fallido (rojo)
+- **Frontend**: -botones se deshabilitan cuando el hábito ya está en ese estado
+- **Backend**: -mejorada función addProgress para actualizar progreso existente en lugar de crear duplicados usando findOneAndUpdate con upsert
+- **Frontend**: -mejorada validación para prevenir marcar hábitos que ya tienen estado asignado (completado o fallido)
+- **Frontend**: -ambos botones se deshabilitan cuando el hábito ya tiene un estado, mostrando mensaje de alerta
+- **Frontend**: -mejorado diseño visual: botones deshabilitados en gris con opacidad reducida
+- **Frontend**: -los símbolos de los botones de hábitos ahora son siempre ✅ y ❌, y solo se muestra uno según el estado (pendiente: ambos activos, completado: solo ✅, fallido: solo ❌)
+- **Backend**: -mensaje de error de límite de hábitos actualizado a 'Solo puedes tener hasta 10 hábitos activos por día'

@@ -18,10 +18,28 @@ export default (userId, name, category, subcategory, emoji) => {
     .then((user) => {
       if (!user) throw new NotFoundError("user not found");
 
-      return Habit.countDocuments({ user: userId })
-        .then((habitCount) => {
-          if (habitCount >= 10) {
-            throw new ValidationError("Maximum 10 habits allowed per user");
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+
+      return Promise.all([
+        Habit.countDocuments({ user: userId }),
+        Habit.countDocuments({ 
+          user: userId, 
+          createdAt: { 
+            $gte: today, 
+            $lt: tomorrow 
+          } 
+        })
+      ])
+        .then(([totalHabits, todayHabits]) => {
+          if (totalHabits >= 10) {
+            throw new ValidationError("Solo puedes tener hasta 10 hábitos activos por día");
+          }
+          
+          if (todayHabits >= 10) {
+            throw new ValidationError("Solo puedes tener hasta 10 hábitos activos por día");
           }
 
           const habit = new Habit({
