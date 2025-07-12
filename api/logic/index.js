@@ -1,7 +1,9 @@
 import {
     registerUser,
     authenticateUser,
-    getUserName
+    getUserName,
+    getUserDetails,
+    updateUser
 } from './users/index.js'
 
 
@@ -38,6 +40,8 @@ const logic = {
     registerUser,
     authenticateUser,
     getUserName,
+    getUserDetails,
+    updateUser,
 
     addHabit,
     deleteHabit,

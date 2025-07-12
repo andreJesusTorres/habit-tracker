@@ -4,8 +4,6 @@ import { validate, errors } from 'com';
 const { SystemError, ValidationError } = errors;
 
 export default async (userId, date) => {
-    console.log('🔔 Debug - getHabits logic called with:', { userId, date });
-    
     validate.id(userId, 'userId');
     
     // Validación simple para la fecha
@@ -20,14 +18,9 @@ export default async (userId, date) => {
     const endOfDay = new Date(targetDate);
     endOfDay.setHours(23, 59, 59, 999);
 
-    console.log('🔔 Debug - Date range for progress search:', { startOfDay, endOfDay });
-
-    console.log('🔔 Debug - Validation passed, fetching habits and progress...');
-
     try {
         // Primero obtener los hábitos del usuario
         const habits = await Habit.find({ user: userId }).lean();
-        console.log('🔔 Debug - Raw habits found:', habits.length);
         
         // Obtener los IDs de los hábitos
         const habitIds = habits.map(habit => habit._id);
@@ -37,41 +30,26 @@ export default async (userId, date) => {
             habit: { $in: habitIds },
             date: { $gte: startOfDay, $lte: endOfDay }
         }).lean();
-
-        console.log('🔔 Debug - Raw progresses found:', progresses.length);
-        console.log('🔔 Debug - Raw progresses:', progresses);
-        
-        // Crear un mapa de progresos por habitId para acceso rápido
-        const progressMap = {};
-        progresses.forEach(progress => {
-            progressMap[progress.habit.toString()] = progress;
-        });
-
-        console.log('🔔 Debug - Progress map:', progressMap);
-
-        // Combinar hábitos con su progreso correspondiente
-        const result = habits.map(habit => {
-            const progress = progressMap[habit._id.toString()];
-            const habitWithProgress = {
-                ...habit,
-                isCompleted: progress ? progress.status === 'done' : false,
-                isFailed: progress ? progress.status === 'missed' : false,
-                progressId: progress ? progress._id : null
-            };
-            console.log('🔔 Debug - Habit processed:', {
-                habitId: habit._id,
-                name: habit.name,
-                isCompleted: habitWithProgress.isCompleted,
-                isFailed: habitWithProgress.isFailed,
-                progressId: habitWithProgress.progressId
+            
+            // Crear un mapa de progresos por habitId para acceso rápido
+            const progressMap = {};
+            progresses.forEach(progress => {
+                progressMap[progress.habit.toString()] = progress;
             });
-            return habitWithProgress;
+
+            // Combinar hábitos con su progreso correspondiente
+            const result = habits.map(habit => {
+                const progress = progressMap[habit._id.toString()];
+            return {
+                    ...habit,
+                    isCompleted: progress ? progress.status === 'done' : false,
+                    isFailed: progress ? progress.status === 'missed' : false,
+                    progressId: progress ? progress._id : null
+                };
         });
 
-        console.log('🔔 Debug - Final result:', result);
-        return result;
+            return result;
     } catch (error) {
-        console.error('🔔 Debug - Error in getHabits:', error);
         throw new SystemError(error.message);
     }
 };

@@ -116,3 +116,46 @@
 - **Frontend**: -corregida llamada a getHabits en Goals.jsx para incluir fecha como parámetro requerido
 - **Backend**: -mejorada función deleteHabit para devolver respuesta explícita tras eliminar hábito, asegurando actualización correcta del frontend
 - **Sistema**: -eliminación de hábitos ahora actualiza automáticamente la lista en el frontend sin necesidad de recargar la página
+- **Frontend**: -implementada funcionalidad completa del diario con vista de calendario y eventos por hora
+- **Frontend**: -agregado componente Calendar con navegación de fechas y selección de día específico
+- **Frontend**: -implementado formulario de agregar eventos con campos: nombre, descripción, fecha y hora de inicio
+- **Frontend**: -agregada validación de formulario: campos requeridos y formato de fecha/hora
+- **Frontend**: -implementada vista de eventos organizados por hora (00:00 a 23:00) en el diario
+- **Frontend**: -agregado botón de eliminar eventos (🗑️) con confirmación antes de eliminar
+- **Frontend**: -implementada función handleDeleteEvent con validación de ID y manejo de errores
+- **Frontend**: -agregados logs de debug detallados para facilitar el troubleshooting de eventos
+- **Backend**: -creado modelo Event con campos: name, description, startDate, endDate, frequency, user
+- **Backend**: -implementada función addEvent para crear eventos con validación de datos
+- **Backend**: -implementada función getEvents para obtener eventos del usuario por fecha
+- **Backend**: -implementada función deleteEvent para eliminar eventos con validación de ownership
+- **Backend**: -agregados handlers para eventos: addEventHandler, getEventsHandler, deleteEventHandler
+- **Backend**: -configuradas rutas de eventos: POST /events, GET /events, DELETE /events/:eventId
+- **Backend**: -corregida ruta de eliminación de eventos para usar parámetro :eventId en lugar de body
+- **Backend**: -agregados logs de debug detallados en deleteEvent para facilitar troubleshooting
+- **Sistema**: -integración completa entre frontend y backend para gestión de eventos del diario
+- **Sistema**: -eventos se muestran visualmente en el horario correcto según fecha y hora de inicio
+- **Sistema**: -eliminación de eventos actualiza automáticamente la vista sin necesidad de recargar
+- **UX**: -interfaz intuitiva para agregar, visualizar y eliminar eventos del diario personal
+- **Frontend**: -corregido el solapamiento de eventos en el diario; ahora cada evento se muestra en su propio bloque y con separación visual
+- **Frontend**: -agregado padding inferior al área de horarios del diario para asegurar que la hora 23:00 siempre sea visible y no quede oculta tras el Footer
+- **Frontend**: -corregido problema de eventos que se guardaban en hora incorrecta (3 horas adelante) debido a conversión de zona horaria
+- **Frontend**: -implementado uso de Date.UTC() para crear fechas en UTC y evitar problemas de zona horaria
+- **Frontend**: -corregido problema de eventos con fechas inválidas que causaban warnings en consola
+- **Frontend**: -actualizado filtrado de eventos para usar startDate en lugar de startTime (coincide con backend)
+- **Frontend**: -corregido error de selectedDate.toISOString() que causaba TypeError
+- **Frontend**: -rediseñada completamente la interfaz del Diary: eliminado sistema de clics en slots de tiempo
+- **Frontend**: -implementado formulario tradicional para agregar eventos con campos: nombre, descripción, hora inicio, hora fin
+- **Frontend**: -agregada lista de eventos organizada por fecha con diseño de tarjetas
+- **Frontend**: -implementado botón de eliminar eventos con confirmación
+- **Frontend**: -agregada validación HTML5 nativa para todos los campos del formulario
+- **Frontend**: -implementado diseño responsivo con grid adaptativo para el formulario
+- **Frontend**: -agregado mensaje cuando no hay eventos para una fecha específica
+- **Frontend**: -corregido problema de actualización del frontend tras agregar eventos
+- **Frontend**: -implementada recarga automática de eventos tras agregar nuevo evento
+- **Frontend**: -corregido problema de desfase de fecha en el calendario (mostraba un día adelante)
+- **Frontend**: -actualizado componente Calendar para usar toLocaleDateString('en-CA') en lugar de toISOString()
+- **Frontend**: -sincronizado calendario con lista de eventos para mostrar fecha correcta
+- **Backend**: -limpiados todos los logs de debug de addEvent.js y getHabits.js
+- **Frontend**: -limpiados todos los logs de debug del componente Diary.jsx
+- **Sistema**: -Diary completamente funcional con formulario intuitivo y sincronización perfecta entre calendario y eventos
+- **Frontend**: -corregida URL de API en updateUser.js para usar http://localhost:3000/users/update en lugar de /api/users/update, solucionando error al guardar cambios en Settings

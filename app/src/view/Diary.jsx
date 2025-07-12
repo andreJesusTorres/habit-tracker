@@ -1,16 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Header, Footer, Calendar } from './components';
-
+import addEvent from '../logic/events/addEvent';
+import getEvents from '../logic/events/getEvents';
+import deleteEvent from '../logic/events/deleteEvent';
 
 export default function Diary() {
-    const [selectedTime, setSelectedTime] = useState(null);
-    const [eventDetails, setEventDetails] = useState({ startTime: '', endTime: '', name: '', description: '' });
+    const [eventDetails, setEventDetails] = useState({ 
+        name: '', 
+        description: '', 
+        startTime: '', 
+        endTime: '' 
+    });
+    const [events, setEvents] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    const hours = Array.from({ length: 24 }, (_, index) => `${index}:00`);
+    useEffect(() => {
+        loadEvents();
+    }, [selectedDate]);
 
-    const handleTimeClick = (startTime, endTime) => {
-        setSelectedTime({ startTime, endTime });
-        setEventDetails({ ...eventDetails, startTime, endTime });
+    const loadEvents = async () => {
+        try {
+            setLoading(true);
+            setError('');
+            const eventsData = await getEvents();
+            setEvents(eventsData);
+        } catch (error) {
+            console.error('❌ Error loading events:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleInputChange = (e) => {
@@ -18,61 +39,219 @@ export default function Diary() {
         setEventDetails({ ...eventDetails, [name]: value });
     };
 
-    const handleAddEvent = () => {
-        console.log('Event added:', eventDetails);
-        setSelectedTime(null);
-        setEventDetails({ startTime: '', endTime: '', name: '', description: '' });
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        
+        if (!eventDetails.name.trim()) {
+            setError('Event name is required');
+            return;
+        }
+        if (!eventDetails.startTime || !eventDetails.endTime) {
+            setError('Please select start and end times');
+            return;
+        }
+        // Validación de rango horario
+        if (eventDetails.startTime >= eventDetails.endTime) {
+            window.alert('La hora de inicio debe ser menor a la de finalización');
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError('');
+
+            const dateObj = new Date(selectedDate);
+            const [startHour, startMinute] = eventDetails.startTime.split(':').map(Number);
+            const [endHour, endMinute] = eventDetails.endTime.split(':').map(Number);
+            
+            const startDateTime = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), startHour, startMinute));
+            const endDateTime = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), endHour, endMinute));
+
+            await addEvent(
+                eventDetails.name,
+                startDateTime.toISOString(),
+                eventDetails.description,
+                endDateTime.toISOString()
+            );
+
+            // Recargar todos los eventos para asegurar sincronización
+            await loadEvents();
+            setEventDetails({ name: '', description: '', startTime: '', endTime: '' });
+        } catch (error) {
+            console.error('❌ Error adding event:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
     };
+
+    const handleDeleteEvent = async (eventId) => {
+        try {
+            setLoading(true);
+            setError('');
+            await deleteEvent(eventId);
+            await loadEvents();
+        } catch (error) {
+            console.error('❌ Error deleting event:', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const formatTime = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleTimeString('en-US', { 
+            hour: '2-digit', 
+            minute: '2-digit',
+            hour12: false 
+        });
+    };
+
+    // Filtrar eventos por fecha seleccionada
+    const filteredEvents = events.filter(event => {
+        try {
+            const eventStart = new Date(event.startDate);
+            if (isNaN(eventStart.getTime())) {
+                return false;
+            }
+            
+            const eventDate = eventStart.toISOString().split('T')[0];
+            const selectedDateStr = new Date(selectedDate).toISOString().split('T')[0];
+            
+            return eventDate === selectedDateStr;
+        } catch (error) {
+            return false;
+        }
+    });
 
     return (
         <div className="diary-container min-h-screen flex flex-col p-4">
             <Header title="Diary" />
 
             <div className="flex-grow">
-                <Calendar />
-                <div className="flex mt-8">
-                    <div className="w-1/12">
-                        {hours.map((hour, index) => (
-                            <div key={index} className="h-16 border-b border-gray-300 flex items-center justify-center">
-                                {hour}
-                            </div>
-                        ))}
+                <Calendar onDateSelect={setSelectedDate} selectedDate={selectedDate} />
+                
+                {error && (
+                    <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
+                        {error}
                     </div>
-                    <div className="w-11/12">
-                        {hours.map((hour, index) => (
-                            <div
-                                key={index}
-                                className="h-16 border-b border-gray-300 cursor-pointer relative"
-                                onClick={() => handleTimeClick(hour, hours[index + 1] || `${index + 1}:00`)}
-                            >
-                                {selectedTime && selectedTime.startTime === hour && (
-                                    <div className="p-2 bg-white shadow-md rounded-md absolute top-0 left-0 w-full z-10">
+                )}
+
+                <div className="mt-6 mb-4">
+                    <h3 className="text-lg font-semibold mb-4">
+                        Add Event for {new Date(selectedDate).toLocaleDateString()}
+                    </h3>
+                    
+                    <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-md">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Event Name
+                                </label>
                                         <input
                                             type="text"
                                             name="name"
                                             value={eventDetails.name}
                                             onChange={handleInputChange}
-                                            placeholder="Event Name"
-                                            className="w-full p-2 border rounded mb-2"
-                                        />
+                                    placeholder="Enter event name"
+                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Start Time
+                                </label>
+                                <input
+                                    type="time"
+                                    name="startTime"
+                                    value={eventDetails.startTime}
+                                    onChange={handleInputChange}
+                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required
+                                />
+                            </div>
+                            
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    End Time
+                                </label>
+                                <input
+                                    type="time"
+                                    name="endTime"
+                                    value={eventDetails.endTime}
+                                    onChange={handleInputChange}
+                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    required
+                                />
+                            </div>
+                            
+                            <div className="md:col-span-2">
+                                <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    Description
+                                </label>
                                         <textarea
                                             name="description"
                                             value={eventDetails.description}
                                             onChange={handleInputChange}
-                                            placeholder="Event Description"
-                                            className="w-full p-2 border rounded mb-2"
-                                        />
+                                    placeholder="Enter event description"
+                                    rows="3"
+                                    className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                />
+                            </div>
+                        </div>
+                        
+                        <div className="mt-4">
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                {loading ? 'Adding Event...' : 'Add Event'}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div className="mt-8">
+                    <h3 className="text-lg font-semibold mb-4">
+                        Events for {new Date(selectedDate).toLocaleDateString()}
+                    </h3>
+                    
+                    {filteredEvents.length === 0 ? (
+                        <p className="text-gray-500 text-center py-8">No events for this date</p>
+                    ) : (
+                        <div className="space-y-3">
+                            {filteredEvents.map((event) => (
+                                <div key={event._id} className="bg-white p-4 rounded-lg shadow-md border">
+                                    <div className="flex justify-between items-start">
+                                        <div className="flex-1">
+                                            <h4 className="font-semibold text-lg">{event.name}</h4>
+                                            <p className="text-sm font-semibold text-blue-700 mt-1 mb-2">
+                                                {formatTime(event.startDate)} - {formatTime(event.endDate)}
+                                            </p>
+                                            {event.description && (
+                                                <p className="text-gray-600">{event.description}</p>
+                                            )}
+                                        </div>
                                         <button
-                                            onClick={handleAddEvent}
-                                            className="w-full p-2 bg-blue-500 text-white rounded"
+                                            onClick={() => {
+                                                if (window.confirm('¿Estás seguro que quieres eliminar este evento?')) {
+                                                    handleDeleteEvent(event._id);
+                                                }
+                                            }}
+                                            disabled={loading}
+                                            className="ml-4 text-red-500 hover:text-red-700 disabled:opacity-50"
                                         >
-                                            Add Event
+                                            Delete
                                         </button>
                                     </div>
-                                )}
                             </div>
                         ))}
                     </div>
+                    )}
                 </div>
             </div>
 

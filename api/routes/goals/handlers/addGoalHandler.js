@@ -1,36 +1,11 @@
-import addGoal from '../../../logic/goals/addGoal.js';
-import { createFunctionalHandler } from '../../helpers/index.js';
+import logic from "../../../logic/index.js";
+import { createFunctionalHandler } from "../../helpers/index.js";
 
-const addGoalHandler = createFunctionalHandler(async (req, res) => {
-    const { userId } = req.body;
-    const { habitId, name, period, objective, targetDays } = req.body;
+const addGoalHandler = createFunctionalHandler((req, res) => {
+  const userId = req.user.id;
+  const { name, description, targetDate } = req.body;
 
-    // Validar que todos los campos requeridos estén presentes
-    if (!userId || !habitId || !name || !period || !objective || !targetDays) {
-        throw new Error('Todos los campos son requeridos: userId, habitId, name, period, objective, targetDays');
-    }
-
-    const goalData = {
-        name,
-        period,
-        objective: parseInt(objective),
-        targetDays: parseInt(targetDays)
-    };
-
-    const goal = await addGoal(userId, habitId, goalData);
-
-    return {
-        message: 'Meta creada exitosamente',
-        goal: {
-            id: goal._id,
-            name: goal.name,
-            period: goal.period,
-            objective: goal.objective,
-            targetDays: goal.targetDays,
-            startDate: goal.startDate,
-            endDate: goal.endDate
-        }
-    };
+  return logic.addGoal(userId, name, description, targetDate);
 });
 
 export default addGoalHandler;

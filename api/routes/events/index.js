@@ -11,7 +11,7 @@ import {
 const eventsRouter = Router();
 
 eventsRouter.post('/', authorizationHandler, jsonBodyParser, addEventHandler);
-eventsRouter.delete('/', authorizationHandler, deleteEventHandler);
+eventsRouter.delete('/:eventId', authorizationHandler, deleteEventHandler);
 eventsRouter.get('/', authorizationHandler, getEventsHandler);
 eventsRouter.patch('/', authorizationHandler, jsonBodyParser, updateEventHandler);
 

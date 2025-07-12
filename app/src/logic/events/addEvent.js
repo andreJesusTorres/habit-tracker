@@ -2,17 +2,20 @@ import { validate, errors } from 'com';
 
 const { SystemError } = errors;
 
-export default (name, date) => {
+export default (name, startDate, description, endDate = null, frequency = 'once') => {
     validate.text(name);
-    validate.date(date);
+    validate.text(startDate);
+    if (description) validate.text(description);
+    if (endDate) validate.text(endDate);
+    if (frequency) validate.text(frequency);
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/events`, {
+    return fetch(`http://localhost:3000/events`, {
         method: 'POST',
         headers: {
             Authorization: `Bearer ${localStorage.token}`,
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name, date }),
+        body: JSON.stringify({ name, startDate, description, endDate, frequency }),
     })
         .catch(error => { throw new SystemError(error.message); })
         .then(res => {

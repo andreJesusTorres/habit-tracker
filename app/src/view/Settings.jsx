@@ -1,16 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logoutUser from '../logic/users/logoutUser';
+import getUserDetails from '../logic/users/getUserDetails';
+import updateUser from '../logic/users/updateUser';
 
 export default function Settings() {
-    const [username, setUsername] = useState('');
+    const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [theme, setTheme] = useState('light');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
-    const handleSave = () => {
-        // Logica para guardar la configuración
-        console.log('Settings saved:', { username, email, theme });
+    useEffect(() => {
+        async function fetchUser() {
+            try {
+                setLoading(true);
+                const user = await getUserDetails();
+                setName(user.name || '');
+                setEmail(user.email || '');
+            } catch (error) {
+                window.alert('No se pudieron cargar los datos del usuario');
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchUser();
+    }, []);
+
+    const handleSave = async () => {
+        try {
+            setLoading(true);
+            await updateUser({ name, email });
+            window.alert('Datos actualizados correctamente');
+        } catch (error) {
+            window.alert('No se pudo actualizar el usuario');
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleLogout = () => {
@@ -22,13 +47,14 @@ export default function Settings() {
         <div className="settings-container max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
             <h2 className="text-2xl font-bold mb-4">Settings</h2>
             <div className="mb-4">
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700">Username</label>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre</label>
                 <input
-                    id="username"
+                    id="name"
                     type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     className="mt-1 p-2 border rounded w-full"
+                    disabled={loading}
                 />
             </div>
             <div className="mb-4">
@@ -39,29 +65,20 @@ export default function Settings() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="mt-1 p-2 border rounded w-full"
+                    disabled={loading}
                 />
-            </div>
-            <div className="mb-4">
-                <label htmlFor="theme" className="block text-sm font-medium text-gray-700">Theme</label>
-                <select
-                    id="theme"
-                    value={theme}
-                    onChange={(e) => setTheme(e.target.value)}
-                    className="mt-1 p-2 border rounded w-full"
-                >
-                    <option value="light">Light</option>
-                    <option value="dark">Dark</option>
-                </select>
             </div>
             <button
                 onClick={handleSave}
                 className="w-full bg-blue-500 text-white p-2 rounded mb-4"
+                disabled={loading}
             >
-                Save Settings
+                Guardar Cambios
             </button>
             <button
                 onClick={handleLogout}
                 className="w-full bg-red-500 text-white p-2 rounded"
+                disabled={loading}
             >
                 Cerrar Sesión
             </button>

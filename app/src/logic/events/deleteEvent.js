@@ -3,9 +3,12 @@ import { validate, errors } from 'com';
 const { SystemError } = errors;
 
 export default (eventId) => {
-    validate.id(eventId);
+    // Validate that eventId is a string and not empty
+    if (typeof eventId !== 'string' || !eventId.trim()) {
+        throw new Error('Invalid event ID');
+    }
 
-    return fetch(`http://${import.meta.env.VITE_API_URL}/events/${eventId}`, {
+    return fetch(`http://localhost:3000/events/${eventId}`, {
         method: 'DELETE',
         headers: {
             Authorization: `Bearer ${localStorage.token}`,

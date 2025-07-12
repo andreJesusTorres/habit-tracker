@@ -9,7 +9,7 @@ export default (req, res, next) => {
 
         const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
 
-        req.userId = userId
+        req.user = { id: userId }
 
         next()
     } catch (error) {
