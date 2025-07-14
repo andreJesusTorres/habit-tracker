@@ -27,7 +27,6 @@ export default function Diary() {
             const eventsData = await getEvents();
             setEvents(eventsData);
         } catch (error) {
-            console.error('❌ Error loading events:', error);
             setError(error.message);
         } finally {
             setLoading(false);
@@ -78,7 +77,6 @@ export default function Diary() {
             await loadEvents();
             setEventDetails({ name: '', description: '', startTime: '', endTime: '' });
         } catch (error) {
-            console.error('❌ Error adding event:', error);
             setError(error.message);
         } finally {
             setLoading(false);
@@ -92,7 +90,6 @@ export default function Diary() {
             await deleteEvent(eventId);
             await loadEvents();
         } catch (error) {
-            console.error('❌ Error deleting event:', error);
             setError(error.message);
         } finally {
             setLoading(false);

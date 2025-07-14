@@ -30,7 +30,6 @@ export default function Goals() {
                 setSelectedHabit(habitsData[0]._id);
             }
         } catch (error) {
-            console.error('Error cargando hábitos:', error);
             setHabits([]); // En caso de error, establecer array vacío
         }
     };
@@ -40,7 +39,6 @@ export default function Goals() {
             const goalsData = await getGoals();
             setGoals(goalsData || []); // Asegurar que siempre sea un array
         } catch (error) {
-            console.error('Error cargando metas:', error);
             setGoals([]); // En caso de error, establecer array vacío
         }
     };

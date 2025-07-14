@@ -20,11 +20,9 @@ export default function Habits() {
                         alert("Error: Inténtalo más tarde.");
                     else
                         alert(error.message);
-                    console.error(error);
                 });
         } catch (error) {
             alert(error.message);
-            console.error(error);
         }
     }, [selectedDate]);
 
@@ -54,15 +52,13 @@ export default function Habits() {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            console.error('Error recargando hábitos después de completar:', error);
+                            // Error silencioso al recargar hábitos
                         });
                 })
                 .catch(error => {
-                    console.error('Error al marcar hábito como completado:', error);
                     window.alert(error.message || 'Error al marcar hábito como completado');
                 });
         } catch (error) {
-            console.error('Error en handleCompleteHabit:', error);
             window.alert(error.message);
         }
     };
@@ -85,15 +81,13 @@ export default function Habits() {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            console.error('Error recargando hábitos después de marcar como fallido:', error);
+                            // Error silencioso al recargar hábitos
                         });
                 })
                 .catch(error => {
-                    console.error('Error al marcar hábito como no completado:', error);
                     window.alert(error.message || 'Error al marcar hábito como no completado');
                 });
         } catch (error) {
-            console.error('Error en handleFailHabit:', error);
             window.alert(error.message);
         }
     };
@@ -178,7 +172,7 @@ export default function Habits() {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            console.error('Error recargando hábitos:', error);
+                            // Error silencioso al recargar hábitos
                         });
                 })
                 .catch(error => {
@@ -198,7 +192,7 @@ export default function Habits() {
                     logic.getHabits(selectedDate)
                         .then(habits => setHabits(habits))
                         .catch(error => {
-                            console.error('Error recargando hábitos:', error);
+                            // Error silencioso al recargar hábitos
                         });
                 })
                 .catch(error => {

@@ -28,11 +28,9 @@ export default function Register(props) {
                     else
                         alert(error.message);
 
-                    console.error(error);
                 });
         } catch (error) {
             alert(error.message);
-            console.error(error);
         }
     };
 

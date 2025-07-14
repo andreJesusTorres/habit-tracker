@@ -24,11 +24,9 @@ export default function Login(props) {
                         alert('Sorry, try again later.');
                     else
                         alert(error.message);
-                    console.error(error);
                 });
         } catch (error) {
             alert(error.message);
-            console.error(error);
         }
     };
 

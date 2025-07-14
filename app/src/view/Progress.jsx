@@ -32,7 +32,6 @@ export default function Progress() {
                 setSelectedHabit(habitsData[0]._id);
             }
         } catch (error) {
-            console.error('Error loading habits:', error);
             window.alert('Error loading habits: ' + error.message);
         } finally {
             setLoading(false);
@@ -62,7 +61,6 @@ export default function Progress() {
 
             setProgressData(progressMap);
         } catch (error) {
-            console.error('Error loading progress:', error);
             setProgressData({});
         }
     };
