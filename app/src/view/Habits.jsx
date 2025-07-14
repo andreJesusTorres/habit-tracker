@@ -10,62 +10,73 @@ export default function Habits() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        console.log('Cargando hábitos para fecha:', selectedDate);
         try {
             logic.getHabits(selectedDate)
                 .then(habits => {
+                    console.log('Hábitos cargados:', habits);
                     setHabits(habits);
                 })
                 .catch(error => {
+                    console.log('Error al cargar hábitos:', error);
                     if (error instanceof SystemError)
                         alert("Error: Inténtalo más tarde.");
                     else
                         alert(error.message);
                 });
         } catch (error) {
+            console.log('Error en useEffect:', error);
             alert(error.message);
         }
     }, [selectedDate]);
 
+    // Función para verificar si una fecha es del pasado
     const isDateInPast = (date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const checkDate = new Date(date);
         checkDate.setHours(0, 0, 0, 0);
+        console.log('Comparando fechas:', { today: today.toDateString(), checkDate: checkDate.toDateString() });
         return checkDate < today;
     };
 
     const handleCompleteHabit = (habitId) => {
+        console.log('Completando hábito:', habitId);
         if (isDateInPast(selectedDate)) {
-            window.alert('No puedes marcar progreso en fechas pasadas.');
+            alert('No puedes marcar progreso en fechas pasadas.');
             return;
         }
 
         try {
             const userId = logic.getUserId();
+            console.log('UserId:', userId);
             
             logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'done')
                 .then((response) => {
-                    window.alert('¡Hábito marcado como completado!');
+                    console.log('Progreso agregado:', response);
+                    alert('¡Hábito marcado como completado!');
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
                         .then(habits => {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            // Error silencioso al recargar hábitos
+                            console.log('Error al recargar hábitos:', error);
                         });
                 })
                 .catch(error => {
-                    window.alert(error.message || 'Error al marcar hábito como completado');
+                    console.log('Error al agregar progreso:', error);
+                    alert(error.message || 'Error al marcar hábito como completado');
                 });
         } catch (error) {
-            window.alert(error.message);
+            console.log('Error en handleCompleteHabit:', error);
+            alert(error.message);
         }
     };
 
     const handleFailHabit = (habitId) => {
         if (isDateInPast(selectedDate)) {
-            window.alert('No puedes marcar progreso en fechas pasadas.');
+            alert('No puedes marcar progreso en fechas pasadas.');
             return;
         }
 
@@ -74,21 +85,21 @@ export default function Habits() {
             
             logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'missed')
                 .then((response) => {
-                    window.alert('¡Hábito marcado como no completado!');
+                    alert('¡Hábito marcado como no completado!');
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
                         .then(habits => {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            // Error silencioso al recargar hábitos
+                            console.log('Error al recargar hábitos:', error);
                         });
                 })
                 .catch(error => {
-                    window.alert(error.message || 'Error al marcar hábito como no completado');
+                    alert(error.message || 'Error al marcar hábito como no completado');
                 });
         } catch (error) {
-            window.alert(error.message);
+            alert(error.message);
         }
     };
 
@@ -119,7 +130,7 @@ export default function Habits() {
                 handleDeleteProgress(habitId, habitName);
             } else if (option === '2') {
                 // Eliminar el hábito completamente
-                const confirmDelete = window.confirm(
+                const confirmDelete = confirm(
                     `¿Estás seguro de que quieres eliminar el hábito "${habitName}" completamente?\n\n` +
                     `Esta acción eliminará el hábito y todo su historial de progreso de todas las fechas.\n` +
                     `Esta acción no se puede deshacer.`
@@ -133,11 +144,11 @@ export default function Habits() {
                 return;
             } else {
                 // Opción inválida
-                window.alert('Opción inválida. Por favor, escribe 1, 2 o 3.');
+                alert('Opción inválida. Por favor, escribe 1, 2 o 3.');
             }
         } else {
             // Si no tiene progreso, preguntar si eliminar el hábito completamente
-            const confirmDelete = window.confirm(
+            const confirmDelete = confirm(
                 `¿Estás seguro de que quieres eliminar el hábito "${habitName}" completamente?\n\n` +
                 `Esta acción eliminará el hábito y todo su historial de progreso.\n` +
                 `Esta acción no se puede deshacer.`
@@ -159,24 +170,24 @@ export default function Habits() {
             const progressId = habit?.progressId;
             
             if (!progressId) {
-                window.alert('No se encontró el progreso para eliminar. ProgressId es null o undefined.');
+                alert('No se encontró el progreso para eliminar. ProgressId es null o undefined.');
                 return;
             }
             
             logic.deleteProgress(progressId, habitId)
                 .then((response) => {
-                    window.alert(`¡Progreso de "${habitName}" eliminado exitosamente!`);
+                    alert(`¡Progreso de "${habitName}" eliminado exitosamente!`);
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
                         .then(habits => {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            // Error silencioso al recargar hábitos
+                            console.log('Error al recargar hábitos:', error);
                         });
                 })
                 .catch(error => {
-                    window.alert(error.message || 'Error al eliminar progreso');
+                    alert(error.message || 'Error al eliminar progreso');
                 });
         } catch (error) {
             window.alert(error.message);
@@ -187,19 +198,19 @@ export default function Habits() {
         try {
             logic.deleteHabit(habitId)
                 .then(() => {
-                    window.alert(`¡Hábito "${habitName}" eliminado completamente!`);
+                    alert(`¡Hábito "${habitName}" eliminado completamente!`);
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
                         .then(habits => setHabits(habits))
                         .catch(error => {
-                            // Error silencioso al recargar hábitos
+                            console.log('Error al recargar hábitos:', error);
                         });
                 })
                 .catch(error => {
-                    window.alert(error.message || 'Error al eliminar hábito');
+                    alert(error.message || 'Error al eliminar hábito');
                 });
         } catch (error) {
-            window.alert(error.message);
+            alert(error.message);
         }
     };
 

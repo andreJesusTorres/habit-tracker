@@ -52,26 +52,36 @@ export default function HabitSelection() {
     const habitsHandlers= {
         "desarrollo-personal": [
             ()=>{
+                console.log('Agregando hábito: leer un libro');
                 try {
                     return addHabit("leer un libro", categoryMap[category], "text", "\ud83d\udcd6")
                         .then(()=>{
-                            window.alert('¡Hábito agregado exitosamente!');
+                            alert('¡Hábito agregado exitosamente!');
                             window.location.href = "/habits";
                         })
-                        .catch(error=> window.alert(error.message || error))
+                        .catch(error=> {
+                            console.log('Error:', error);
+                            alert(error.message || error);
+                        })
                 } catch (error) {
-                    window.alert(error.message)
+                    console.log('Error en try-catch:', error);
+                    alert(error.message)
                 }},
             ()=>{
+                console.log('Agregando hábito: aprender algo nuevo');
                 try {
                     return addHabit("aprender algo nuevo", categoryMap[category], "text", "\ud83c\udf93")
                         .then(()=>{
-                            window.alert('¡Hábito agregado exitosamente!');
+                            alert('¡Hábito agregado exitosamente!');
                             window.location.href = "/habits";
                         })
-                        .catch(error=> window.alert(error.message || error))
+                        .catch(error=> {
+                            console.log('Error:', error);
+                            alert(error.message || error);
+                        })
                 } catch (error) {
-                    window.alert(error.message)
+                    console.log('Error en try-catch:', error);
+                    alert(error.message)
                 }},
         ],
         "salud-y-bienestar": [
