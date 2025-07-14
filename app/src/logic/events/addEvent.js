@@ -12,7 +12,7 @@ export default (name, startDate, description, endDate = null, frequency = 'once'
     return fetch(`http://localhost:3000/events`, {
         method: 'POST',
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({ name, startDate, description, endDate, frequency }),

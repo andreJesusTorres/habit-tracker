@@ -9,7 +9,7 @@ export default (eventId, updates) => {
     return fetch(`http://${import.meta.env.VITE_API_URL}/events/${eventId}`, {
         method: 'PATCH',
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(updates),

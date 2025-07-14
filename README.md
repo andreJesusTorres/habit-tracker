@@ -1,14 +1,107 @@
 ## Cambios
 
-- **Endpoints**: -registro
-- **Frontend**: -corregido error de tipeo en registerUser.js (metohd → method)
-- **Frontend**: -corregido campo password-repeat → passwordRepeat
-- **Frontend**: -corregido URL de API en loginUser.js
+### 🔐 **Sistema de Autenticación y Autorización**
+- **Backend**: -corregido middleware de autorización para extraer correctamente userId del token JWT
+- **Backend**: -corregidos handlers de eventos para usar req.user.id en lugar de req.userId
+- **Frontend**: -corregidas todas las funciones para usar localStorage.getItem('token') en lugar de localStorage.token
+- **Frontend**: -actualizadas funciones de autenticación: isUserLoggedIn, getUserId, getUserRole
+- **Backend**: -agregada validación de ownership en deleteEvent para asegurar que solo el propietario pueda eliminar eventos
+- **Backend**: -actualizado handler de autenticación para devolver token, userId y role en la respuesta
+- **Frontend**: -actualizada función loginUser para guardar userId y role en localStorage
+- **Frontend**: -actualizada función logoutUser para limpiar todos los datos de autenticación
+- **Frontend**: -actualizadas todas las funciones para usar localStorage.getItem('token') en lugar de localStorage.token
+- **Frontend**: -corregidas funciones de autenticación: isUserLoggedIn, getUserId, getUserRole, isUserRoleRegular, isUserRoleModerator
+- **Frontend**: -actualizadas funciones de hábitos y progreso para usar el nuevo formato de token
+- **Frontend**: -corregidas todas las funciones que usaban localStorage.token: deleteHabit, updateHabit, trackProgress, getProgress, deleteProgress, getUserName
+- **Frontend**: -actualizadas funciones para usar localStorage.getItem('token') consistentemente
+- **Backend**: -aumentado tiempo de expiración del JWT de 1h a 7d
+- **Frontend**: -agregado botón de logout en Settings
+- **Frontend**: -corregida URL de API en updateUser.js para usar http://localhost:3000/users/update en lugar de /api/users/update, solucionando error al guardar cambios en Settings
+
+### 🎯 **Sistema de Metas (Goals)**
+- **Frontend**: -corregido error "undefined is not an object (evaluating 'goals.length')" en Goals.jsx
+- **Frontend**: -agregadas verificaciones de seguridad para manejar arrays undefined/null
+- **Frontend**: -mejorado manejo de errores en loadGoals y loadHabits
+- **Frontend**: -corregida función getGoals para manejar respuestas del backend correctamente
+- **Frontend**: -corregida función getHabits para manejar respuestas del backend correctamente
+- **Frontend**: -corregidas funciones deleteGoal y updateGoal para usar localStorage.getItem('token')
+- **Sistema**: -metas ahora funcionan completamente sin errores de autenticación
+- **Frontend**: -actualizado componente Goals para mostrar todas las categorías de hábitos disponibles con emojis
+- **Frontend**: -mejorada interfaz de selección de hábitos en Goals con información visual del hábito seleccionado
+- **Frontend**: -agregada información de categoría en el selector de hábitos de Goals
+- **Backend**: -actualizado modelo Goal para incluir campos targetDays, startDate, endDate, completedCount
+- **Backend**: -creada función addGoal para crear metas con período personalizado y objetivo específico
+- **Backend**: -creada función getGoals para obtener metas con información de progreso calculada
+- **Backend**: -actualizados handlers de goals para manejar nuevas funcionalidades
+- **Frontend**: -implementado formulario completo para crear metas con nombre, días objetivo y veces a completar
+- **Frontend**: -agregada validación de formulario: objetivo no puede ser mayor que días, valores positivos
+- **Frontend**: -implementada lista de metas existentes con barras de progreso visuales
+- **Frontend**: -agregados indicadores de estado: Completada, Expirada, días restantes
+- **Frontend**: -barras de progreso con colores dinámicos según porcentaje (verde, amarillo, naranja, rojo)
+- **Frontend**: -integración completa entre metas y progreso de hábitos: las metas se actualizan automáticamente
+- **Frontend**: -corregido componente Goals para cargar hábitos dinámicamente desde la base de datos en lugar de usar array hardcodeado
+- **Frontend**: -eliminado array hardcodeado de hábitos en Goals.jsx que causaba errores de "Cast to ObjectId failed"
+- **Frontend**: -implementada carga dinámica de hábitos usando getHabits() en el componente Goals
+- **Frontend**: -corregida selección de hábitos para usar habit._id (ObjectId real) en lugar de habit.id (número)
+- **Frontend**: -agregada validación para asegurar que se seleccione un hábito antes de crear una meta
+- **Backend**: -sistema de metas ahora funciona correctamente con ObjectIds reales de hábitos
+- **Frontend**: -corregido error de "Cast to ObjectId failed for value '15'" al crear metas
+- **Sistema**: -integración completa entre progreso de hábitos y metas: marcar hábitos como "done" actualiza automáticamente el contador de metas relacionadas
+- **Backend**: -función getGoals calcula progreso en tiempo real contando registros de Progress con status 'done' dentro del período de la meta
+- **Frontend**: -contador de metas se actualiza automáticamente al recargar la página de Goals
+- **Sistema**: -metas ahora funcionan completamente: creación, visualización y seguimiento de progreso automático
+- **Backend**: -corregida función getGoals para filtrar metas con hábitos válidos (no null), solucionando error "Cannot read properties of null"
+- **Frontend**: -corregida llamada a getHabits en Goals.jsx para incluir fecha como parámetro requerido
+
+### 🗓️ **Sistema de Eventos (Diary)**
+- **Backend**: -corregido handler addEventHandler para usar req.user.id correctamente
+- **Backend**: -corregido handler deleteEventHandler para incluir userId en la validación
+- **Backend**: -agregada validación de ownership en deleteEvent
+- **Frontend**: -corregidas funciones addEvent, getEvents, deleteEvent, updateEvent para usar localStorage.getItem('token')
+- **Sistema**: -eventos ahora se crean y eliminan correctamente sin errores de validación
+- **Frontend**: -implementada funcionalidad completa del diario con vista de calendario y eventos por hora
+- **Frontend**: -agregado componente Calendar con navegación de fechas y selección de día específico
+- **Frontend**: -implementado formulario de agregar eventos con campos: nombre, descripción, fecha y hora de inicio
+- **Frontend**: -agregada validación de formulario: campos requeridos y formato de fecha/hora
+- **Frontend**: -implementada vista de eventos organizados por hora (00:00 a 23:00) en el diario
+- **Frontend**: -agregado botón de eliminar eventos (🗑️) con confirmación antes de eliminar
+- **Frontend**: -implementada función handleDeleteEvent con validación de ID y manejo de errores
+- **Backend**: -creado modelo Event con campos: name, description, startDate, endDate, frequency, user
+- **Backend**: -implementada función addEvent para crear eventos con validación de datos
+- **Backend**: -implementada función getEvents para obtener eventos del usuario por fecha
+- **Backend**: -implementada función deleteEvent para eliminar eventos con validación de ownership
+- **Backend**: -agregados handlers para eventos: addEventHandler, getEventsHandler, deleteEventHandler
+- **Backend**: -configuradas rutas de eventos: POST /events, GET /events, DELETE /events/:eventId
+- **Backend**: -corregida ruta de eliminación de eventos para usar parámetro :eventId en lugar de body
+- **Sistema**: -integración completa entre frontend y backend para gestión de eventos del diario
+- **Sistema**: -eventos se muestran visualmente en el horario correcto según fecha y hora de inicio
+- **Sistema**: -eliminación de eventos actualiza automáticamente la vista sin necesidad de recargar
+- **UX**: -interfaz intuitiva para agregar, visualizar y eliminar eventos del diario personal
+- **Frontend**: -corregido el solapamiento de eventos en el diario; ahora cada evento se muestra en su propio bloque y con separación visual
+- **Frontend**: -agregado padding inferior al área de horarios del diario para asegurar que la hora 23:00 siempre sea visible y no quede oculta tras el Footer
+- **Frontend**: -corregido problema de eventos que se guardaban en hora incorrecta (3 horas adelante) debido a conversión de zona horaria
+- **Frontend**: -implementado uso de Date.UTC() para crear fechas en UTC y evitar problemas de zona horaria
+- **Frontend**: -corregido problema de eventos con fechas inválidas que causaban warnings en consola
+- **Frontend**: -actualizado filtrado de eventos para usar startDate en lugar de startTime (coincide con backend)
+- **Frontend**: -corregido error de selectedDate.toISOString() que causaba TypeError
+- **Frontend**: -rediseñada completamente la interfaz del Diary: eliminado sistema de clics en slots de tiempo
+- **Frontend**: -implementado formulario tradicional para agregar eventos con campos: nombre, descripción, hora inicio, hora fin
+- **Frontend**: -agregada lista de eventos organizada por fecha con diseño de tarjetas
+- **Frontend**: -implementado botón de eliminar eventos con confirmación
+- **Frontend**: -agregada validación HTML5 nativa para todos los campos del formulario
+- **Frontend**: -implementado diseño responsivo con grid adaptativo para el formulario
+- **Frontend**: -agregado mensaje cuando no hay eventos para una fecha específica
+- **Frontend**: -corregido problema de actualización del frontend tras agregar eventos
+- **Frontend**: -implementada recarga automática de eventos tras agregar nuevo evento
+- **Frontend**: -corregido problema de desfase de fecha en el calendario (mostraba un día adelante)
+- **Frontend**: -actualizado componente Calendar para usar toLocaleDateString('en-CA') en lugar de toISOString()
+- **Frontend**: -sincronizado calendario con lista de eventos para mostrar fecha correcta
+- **Sistema**: -Diary completamente funcional con formulario intuitivo y sincronización perfecta entre calendario y eventos
+
+### 🧠 **Sistema de Hábitos (Habits)**
 - **Frontend**: -agregados emojis a todos los hábitos predefinidos
 - **Frontend**: -mejorada interfaz de selección de hábitos con emojis
 - **Frontend**: -corregido URL de API en addHabit.js, getHabits.js, deleteHabit.js, updateHabit.js
-- **Backend**: -aumentado tiempo de expiración del JWT de 1h a 7d
-- **Frontend**: -agregado botón de logout en Settings
 - **Frontend**: -mejorado debugging en HabitSelection.jsx
 - **Frontend**: -agregado mensaje de éxito al agregar hábito
 - **Backend**: -permitido emojis de hasta 8 caracteres en la validación
@@ -53,38 +146,6 @@
 - **Frontend**: -actualizada navegación de días: fechas pasadas permiten navegación pero se muestran visualmente diferentes (colores grises, hover suave)
 - **Frontend**: -enviada fecha específica seleccionada al backend en lugar de usar fecha por defecto
 - **Frontend**: -mejorada experiencia de usuario: fechas pasadas permiten ver historial pero no marcar progreso
-- **Frontend**: -actualizado componente Goals para mostrar todas las categorías de hábitos disponibles con emojis
-- **Frontend**: -mejorada interfaz de selección de hábitos en Goals con información visual del hábito seleccionado
-- **Frontend**: -agregada información de categoría en el selector de hábitos de Goals
-- **Backend**: -actualizado modelo Goal para incluir campos targetDays, startDate, endDate, completedCount
-- **Backend**: -creada función addGoal para crear metas con período personalizado y objetivo específico
-- **Backend**: -creada función getGoals para obtener metas con información de progreso calculada
-- **Backend**: -actualizados handlers de goals para manejar nuevas funcionalidades
-- **Frontend**: -implementado formulario completo para crear metas con nombre, días objetivo y veces a completar
-- **Frontend**: -agregada validación de formulario: objetivo no puede ser mayor que días, valores positivos
-- **Frontend**: -implementada lista de metas existentes con barras de progreso visuales
-- **Frontend**: -agregados indicadores de estado: Completada, Expirada, días restantes
-- **Frontend**: -barras de progreso con colores dinámicos según porcentaje (verde, amarillo, naranja, rojo)
-- **Frontend**: -integración completa entre metas y progreso de hábitos: las metas se actualizan automáticamente
-- **Backend**: -actualizado handler de autenticación para devolver token, userId y role en la respuesta
-- **Frontend**: -actualizada función loginUser para guardar userId y role en localStorage
-- **Frontend**: -actualizada función logoutUser para limpiar todos los datos de autenticación
-- **Frontend**: -actualizadas todas las funciones para usar localStorage.getItem('token') en lugar de localStorage.token
-- **Frontend**: -corregidas funciones de autenticación: isUserLoggedIn, getUserId, getUserRole, isUserRoleRegular, isUserRoleModerator
-- **Frontend**: -actualizadas funciones de hábitos y progreso para usar el nuevo formato de token
-- **Frontend**: -corregidas todas las funciones que usaban localStorage.token: deleteHabit, updateHabit, trackProgress, getProgress, deleteProgress, getUserName
-- **Frontend**: -actualizadas funciones para usar localStorage.getItem('token') consistentemente
-- **Frontend**: -corregido componente Goals para cargar hábitos dinámicamente desde la base de datos en lugar de usar array hardcodeado
-- **Frontend**: -eliminado array hardcodeado de hábitos en Goals.jsx que causaba errores de "Cast to ObjectId failed"
-- **Frontend**: -implementada carga dinámica de hábitos usando getHabits() en el componente Goals
-- **Frontend**: -corregida selección de hábitos para usar habit._id (ObjectId real) en lugar de habit.id (número)
-- **Frontend**: -agregada validación para asegurar que se seleccione un hábito antes de crear una meta
-- **Backend**: -sistema de metas ahora funciona correctamente con ObjectIds reales de hábitos
-- **Frontend**: -corregido error de "Cast to ObjectId failed for value '15'" al crear metas
-- **Sistema**: -integración completa entre progreso de hábitos y metas: marcar hábitos como "done" actualiza automáticamente el contador de metas relacionadas
-- **Backend**: -función getGoals calcula progreso en tiempo real contando registros de Progress con status 'done' dentro del período de la meta
-- **Frontend**: -contador de metas se actualiza automáticamente al recargar la página de Goals
-- **Sistema**: -metas ahora funcionan completamente: creación, visualización y seguimiento de progreso automático
 - **Frontend**: -agregado botón de eliminar hábito (🗑️) en la página de Habits
 - **Frontend**: -implementada función handleDeleteHabit con confirmación antes de eliminar
 - **Frontend**: -botón de eliminar disponible en todos los estados del hábito (pendiente, completado, fallido)
@@ -110,52 +171,27 @@
 - **Backend**: -implementada búsqueda de progresos por rango de fechas (todo el día) en lugar de coincidencia exacta
 - **Backend**: -corregida consulta de progresos para usar $in con habitIds del usuario en lugar de buscar por user
 - **Sistema**: -funcionalidades de marcar hábitos como hecho (✅), no hecho (❌) y eliminar (🗑️) ahora funcionan completamente
-- **Backend**: -agregados logs de debug detallados para facilitar el troubleshooting de problemas de progreso
 - **Sistema**: -integración completa entre frontend y backend: los cambios de estado de hábitos se reflejan inmediatamente en la interfaz
-- **Backend**: -corregida función getGoals para filtrar metas con hábitos válidos (no null), solucionando error "Cannot read properties of null"
-- **Frontend**: -corregida llamada a getHabits en Goals.jsx para incluir fecha como parámetro requerido
 - **Backend**: -mejorada función deleteHabit para devolver respuesta explícita tras eliminar hábito, asegurando actualización correcta del frontend
 - **Sistema**: -eliminación de hábitos ahora actualiza automáticamente la lista en el frontend sin necesidad de recargar la página
-- **Frontend**: -implementada funcionalidad completa del diario con vista de calendario y eventos por hora
-- **Frontend**: -agregado componente Calendar con navegación de fechas y selección de día específico
-- **Frontend**: -implementado formulario de agregar eventos con campos: nombre, descripción, fecha y hora de inicio
-- **Frontend**: -agregada validación de formulario: campos requeridos y formato de fecha/hora
-- **Frontend**: -implementada vista de eventos organizados por hora (00:00 a 23:00) en el diario
-- **Frontend**: -agregado botón de eliminar eventos (🗑️) con confirmación antes de eliminar
-- **Frontend**: -implementada función handleDeleteEvent con validación de ID y manejo de errores
-- **Frontend**: -agregados logs de debug detallados para facilitar el troubleshooting de eventos
-- **Backend**: -creado modelo Event con campos: name, description, startDate, endDate, frequency, user
-- **Backend**: -implementada función addEvent para crear eventos con validación de datos
-- **Backend**: -implementada función getEvents para obtener eventos del usuario por fecha
-- **Backend**: -implementada función deleteEvent para eliminar eventos con validación de ownership
-- **Backend**: -agregados handlers para eventos: addEventHandler, getEventsHandler, deleteEventHandler
-- **Backend**: -configuradas rutas de eventos: POST /events, GET /events, DELETE /events/:eventId
-- **Backend**: -corregida ruta de eliminación de eventos para usar parámetro :eventId en lugar de body
-- **Backend**: -agregados logs de debug detallados en deleteEvent para facilitar troubleshooting
-- **Sistema**: -integración completa entre frontend y backend para gestión de eventos del diario
-- **Sistema**: -eventos se muestran visualmente en el horario correcto según fecha y hora de inicio
-- **Sistema**: -eliminación de eventos actualiza automáticamente la vista sin necesidad de recargar
-- **UX**: -interfaz intuitiva para agregar, visualizar y eliminar eventos del diario personal
-- **Frontend**: -corregido el solapamiento de eventos en el diario; ahora cada evento se muestra en su propio bloque y con separación visual
-- **Frontend**: -agregado padding inferior al área de horarios del diario para asegurar que la hora 23:00 siempre sea visible y no quede oculta tras el Footer
-- **Frontend**: -corregido problema de eventos que se guardaban en hora incorrecta (3 horas adelante) debido a conversión de zona horaria
-- **Frontend**: -implementado uso de Date.UTC() para crear fechas en UTC y evitar problemas de zona horaria
-- **Frontend**: -corregido problema de eventos con fechas inválidas que causaban warnings en consola
-- **Frontend**: -actualizado filtrado de eventos para usar startDate en lugar de startTime (coincide con backend)
-- **Frontend**: -corregido error de selectedDate.toISOString() que causaba TypeError
-- **Frontend**: -rediseñada completamente la interfaz del Diary: eliminado sistema de clics en slots de tiempo
-- **Frontend**: -implementado formulario tradicional para agregar eventos con campos: nombre, descripción, hora inicio, hora fin
-- **Frontend**: -agregada lista de eventos organizada por fecha con diseño de tarjetas
-- **Frontend**: -implementado botón de eliminar eventos con confirmación
-- **Frontend**: -agregada validación HTML5 nativa para todos los campos del formulario
-- **Frontend**: -implementado diseño responsivo con grid adaptativo para el formulario
-- **Frontend**: -agregado mensaje cuando no hay eventos para una fecha específica
-- **Frontend**: -corregido problema de actualización del frontend tras agregar eventos
-- **Frontend**: -implementada recarga automática de eventos tras agregar nuevo evento
-- **Frontend**: -corregido problema de desfase de fecha en el calendario (mostraba un día adelante)
-- **Frontend**: -actualizado componente Calendar para usar toLocaleDateString('en-CA') en lugar de toISOString()
-- **Frontend**: -sincronizado calendario con lista de eventos para mostrar fecha correcta
-- **Backend**: -limpiados todos los logs de debug de addEvent.js y getHabits.js
-- **Frontend**: -limpiados todos los logs de debug del componente Diary.jsx
-- **Sistema**: -Diary completamente funcional con formulario intuitivo y sincronización perfecta entre calendario y eventos
-- **Frontend**: -corregida URL de API en updateUser.js para usar http://localhost:3000/users/update en lugar de /api/users/update, solucionando error al guardar cambios en Settings
+
+### 📊 **Sistema de Progreso**
+- **Frontend**: -corregidas funciones addProgress, getProgress, deleteProgress para usar localStorage.getItem('token')
+- **Backend**: -corregido el handler de progreso (POST /progress) para que envíe respuesta HTTP tras agregar progreso, solucionando el bug de carga infinita en el frontend
+- **Frontend**: -corregida función addProgress para que coincida con la función del backend 
+- **Backend**: -mejorada función addProgress para actualizar progreso existente en lugar de crear duplicados usando findOneAndUpdate con upsert
+- **Frontend**: -corregida función deleteProgress para enviar tanto progressId como habitId al backend
+- **Backend**: -función deleteProgress requiere validación de ownership entre progressId y habitId
+- **Sistema**: -eliminación de progreso específico ahora funciona correctamente con validación de seguridad
+
+### 🧹 **Limpieza y Optimización de Código**
+- **Sistema**: -eliminados todos los logs de debug del backend y frontend
+- **Backend**: -limpiados logs de debug en authorizationHandler, addEventHandler, deleteEvent, addProgress
+- **Frontend**: -limpiados logs de debug en addEvent, getHabits, getGoals, addProgress, Goals.jsx
+- **Código**: -código más limpio y profesional sin logs de desarrollo
+
+### 📋 **Cambios Anteriores (Mantenidos)**
+- **Endpoints**: -registro
+- **Frontend**: -corregido error de tipeo en registerUser.js (metohd → method)
+- **Frontend**: -corregido campo password-repeat → passwordRepeat
+- **Frontend**: -corregido URL de API en loginUser.js

@@ -11,7 +11,7 @@ export default (eventId) => {
     return fetch(`http://localhost:3000/events/${eventId}`, {
         method: 'DELETE',
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
     })
         .catch(error => { throw new SystemError(error.message); })

@@ -4,16 +4,11 @@ import { validate, errors } from 'com';
 
 const { SystemError, NotFoundError } = errors;
 
-export default (eventId) => {
-    console.log('🔍 Backend - Deleting event with ID:', eventId, 'Length:', eventId?.length);
-    console.log('🔍 Backend - EventId type:', typeof eventId);
-    console.log('🔍 Backend - EventId value:', JSON.stringify(eventId));
-    
+export default (eventId, userId) => {
     try {
-    validate.id(eventId, 'eventId');
-        console.log('🔍 Backend - Validation passed');
+        validate.id(eventId, 'eventId');
+        validate.id(userId, 'userId');
     } catch (error) {
-        console.log('🔍 Backend - Validation failed:', error.message);
         throw error;
     }
 
@@ -23,20 +18,16 @@ export default (eventId) => {
             throw new SystemError(error.message); 
         })
         .then(event => {
-            console.log('🔍 Backend - Event found:', event ? 'YES' : 'NO');
-            if (event) {
-                console.log('🔍 Backend - Event details:', JSON.stringify(event));
-            }
             if (!event) throw new NotFoundError('Event not found');
+            
+            // Validar que el evento pertenezca al usuario
+            if (event.user.toString() !== userId) {
+                throw new errors.AuthorizationError('Event does not belong to user');
+            }
             
             return Event.deleteOne({ _id: eventId })
                 .catch(error => { 
-                    console.log('🔍 Backend - DeleteOne error:', error.message);
                     throw new SystemError(error.message); 
-                })
-                .then(result => {
-                    console.log('🔍 Backend - Delete result:', JSON.stringify(result));
-                    return result;
                 });
         });
 };

@@ -24,21 +24,20 @@ export default function Goals() {
     const loadHabits = async () => {
         try {
             const habitsData = await getHabits(new Date());
-            setHabits(habitsData);
+            setHabits(habitsData || []); // Asegurar que siempre sea un array
             // Seleccionar el primer hábito por defecto si hay hábitos disponibles
-            if (habitsData.length > 0 && !selectedHabit) {
+            if (habitsData && habitsData.length > 0 && !selectedHabit) {
                 setSelectedHabit(habitsData[0]._id);
             }
         } catch (error) {
             console.error('Error cargando hábitos:', error);
+            setHabits([]); // En caso de error, establecer array vacío
         }
     };
 
     const loadGoals = async () => {
         try {
-            console.log('Cargando metas...');
             const goalsData = await getGoals();
-            console.log('Metas cargadas:', goalsData);
             setGoals(goalsData || []); // Asegurar que siempre sea un array
         } catch (error) {
             console.error('Error cargando metas:', error);
@@ -118,7 +117,7 @@ export default function Goals() {
                         className="p-3 border rounded-lg w-full text-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     >
                         <option value="">Selecciona un hábito</option>
-                        {habits.map(habit => (
+                        {habits && habits.map(habit => (
                             <option key={habit._id} value={habit._id}>
                                 {habit.emoji} {habit.name} ({habit.category})
                             </option>

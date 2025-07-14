@@ -5,7 +5,7 @@ const { SystemError } = errors;
 export default () => {
     return fetch(`http://localhost:3000/events`, {
         headers: {
-            Authorization: `Bearer ${localStorage.token}`,
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
     })
         .catch(error => { throw new SystemError(error.message); })
