@@ -37,8 +37,6 @@ export default function Habits() {
     };
 
     const handleCompleteHabit = (habitId) => {
-        console.log('🔍 Debug - handleCompleteHabit called with habitId:', habitId);
-        
         if (isDateInPast(selectedDate)) {
             window.alert('No puedes marcar progreso en fechas pasadas.');
             return;
@@ -46,38 +44,30 @@ export default function Habits() {
 
         try {
             const userId = logic.getUserId();
-            console.log('🔍 Debug - userId:', userId);
-            console.log('🔍 Debug - selectedDate:', selectedDate);
-            console.log('🔍 Debug - date string:', selectedDate.toISOString().split('T')[0]);
             
             logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'done')
                 .then((response) => {
-                    console.log('✅ Debug - addProgress success response:', response);
                     window.alert('¡Hábito marcado como completado!');
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
                         .then(habits => {
-                            console.log('📋 Debug - New habits loaded after completion:', habits);
                             setHabits(habits);
-                            console.log('✅ Debug - Habits state updated after completion');
                         })
                         .catch(error => {
-                            console.error('❌ Error recargando hábitos después de completar:', error);
+                            console.error('Error recargando hábitos después de completar:', error);
                         });
                 })
                 .catch(error => {
-                    console.error('❌ Debug - addProgress error:', error);
+                    console.error('Error al marcar hábito como completado:', error);
                     window.alert(error.message || 'Error al marcar hábito como completado');
                 });
         } catch (error) {
-            console.error('❌ Debug - handleCompleteHabit catch error:', error);
+            console.error('Error en handleCompleteHabit:', error);
             window.alert(error.message);
         }
     };
 
     const handleFailHabit = (habitId) => {
-        console.log('🔍 Debug - handleFailHabit called with habitId:', habitId);
-        
         if (isDateInPast(selectedDate)) {
             window.alert('No puedes marcar progreso en fechas pasadas.');
             return;
@@ -85,31 +75,25 @@ export default function Habits() {
 
         try {
             const userId = logic.getUserId();
-            console.log('🔍 Debug - userId:', userId);
-            console.log('🔍 Debug - selectedDate:', selectedDate);
-            console.log('🔍 Debug - date string:', selectedDate.toISOString().split('T')[0]);
             
             logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'missed')
                 .then((response) => {
-                    console.log('✅ Debug - addProgress (missed) success response:', response);
                     window.alert('¡Hábito marcado como no completado!');
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
                         .then(habits => {
-                            console.log('📋 Debug - New habits loaded after marking as missed:', habits);
                             setHabits(habits);
-                            console.log('✅ Debug - Habits state updated after marking as missed');
                         })
                         .catch(error => {
-                            console.error('❌ Error recargando hábitos después de marcar como fallido:', error);
+                            console.error('Error recargando hábitos después de marcar como fallido:', error);
                         });
                 })
                 .catch(error => {
-                    console.error('❌ Debug - addProgress (missed) error:', error);
+                    console.error('Error al marcar hábito como no completado:', error);
                     window.alert(error.message || 'Error al marcar hábito como no completado');
                 });
         } catch (error) {
-            console.error('❌ Debug - handleFailHabit catch error:', error);
+            console.error('Error en handleFailHabit:', error);
             window.alert(error.message);
         }
     };

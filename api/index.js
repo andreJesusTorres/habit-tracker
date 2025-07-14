@@ -1,6 +1,4 @@
-console.log('Antes de importar db');
 import db from 'dat';
-console.log('Después de importar db');
 import 'dotenv/config'
 import express from 'express'
 import cors from 'cors'
@@ -9,9 +7,8 @@ import { usersRouter, habitsRouter, goalsRouter, progressRouter, eventsRouter } 
 
 import { errorHandler } from './routes/helpers/index.js'
 
-console.log('Intentando conectar a MongoDB...');
 db.connect(process.env.MONGO_URL).then(() => {
-    console.log('connected to MONGODB')
+    console.log('Connected to MongoDB')
 
     const server = express()
 

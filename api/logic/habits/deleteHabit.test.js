@@ -6,7 +6,7 @@ db.connect(process.env.MONGO_URL_TEST)
     .then(() => {
         try {
             return deleteHabit('675ace02a28a390d912bc40e','675b0409eb88a672a794bf6d',)
-                .then(console.log('habito deleteado cabron'))
+                .then(result => console.log('Habit deleted successfully:', result))
                 .catch(console.error)
         } catch (error) {
             console.error(error)

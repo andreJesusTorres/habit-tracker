@@ -13,9 +13,8 @@ export default (eventId, userId) => {
     }
 
     return Event.findById(eventId).lean()
-        .catch(error => { 
-            console.log('🔍 Backend - FindById error:', error.message);
-            throw new SystemError(error.message); 
+                .catch(error => {
+            throw new SystemError(error.message);
         })
         .then(event => {
             if (!event) throw new NotFoundError('Event not found');

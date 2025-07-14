@@ -14,7 +14,6 @@ export default (userId, goalId) => {
 
             return Goal.findByIdAndDelete(goalId)
                 .then(() => {
-                    console.log('Goal eliminado correctamente:', goalId);
                     return { message: 'Goal eliminado correctamente', goalId };
                 })
                 .catch(error => { throw new SystemError(error.message); });
