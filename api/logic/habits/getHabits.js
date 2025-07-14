@@ -22,7 +22,7 @@ export default async (userId, date) => {
     }
     
     // Validación simple para la fecha
-    if (typeof date !== 'string' && !(date instanceof Date)) {
+    if (typeof date !== 'string') {
         throw new ValidationError('invalid date');
     }
 

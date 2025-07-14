@@ -3,7 +3,7 @@ import { errors } from 'com';
 const { SystemError } = errors;
 
 export default (date) => {
-    const url = date ? `http://localhost:3000/habits?date=${date.toISOString()}` : `http://localhost:3000/habits`;
+    const url = date ? `http://localhost:3000/habits?date=${date.toISOString().split('T')[0]}` : `http://localhost:3000/habits`;
     
     return fetch(url, {
         headers: {
