@@ -3,9 +3,16 @@ import { createFunctionalHandler } from "../../helpers/index.js";
 
 const addGoalHandler = createFunctionalHandler((req, res) => {
   const userId = req.user.id;
-  const { name, description, targetDate } = req.body;
+  const { habitId, name, period, objective, targetDays } = req.body;
 
-  return logic.addGoal(userId, name, description, targetDate);
+  const goalData = {
+    name,
+    period,
+    objective,
+    targetDays
+  };
+
+  return logic.addGoal(userId, habitId, goalData);
 });
 
 export default addGoalHandler;

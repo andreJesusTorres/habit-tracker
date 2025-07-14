@@ -52,6 +52,9 @@
 - **Sistema**: -metas ahora funcionan completamente: creación, visualización y seguimiento de progreso automático
 - **Backend**: -corregida función getGoals para filtrar metas con hábitos válidos (no null), solucionando error "Cannot read properties of null"
 - **Frontend**: -corregida llamada a getHabits en Goals.jsx para incluir fecha como parámetro requerido
+- **Backend**: -corregido handler addGoalHandler para extraer correctamente los parámetros del body de la petición
+- **Frontend**: -corregida función addGoal para no enviar userId duplicado (el backend lo obtiene del token)
+- **Sistema**: -creación de metas ahora funciona correctamente sin errores de SystemError
 
 ### 🗓️ **Sistema de Eventos (Diary)**
 - **Backend**: -corregido handler addEventHandler para usar req.user.id correctamente
@@ -174,6 +177,8 @@
 - **Sistema**: -integración completa entre frontend y backend: los cambios de estado de hábitos se reflejan inmediatamente en la interfaz
 - **Backend**: -mejorada función deleteHabit para devolver respuesta explícita tras eliminar hábito, asegurando actualización correcta del frontend
 - **Sistema**: -eliminación de hábitos ahora actualiza automáticamente la lista en el frontend sin necesidad de recargar la página
+- **Backend**: -corregido handler addHabitHandler para usar req.user.id en lugar de req.userId, solucionando error "invalid userId"
+- **Sistema**: -agregar hábitos ahora funciona correctamente sin errores de validación de userId
 
 ### 📊 **Sistema de Progreso**
 - **Frontend**: -corregidas funciones addProgress, getProgress, deleteProgress para usar localStorage.getItem('token')
