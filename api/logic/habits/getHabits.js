@@ -6,6 +6,21 @@ const { SystemError, ValidationError } = errors;
 export default async (userId, date) => {
     validate.id(userId, 'userId');
     
+    // Si no se proporciona fecha, devolver solo los hábitos sin progreso
+    if (!date) {
+        try {
+            const habits = await Habit.find({ user: userId }).lean();
+            return habits.map(habit => ({
+                ...habit,
+                isCompleted: false,
+                isFailed: false,
+                progressId: null
+            }));
+        } catch (error) {
+            throw new SystemError(error.message);
+        }
+    }
+    
     // Validación simple para la fecha
     if (typeof date !== 'string' && !(date instanceof Date)) {
         throw new ValidationError('invalid date');

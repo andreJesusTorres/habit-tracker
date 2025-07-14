@@ -184,6 +184,21 @@
 - **Backend**: -función deleteProgress requiere validación de ownership entre progressId y habitId
 - **Sistema**: -eliminación de progreso específico ahora funciona correctamente con validación de seguridad
 
+### 📈 **Progress Tracker (Nuevo)**
+- **Frontend**: -implementado Progress Tracker completamente funcional con selección de hábitos y calendario visual
+- **Frontend**: -agregado selector de hábitos que carga dinámicamente desde la base de datos con emojis
+- **Frontend**: -implementado calendario mensual con navegación entre meses
+- **Frontend**: -agregado sistema de colores para fechas: verde (done), rojo (missed), blanco (sin progreso)
+- **Frontend**: -implementada leyenda visual para explicar los colores del calendario
+- **Frontend**: -agregada carga automática de progreso al cambiar hábito o mes
+- **Frontend**: -implementado manejo de errores y estados de carga
+- **Backend**: -actualizada función getProgress para soportar filtrado por habitId y rango de fechas
+- **Backend**: -actualizado handler getProgressHandler para manejar parámetros habitId, startDate, endDate
+- **Frontend**: -actualizada función getProgress para enviar parámetros de filtrado al backend
+- **Backend**: -corregida función getHabits para manejar casos cuando no se proporciona fecha (necesario para Progress Tracker)
+- **Sistema**: -integración completa entre frontend y backend para visualización de progreso por hábito
+- **UX**: -interfaz intuitiva que permite ver el progreso histórico de cualquier hábito en formato calendario
+
 ### 🧹 **Limpieza y Optimización de Código**
 - **Sistema**: -eliminados todos los logs de debug del backend y frontend
 - **Backend**: -limpiados logs de debug en authorizationHandler, addEventHandler, deleteEvent, addProgress

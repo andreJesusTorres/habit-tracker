@@ -2,8 +2,27 @@ import { errors } from 'com';
 
 const { SystemError } = errors;
 
-export default (habitId) => {
-    return fetch(`http://${import.meta.env.VITE_API_URL}/progress/${habitId}`, {
+export default (habitId, startDate, endDate) => {
+    let url = `http://localhost:3000/progress`;
+    const params = new URLSearchParams();
+    
+    if (habitId) {
+        params.append('habitId', habitId);
+    }
+    
+    if (startDate) {
+        params.append('startDate', startDate);
+    }
+    
+    if (endDate) {
+        params.append('endDate', endDate);
+    }
+    
+    if (params.toString()) {
+        url += `?${params.toString()}`;
+    }
+
+    return fetch(url, {
         headers: {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
         },

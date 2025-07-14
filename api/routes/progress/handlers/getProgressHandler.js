@@ -2,10 +2,9 @@ import logic from "../../../logic/index.js";
 import { createFunctionalHandler } from "../../helpers/index.js";
 
 const getProgressHandler = createFunctionalHandler((req, res) => {
-  const userId = req.user.id;
-  const { date } = req.query;
+  const { habitId, startDate, endDate } = req.query;
 
-  return logic.getProgress(userId, date);
+  return logic.getProgress(habitId, startDate, endDate);
 });
 
 export default getProgressHandler;
