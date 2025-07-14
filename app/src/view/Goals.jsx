@@ -36,10 +36,13 @@ export default function Goals() {
 
     const loadGoals = async () => {
         try {
+            console.log('Cargando metas...');
             const goalsData = await getGoals();
-            setGoals(goalsData);
+            console.log('Metas cargadas:', goalsData);
+            setGoals(goalsData || []); // Asegurar que siempre sea un array
         } catch (error) {
             console.error('Error cargando metas:', error);
+            setGoals([]); // En caso de error, establecer array vacío
         }
     };
 
@@ -199,7 +202,7 @@ export default function Goals() {
                 </div>
 
                 {/* Lista de metas existentes */}
-                {goals.length > 0 && (
+                {goals && goals.length > 0 && (
                     <div className="space-y-4">
                         <h3 className="text-lg font-semibold">Mis Metas</h3>
                         {goals.map((goal) => (
