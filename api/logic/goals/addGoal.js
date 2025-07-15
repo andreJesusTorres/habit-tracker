@@ -18,7 +18,7 @@ export default async function addGoal(userId, habitId, goalData) {
         if (targetDays <= 0) {
             throw new Error("El período de días debe ser un número positivo");
         }
-ç
+
         // Crear la meta
         const goal = new Goal({
             user: userId,

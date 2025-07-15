@@ -1,16 +1,48 @@
 import 'dotenv/config';
-import db from 'dat';
+import db, { User, Progress, Habit } from 'dat';
 import updateProgress from './updateProgress.js';
 
 db.connect(process.env.MONGO_URL_TEST)
-    .then(() => {
-        return updateProgress(
-            '679badac0e96a21dc7370369', // progressId
-            '675ace02a28a390d912bc40e', // userId
-            { date: new Date(), status: 'done' } // updates
-        )
-            .then(console.log) // Log the updated progress ID
-            .catch(console.error);
+    .then(async () => {
+        try {
+            // Limpiar datos de prueba existentes
+            await User.deleteMany({ email: 'test@example.com' });
+            await Progress.deleteMany({});
+            await Habit.deleteMany({ name: 'Ejercicio diario' });
+            // Crear usuario de prueba
+            const user = await User.create({
+                name: 'Usuario Test',
+                email: 'test@example.com',
+                username: 'testuser',
+                password: 'password123',
+                role: 'regular'
+            });
+            // Crear hábito de prueba
+            const habit = await Habit.create({
+                user: user._id,
+                name: 'Ejercicio diario',
+                category: 'actividad física',
+                emoji: '🏋️'
+            });
+            // Crear registro de progreso de prueba
+            const progress = await Progress.create({
+                habit: habit._id,
+                date: new Date('2024-11-15'),
+                status: 'done'
+            });
+            // Actualizar el progreso
+            const updatedProgress = await updateProgress(
+                progress._id.toString(),
+                user._id.toString(),
+                {
+                    date: new Date('2024-11-16'),
+                    status: 'half-done'
+                }
+            );
+            console.log('✅ Progreso actualizado exitosamente:', updatedProgress);
+        } catch (error) {
+            console.error('❌ Error al actualizar progreso:', error.message);
+        }
     })
     .catch(console.error)
     .finally(() => db.disconnect());

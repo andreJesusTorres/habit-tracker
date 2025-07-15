@@ -1,16 +1,22 @@
 import 'dotenv/config';
-import db, { User } from 'dat';
+import db, { User, Habit } from 'dat';
 import addHabit from './addHabit.js';
 
 db.connect(process.env.MONGO_URL_TEST)
     .then(async () => {
         try {
-            // Primero necesitamos crear un usuario para poder crear un hábito
-            const user = await User.findOne({ email: 'test@example.com' });
-            if (!user) {
-                console.log('❌ No se encontró usuario de prueba. Ejecuta primero registerUser.test.js');
-                return;
-            }
+            // Limpiar datos de prueba existentes
+            await User.deleteMany({ email: 'test@example.com' });
+            await Habit.deleteMany({ name: 'Ejercicio diario' });
+            
+            // Crear usuario de prueba
+            const user = await User.create({
+                name: 'Usuario Test',
+                email: 'test@example.com',
+                username: 'testuser',
+                password: 'password123',
+                role: 'regular'
+            });
             
             const habit = await addHabit(user._id.toString(), 'Ejercicio diario', 'actividad física', 'gimnasio', '🏋️');
             console.log('✅ Hábito creado exitosamente:', habit.name);

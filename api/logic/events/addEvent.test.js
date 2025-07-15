@@ -1,25 +1,32 @@
 import 'dotenv/config';
-import db, { User } from 'dat';
+import db, { User, Event } from 'dat';
 import addEvent from './addEvent.js';
 
 db.connect(process.env.MONGO_URL_TEST)
     .then(async () => {
         try {
-            const user = await User.findOne({ email: 'test@example.com' });
-            if (!user) {
-                console.log('❌ No se encontró usuario de prueba. Ejecuta primero registerUser.test.js');
-                return;
-            }
+            // Limpiar datos de prueba existentes
+            await User.deleteMany({ email: 'test@example.com' });
+            await Event.deleteMany({ name: 'Reunión de trabajo' });
+            
+            // Crear usuario de prueba
+            const user = await User.create({
+                name: 'Usuario Test',
+                email: 'test@example.com',
+                username: 'testuser',
+                password: 'password123',
+                role: 'regular'
+            });
             
             const eventId = await addEvent(
                 user._id.toString(),
-                'Reunión de equipo',
-                new Date('2025-01-30T10:00:00.000Z'),
-                'Reunión semanal del equipo de desarrollo',
-                new Date('2025-01-30T11:00:00.000Z'),
+                'Reunión de trabajo',
+                new Date('2024-11-15T10:00:00Z'),
+                'Reunión semanal del equipo',
+                new Date('2024-11-15T11:00:00Z'),
                 'weekly'
             );
-            console.log('✅ Evento creado exitosamente. ID:', eventId);
+            console.log('✅ Evento creado exitosamente:', eventId);
         } catch (error) {
             console.error('❌ Error al crear evento:', error.message);
         }

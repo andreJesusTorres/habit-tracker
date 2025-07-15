@@ -1,23 +1,56 @@
 import 'dotenv/config';
-import db from 'dat';
+import db, { User, Goal, Habit } from 'dat';
 import updateGoal from './updateGoal.js';
 
 db.connect(process.env.MONGO_URL_TEST)
-    .then(() => {
+    .then(async () => {
         try {
-            const userId = '675ace02a28a390d912bc40e'; // Cambia este ID según tus datos de prueba
-            const goalId = '67950bd03dfd8073c15b1343'; // Cambia este ID según tus datos de prueba
-            const updates = {
-                description: 'Ahorrar 200€',
-                period: 'weekly',
-                objective: 200,
-            };
-
-            return updateGoal(userId, goalId, updates)
-                .then(console.log) // Resultado: Goal actualizado
-                .catch(console.error);
+            // Limpiar datos de prueba existentes
+            await User.deleteMany({ email: 'test@example.com' });
+            await Goal.deleteMany({ name: 'Meta de ejercicio' });
+            await Habit.deleteMany({ name: 'Ejercicio diario' });
+            
+            // Crear usuario de prueba
+            const user = await User.create({
+                name: 'Usuario Test',
+                email: 'test@example.com',
+                username: 'testuser',
+                password: 'password123',
+                role: 'regular'
+            });
+            // Crear hábito de prueba
+            const habit = await Habit.create({
+                user: user._id,
+                name: 'Ejercicio diario',
+                category: 'actividad física',
+                emoji: '🏋️'
+            });
+            // Crear meta de prueba
+            const goal = await Goal.create({
+                user: user._id,
+                habit: habit._id,
+                name: 'Meta de ejercicio',
+                period: 'monthly',
+                objective: 30,
+                targetDays: 30,
+                startDate: new Date(),
+                endDate: new Date('2024-12-31')
+            });
+            // Actualizar la meta
+            const updatedGoal = await updateGoal(
+                user._id.toString(),
+                goal._id.toString(),
+                {
+                    name: 'Meta de ejercicio avanzada',
+                    period: 'monthly',
+                    objective: 60,
+                    targetDays: 30,
+                    endDate: new Date('2025-01-31')
+                }
+            );
+            console.log('✅ Meta actualizada exitosamente:', updatedGoal.name);
         } catch (error) {
-            console.error(error);
+            console.error('❌ Error al actualizar meta:', error.message);
         }
     })
     .catch(console.error)
