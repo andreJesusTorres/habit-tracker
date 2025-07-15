@@ -3,9 +3,9 @@ import { validate, errors } from 'com';
 const { SystemError } = errors;
 
 export default (eventId) => {
-    // Validate that eventId is a string and not empty
+    // Validar que eventId sea una cadena y no esté vacía
     if (typeof eventId !== 'string' || !eventId.trim()) {
-        throw new Error('Invalid event ID');
+        throw new Error('ID de evento inválido');
     }
 
     return fetch(`http://localhost:3000/events/${eventId}`, {

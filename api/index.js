@@ -8,14 +8,14 @@ import { usersRouter, habitsRouter, goalsRouter, progressRouter, eventsRouter } 
 import { errorHandler } from './routes/helpers/index.js'
 
 db.connect(process.env.MONGO_URL).then(() => {
-    console.log('Connected to MongoDB')
+    console.log('Conectado a MongoDB')
 
     const server = express()
 
     server.use(cors())
     server.use(express.json())
 
-    server.get('/', (_, res) => res.send('Hello, API!'))
+    server.get('/', (_, res) => res.send('¡Hola, API!'))
 
     server.use('/users', usersRouter)
     server.use('/habits', habitsRouter)
@@ -25,5 +25,5 @@ db.connect(process.env.MONGO_URL).then(() => {
 
     server.use(errorHandler)
 
-    server.listen(process.env.PORT, () => console.log(`API listening on port ${process.env.PORT}`))
+    server.listen(process.env.PORT, () => console.log(`API escuchando en puerto ${process.env.PORT}`))
 })

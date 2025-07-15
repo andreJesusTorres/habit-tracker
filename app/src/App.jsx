@@ -12,9 +12,7 @@ export default function App() {
         navigate('/habits');
     };
 
-    // Función para mostrar alertas en pantalla
     const alert = (msg) => {
-        console.log('Mostrando alerta:', msg);
         setAlertMessage(msg);
         setTimeout(() => setAlertMessage(null), 2000);
     };

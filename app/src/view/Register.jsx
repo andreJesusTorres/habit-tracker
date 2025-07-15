@@ -24,7 +24,7 @@ export default function Register(props) {
                 })
                 .catch(error => {
                     if (error instanceof SystemError)
-                        alert('Sorry, try again later.');
+                        alert('Lo siento, inténtalo más tarde.');
                     else
                         alert(error.message);
 

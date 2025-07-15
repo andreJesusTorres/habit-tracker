@@ -18,7 +18,7 @@ export default function Settings() {
                 setName(user.name || '');
                 setEmail(user.email || '');
             } catch (error) {
-                window.alert('No se pudieron cargar los datos del usuario');
+                alert('No se pudieron cargar los datos del usuario');
             } finally {
                 setLoading(false);
             }
@@ -30,9 +30,9 @@ export default function Settings() {
         try {
             setLoading(true);
             await updateUser({ name, email });
-            window.alert('Datos actualizados correctamente');
+            alert('Datos actualizados correctamente');
         } catch (error) {
-            window.alert('No se pudo actualizar el usuario');
+            alert('No se pudo actualizar el usuario');
         } finally {
             setLoading(false);
         }
@@ -45,7 +45,7 @@ export default function Settings() {
 
     return (
         <div className="settings-container max-w-md mx-auto bg-white shadow-md rounded-lg p-6">
-            <h2 className="text-2xl font-bold mb-4">Settings</h2>
+            <h2 className="text-2xl font-bold mb-4">Configuración</h2>
             <div className="mb-4">
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre</label>
                 <input

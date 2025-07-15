@@ -42,16 +42,16 @@ export default function Diary() {
         e.preventDefault();
         
         if (!eventDetails.name.trim()) {
-            setError('Event name is required');
+            setError('El nombre del evento es requerido');
             return;
         }
         if (!eventDetails.startTime || !eventDetails.endTime) {
-            setError('Please select start and end times');
+            setError('Por favor selecciona hora de inicio y fin');
             return;
         }
         // Validación de rango horario
         if (eventDetails.startTime >= eventDetails.endTime) {
-            window.alert('La hora de inicio debe ser menor a la de finalización');
+            alert('La hora de inicio debe ser menor a la de finalización');
             return;
         }
 
@@ -124,7 +124,7 @@ export default function Diary() {
 
     return (
         <div className="diary-container min-h-screen flex flex-col p-4">
-            <Header title="Diary" />
+            <Header title="Diario" />
 
             <div className="flex-grow">
                 <Calendar onDateSelect={setSelectedDate} selectedDate={selectedDate} />
@@ -137,21 +137,21 @@ export default function Diary() {
 
                 <div className="mt-6 mb-4">
                     <h3 className="text-lg font-semibold mb-4">
-                        Add Event for {new Date(selectedDate).toLocaleDateString()}
+                        Agregar Evento para {new Date(selectedDate).toLocaleDateString('es-ES')}
                     </h3>
                     
                     <form onSubmit={handleSubmit} className="bg-white p-4 rounded-lg shadow-md">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Event Name
+                                    Nombre del Evento
                                 </label>
                                         <input
                                             type="text"
                                             name="name"
                                             value={eventDetails.name}
                                             onChange={handleInputChange}
-                                    placeholder="Enter event name"
+                                    placeholder="Ingresa el nombre del evento"
                                     className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
@@ -159,7 +159,7 @@ export default function Diary() {
                             
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Start Time
+                                    Hora de Inicio
                                 </label>
                                 <input
                                     type="time"
@@ -173,7 +173,7 @@ export default function Diary() {
                             
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    End Time
+                                    Hora de Fin
                                 </label>
                                 <input
                                     type="time"
@@ -187,13 +187,13 @@ export default function Diary() {
                             
                             <div className="md:col-span-2">
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Description
+                                    Descripción
                                 </label>
                                         <textarea
                                             name="description"
                                             value={eventDetails.description}
                                             onChange={handleInputChange}
-                                    placeholder="Enter event description"
+                                    placeholder="Ingresa la descripción del evento"
                                     rows="3"
                                     className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 />
@@ -206,7 +206,7 @@ export default function Diary() {
                                 disabled={loading}
                                 className="w-full bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
                             >
-                                {loading ? 'Adding Event...' : 'Add Event'}
+                                {loading ? 'Agregando Evento...' : 'Agregar Evento'}
                             </button>
                         </div>
                     </form>

@@ -8,20 +8,25 @@ export default (name, email, username, password, passwordRepeat) => {
     validate.username(username)
     validate.password(password)
     validate.passwordsMatch(password, passwordRepeat)
-   
 
     return fetch(`http://localhost:3000/users`,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({ name, email, username, password, passwordRepeat})
     })
-        .catch(error => { throw new SystemError(error.message) })
+        .catch(error => { 
+            throw new SystemError(error.message) 
+        })
         .then(res => {
             if (res.ok)
                 return
 
             return res.json()
-                .catch(error => { throw new SystemError(error.message) })
-                .then(({ error, message}) => { throw new errors[error](message) })
+                .catch(error => { 
+                    throw new SystemError(error.message) 
+                })
+                .then(({ error, message}) => { 
+                    throw new errors[error](message) 
+                })
         })
 }

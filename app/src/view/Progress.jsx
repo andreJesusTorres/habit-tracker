@@ -32,7 +32,7 @@ export default function Progress() {
                 setSelectedHabit(habitsData[0]._id);
             }
         } catch (error) {
-            window.alert('Error loading habits: ' + error.message);
+            alert('Error al cargar hábitos: ' + error.message);
         } finally {
             setLoading(false);
         }
@@ -107,14 +107,14 @@ export default function Progress() {
 
     const daysInMonth = getDaysInMonth(currentYear, currentMonth);
     const firstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth);
-    const weekDays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    const weekDays = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
 
     if (loading) {
         return (
             <div className="progress-container min-h-screen flex flex-col">
-                <Header title="Progress Tracker" />
+                <Header title="Seguimiento de Progreso" />
                 <div className="flex-grow p-4 flex items-center justify-center">
-                    <div className="text-lg">Loading habits...</div>
+                    <div className="text-lg">Cargando hábitos...</div>
                 </div>
                 <Footer />
             </div>
@@ -123,13 +123,13 @@ export default function Progress() {
 
     return (
         <div className="progress-container min-h-screen flex flex-col">
-            <Header title="Progress Tracker" />
+            <Header title="Seguimiento de Progreso" />
 
             <div className="flex-grow p-4">
                 {/* Habit Selector */}
                 <div className="habit-selector mb-6">
                     <label htmlFor="habit-select" className="block mb-2 text-lg font-semibold">
-                        Select Habit to Track:
+                        Seleccionar Hábito a Seguir:
                     </label>
                     <select
                         id="habit-select"
@@ -157,9 +157,9 @@ export default function Progress() {
                                 >
                                     &lt;
                                 </button>
-                                <h2 className="text-xl font-bold">
-                                    {new Date(currentYear, currentMonth).toLocaleString('default', { month: 'long' })} {currentYear}
-                                </h2>
+                                                            <h2 className="text-xl font-bold">
+                                {new Date(currentYear, currentMonth).toLocaleString('es-ES', { month: 'long' })} {currentYear}
+                            </h2>
                                 <button 
                                     onClick={() => handleMonthChange(1)}
                                     className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
@@ -197,15 +197,15 @@ export default function Progress() {
                             <div className="mt-6 flex justify-center space-x-4 text-sm">
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-green-200 border border-green-400 rounded mr-2"></div>
-                                    <span>Done</span>
+                                    <span>Completado</span>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-red-200 border border-red-400 rounded mr-2"></div>
-                                    <span>Missed</span>
+                                    <span>Fallido</span>
                                 </div>
                                 <div className="flex items-center">
                                     <div className="w-4 h-4 bg-white border border-gray-300 rounded mr-2"></div>
-                                    <span>No Progress</span>
+                                    <span>Sin Progreso</span>
                                 </div>
                             </div>
                         </div>
@@ -214,7 +214,7 @@ export default function Progress() {
 
                 {!selectedHabit && habits.length === 0 && (
                     <div className="text-center text-gray-500 mt-8">
-                        No habits found. Create some habits first!
+                        No se encontraron hábitos. ¡Crea algunos hábitos primero!
                     </div>
                 )}
             </div>

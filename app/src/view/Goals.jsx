@@ -49,22 +49,22 @@ export default function Goals() {
 
     const handleCreateGoal = async () => {
         if (!goalName.trim()) {
-            window.alert('Por favor ingresa un nombre para la meta');
+            alert('Por favor ingresa un nombre para la meta');
             return;
         }
 
         if (objective <= 0 || targetDays <= 0) {
-            window.alert('Los valores deben ser números positivos');
+            alert('Los valores deben ser números positivos');
             return;
         }
 
         if (objective > targetDays) {
-            window.alert('El objetivo no puede ser mayor que el número de días');
+            alert('El objetivo no puede ser mayor que el número de días');
             return;
         }
 
         if (!selectedHabit) {
-            window.alert('Por favor selecciona un hábito');
+            alert('Por favor selecciona un hábito');
             return;
         }
 
@@ -78,7 +78,7 @@ export default function Goals() {
             };
 
             await addGoal(selectedHabit, goalData);
-            window.alert('¡Meta creada exitosamente!');
+            alert('¡Meta creada exitosamente!');
             
             // Limpiar formulario
             setGoalName('');
@@ -88,7 +88,7 @@ export default function Goals() {
             // Recargar metas
             await loadGoals();
         } catch (error) {
-            window.alert(error.message || 'Error al crear meta');
+            alert(error.message || 'Error al crear meta');
         } finally {
             setLoading(false);
         }
@@ -103,11 +103,11 @@ export default function Goals() {
 
     return (
         <div className="goals-container min-h-screen flex flex-col">
-            <Header title="Goals" />
+            <Header title="Metas" />
 
             <div className="flex-grow p-4">
                 <div className="habit-selector mb-4">
-                    <label htmlFor="habit-select" className="block mb-2 text-lg font-medium">Choose Habit:</label>
+                    <label htmlFor="habit-select" className="block mb-2 text-lg font-medium">Elegir Hábito:</label>
                     <select
                         id="habit-select"
                         value={selectedHabit}

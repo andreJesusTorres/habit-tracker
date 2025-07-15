@@ -21,7 +21,7 @@ export default function Login(props) {
                 })
                 .catch(error => {
                     if (error instanceof SystemError)
-                        alert('Sorry, try again later.');
+                        alert('Lo siento, inténtalo más tarde.');
                     else
                         alert(error.message);
                 });
@@ -49,13 +49,13 @@ export default function Login(props) {
             <Form onSubmit={handleSubmit} className="bg-white p-[32px] rounded-lg shadow-md w-[320px] mb-[16px]">
                 <Input
                     type="text"
-                    placeholder="Username or email"
+                    placeholder="Nombre de usuario o email"
                     id='username'
                     className="w-4/5 mb-6 mx-auto px-4 py-2 border border-gray-300 rounded"
                 />
                 <Input
                     type="password"
-                    placeholder="Password"
+                    placeholder="Contraseña"
                     id='password'
                     className="w-4/5 mb-6 mx-auto px-4 py-2 border border-gray-300 rounded"
                 />
@@ -63,7 +63,7 @@ export default function Login(props) {
                     type="submit"
                     className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition-all"
                 >
-                    Login 
+                    Iniciar Sesión 
                 </Button>
                 
                 

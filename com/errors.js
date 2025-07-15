@@ -10,13 +10,13 @@ const createCustomError = name =>
     }
 
 const errors = {
-    ValidationError: createCustomError('ValidationError'),
-    NotFoundError: createCustomError('NotFoundError'),
-    DuplicityError : createCustomError('Duplicity Error'),
-    CredentialsError: createCustomError('CredentialsError'),
-    SystemError: createCustomError('SystemError'),
-    OwnershipError: createCustomError('OwnershipError'),
-    AuthorizationError: createCustomError('AuthorizationError')
+    ValidationError: createCustomError('Error de Validación'),
+    NotFoundError: createCustomError('Error de No Encontrado'),
+    DuplicityError : createCustomError('Error de Duplicidad'),
+    CredentialsError: createCustomError('Error de Credenciales'),
+    SystemError: createCustomError('Error del Sistema'),
+    OwnershipError: createCustomError('Error de Propiedad'),
+    AuthorizationError: createCustomError('Error de Autorización')
 
 }
 

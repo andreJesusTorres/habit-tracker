@@ -15,16 +15,16 @@ export default function AddHabit({ onAddHabit }) {
 
     return (
         <form onSubmit={handleSubmit}>
-            <input name="name" placeholder="Name" value={habit.name} onChange={handleChange} required />
+            <input name="name" placeholder="Nombre" value={habit.name} onChange={handleChange} required />
             <input name="emoji" placeholder="Emoji" value={habit.emoji} onChange={handleChange} maxLength="10" required />
             <select name="category" value={habit.category} onChange={handleChange} required>
-                <option value="">Select Category</option>
+                <option value="">Seleccionar Categoría</option>
                 <option value="salud y bienestar">Salud y Bienestar</option>
                 <option value="actividad física">Actividad Física</option>
                 <option value="desarrollo personal">Desarrollo Personal</option>
             </select>
-            <input name="subcategory" placeholder="Subcategory" value={habit.subcategory} onChange={handleChange} required />
-            <button type="submit">Add Habit</button>
+            <input name="subcategory" placeholder="Subcategoría" value={habit.subcategory} onChange={handleChange} required />
+            <button type="submit">Agregar Hábito</button>
         </form>
     );
 }

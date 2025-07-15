@@ -16,14 +16,22 @@ export default (name, category, subcategory, emoji) => {
         },
         body: JSON.stringify({ name, category, subcategory, emoji }),
     })
-        .catch(error => { throw new SystemError(error.message); })
+        .catch(error => { 
+            throw new SystemError(error.message); 
+        })
         .then(res => {
             if (res.ok)
                 return res.json()
-                    .catch(error => { throw new SystemError(error.message); });
+                    .catch(error => { 
+                        throw new SystemError(error.message); 
+                    });
 
             return res.json()
-                .catch(error => { throw new SystemError(error.message); })
-                .then(({ error, message }) => { throw new errors[error](message); });
+                .catch(error => { 
+                    throw new SystemError(error.message); 
+                })
+                .then(({ error, message }) => { 
+                    throw new errors[error](message); 
+                });
         });
 };

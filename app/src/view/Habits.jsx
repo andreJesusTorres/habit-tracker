@@ -10,38 +10,31 @@ export default function Habits() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        console.log('Cargando hábitos para fecha:', selectedDate);
         try {
             logic.getHabits(selectedDate)
                 .then(habits => {
-                    console.log('Hábitos cargados:', habits);
                     setHabits(habits);
                 })
                 .catch(error => {
-                    console.log('Error al cargar hábitos:', error);
                     if (error instanceof SystemError)
                         alert("Error: Inténtalo más tarde.");
                     else
                         alert(error.message);
                 });
         } catch (error) {
-            console.log('Error en useEffect:', error);
             alert(error.message);
         }
     }, [selectedDate]);
 
-    // Función para verificar si una fecha es del pasado
     const isDateInPast = (date) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const checkDate = new Date(date);
         checkDate.setHours(0, 0, 0, 0);
-        console.log('Comparando fechas:', { today: today.toDateString(), checkDate: checkDate.toDateString() });
         return checkDate < today;
     };
 
     const handleCompleteHabit = (habitId) => {
-        console.log('Completando hábito:', habitId);
         if (isDateInPast(selectedDate)) {
             alert('No puedes marcar progreso en fechas pasadas.');
             return;
@@ -49,11 +42,9 @@ export default function Habits() {
 
         try {
             const userId = logic.getUserId();
-            console.log('UserId:', userId);
             
             logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'done')
                 .then((response) => {
-                    console.log('Progreso agregado:', response);
                     alert('¡Hábito marcado como completado!');
                     // Recargar solo la lista de hábitos
                     logic.getHabits(selectedDate)
@@ -61,15 +52,13 @@ export default function Habits() {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            console.log('Error al recargar hábitos:', error);
+                            // Error silencioso al recargar hábitos
                         });
                 })
                 .catch(error => {
-                    console.log('Error al agregar progreso:', error);
                     alert(error.message || 'Error al marcar hábito como completado');
                 });
         } catch (error) {
-            console.log('Error en handleCompleteHabit:', error);
             alert(error.message);
         }
     };
@@ -170,7 +159,7 @@ export default function Habits() {
             const progressId = habit?.progressId;
             
             if (!progressId) {
-                alert('No se encontró el progreso para eliminar. ProgressId es null o undefined.');
+                alert('No se encontró el progreso para eliminar. ID de progreso es nulo o indefinido.');
                 return;
             }
             
@@ -183,14 +172,14 @@ export default function Habits() {
                             setHabits(habits);
                         })
                         .catch(error => {
-                            console.log('Error al recargar hábitos:', error);
+                            // Error silencioso al recargar hábitos
                         });
                 })
                 .catch(error => {
                     alert(error.message || 'Error al eliminar progreso');
                 });
         } catch (error) {
-            window.alert(error.message);
+            alert(error.message);
         }
     };
 
@@ -203,7 +192,7 @@ export default function Habits() {
                     logic.getHabits(selectedDate)
                         .then(habits => setHabits(habits))
                         .catch(error => {
-                            console.log('Error al recargar hábitos:', error);
+                            // Error silencioso al recargar hábitos
                         });
                 })
                 .catch(error => {
