@@ -32,7 +32,11 @@ export default (username, password) => {
                     throw new SystemError(error.message) 
                 })
                 .then(({ error, message }) => { 
-                    throw new errors[error](message) 
+                    if (errors[error]) {
+                        throw new errors[error](message);
+                    } else {
+                        throw new SystemError(message || 'Error desconocido');
+                    }
                 })
     })
 }

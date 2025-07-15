@@ -9,7 +9,7 @@ export default (name, email, username, password, passwordRepeat) => {
     validate.password(password)
     validate.passwordsMatch(password, passwordRepeat)
 
-    return fetch(`http://localhost:3000/users`,{
+    return fetch(`http://localhost:3000/users/register`,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({ name, email, username, password, passwordRepeat})
@@ -18,15 +18,21 @@ export default (name, email, username, password, passwordRepeat) => {
             throw new SystemError(error.message) 
         })
         .then(res => {
-            if (res.ok)
-                return
+            if (res.ok) {
+                return res.json()
+                    .catch(() => ({ message: 'Usuario registrado exitosamente' }));
+            }
 
             return res.json()
                 .catch(error => { 
                     throw new SystemError(error.message) 
                 })
                 .then(({ error, message}) => { 
-                    throw new errors[error](message) 
+                    if (errors[error]) {
+                        throw new errors[error](message);
+                    } else {
+                        throw new SystemError(message || 'Error desconocido');
+                    }
                 })
         })
 }

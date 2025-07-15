@@ -11,6 +11,9 @@ export default callback =>
                         } else {
                             res.json(result);
                         }
+                    } else {
+                        // Si no hay resultado pero la operación fue exitosa, enviar respuesta 201
+                        res.status(201).json({ message: 'Usuario registrado exitosamente' });
                     }
                 })
                 .catch(next)

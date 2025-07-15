@@ -122,13 +122,6 @@ export default function Settings() {
                             </button>
                         </div>
                     </div>
-
-                    {/* Información adicional */}
-                    <div className="mt-6 text-center">
-                        <p className="text-sm text-gray-500">
-                            Versión 1.0.0 • Desarrollado con ❤️
-                        </p>
-                    </div>
                 </div>
             </div>
         </div>

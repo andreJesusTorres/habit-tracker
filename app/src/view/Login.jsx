@@ -1,38 +1,82 @@
-import { Anchor, Button, Form, Input } from './library';
+import { Anchor, Button, Input } from './library';
 import logic from '../logic';
-import { errors } from 'com';
+import { errors as comErrors } from 'com';
 import useContext from './useContext';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const { SystemError } = errors;
+const { SystemError } = comErrors;
 
 export default function Login(props) {
     const { alert } = useContext();
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({
+        username: '',
+        password: ''
+    });
+    const [formErrors, setFormErrors] = useState({});
 
-    const handleSubmit = event => {
-        event.preventDefault();
+    const validateForm = () => {
+        const newErrors = {};
+        
+        if (!formData.username.trim()) {
+            newErrors.username = 'El usuario o email es requerido';
+        }
+        
+        if (!formData.password) {
+            newErrors.password = 'La contraseña es requerida';
+        } else if (formData.password.length < 6) {
+            newErrors.password = 'La contraseña debe tener al menos 6 caracteres';
+        }
 
-        const { target: { username: { value: username }, password: { value: password } } } = event;
+        setFormErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
 
-        try {
-            logic.loginUser(username, password)
-                .then(() => {
-                    event.target.reset();
-                    props.onLoggedIn();
-                })
-                .catch(error => {
-                    if (error instanceof SystemError)
-                        alert('Lo siento, inténtalo más tarde.');
-                    else
-                        alert(error.message);
-                });
-        } catch (error) {
-            alert(error.message);
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }));
+        
+        // Limpiar error del campo cuando el usuario empiece a escribir
+        if (formErrors[name]) {
+            setFormErrors(prev => ({
+                ...prev,
+                [name]: ''
+            }));
         }
     };
 
-    const handleRegisterClick = event => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
-        props.onRegisterClick();
+
+        if (!validateForm()) {
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            await logic.loginUser(formData.username, formData.password);
+            setFormData({ username: '', password: '' });
+            props.onLoggedIn();
+        } catch (error) {
+            if (error instanceof SystemError) {
+                alert('Error del servidor. Inténtalo más tarde.');
+            } else {
+                alert(error.message);
+            }
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleRegisterClick = (event) => {
+        event.preventDefault();
+        navigate('/register');
     };
 
     return (
@@ -51,7 +95,7 @@ export default function Login(props) {
                 <div className="bg-white rounded-2xl shadow-xl p-8">
                     <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Iniciar Sesión</h2>
                     
-                    <Form onSubmit={handleSubmit} className="space-y-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
                                 Usuario o Email
@@ -59,9 +103,17 @@ export default function Login(props) {
                             <Input
                                 type="text"
                                 placeholder="Ingresa tu usuario o email"
-                                id='username'
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                id="username"
+                                name="username"
+                                value={formData.username}
+                                onChange={handleInputChange}
+                                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    formErrors.username ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {formErrors.username && (
+                                <p className="text-red-500 text-sm mt-1">{formErrors.username}</p>
+                            )}
                         </div>
                         
                         <div>
@@ -71,18 +123,36 @@ export default function Login(props) {
                             <Input
                                 type="password"
                                 placeholder="Ingresa tu contraseña"
-                                id='password'
-                                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                                id="password"
+                                name="password"
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all ${
+                                    formErrors.password ? 'border-red-500' : 'border-gray-300'
+                                }`}
                             />
+                            {formErrors.password && (
+                                <p className="text-red-500 text-sm mt-1">{formErrors.password}</p>
+                            )}
                         </div>
                         
                         <Button
                             type="submit"
-                            className="w-full bg-blue-500 text-white py-3 px-4 rounded-lg hover:bg-blue-600 transition-all duration-200 font-medium text-lg"
+                            disabled={loading}
+                            variant="primary"
+                            size="lg"
+                            className="w-full mt-6"
                         >
-                            Iniciar Sesión
+                            {loading ? (
+                                <>
+                                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
+                                    Iniciando sesión...
+                                </>
+                            ) : (
+                                'Iniciar Sesión'
+                            )}
                         </Button>
-                    </Form>
+                    </form>
                 </div>
 
                 {/* Enlace para registrarse */}

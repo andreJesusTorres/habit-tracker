@@ -17,6 +17,20 @@
 - **Backend**: -aumentado tiempo de expiración del JWT de 1h a 7d
 - **Frontend**: -agregado botón de logout en Settings
 - **Frontend**: -corregida URL de API en updateUser.js para usar http://localhost:3000/users/update en lugar de /api/users/update, solucionando error al guardar cambios en Settings
+- **Frontend**: -mejorados formularios de Login y Register con validaciones en tiempo real y mejor UX
+- **Frontend**: -agregados estados de carga con spinners en botones de Login y Register
+- **Frontend**: -implementado manejo de errores mejorado con bordes rojos en campos con errores
+- **Frontend**: -corregido conflicto de nombres entre errors de com y errors del estado local
+- **Frontend**: -actualizado componente Input para soportar formularios controlados (value, onChange, name, className)
+- **Frontend**: -actualizado componente PasswordInput para soportar formularios controlados
+- **Frontend**: -mejorado componente Button con múltiples variantes (primary, secondary, success, danger, outline, ghost) y tamaños
+- **Frontend**: -agregados efectos hover y transformaciones en botones para mejor UX
+- **Frontend**: -corregida URL de registro en frontend: http://localhost:3000/users/register en lugar de /users
+- **Backend**: -corregido createFunctionalHandler para enviar respuesta 201 cuando la operación es exitosa
+- **Frontend**: -corregido manejo de errores para soportar todos los tipos de errores del backend (DuplicityError, ValidationError, etc.)
+- **Frontend**: -cambiado sistema de alertas personalizado por alert básico del navegador (window.alert)
+- **Frontend**: -eliminado texto "Desarrollado con ❤️" del componente Settings
+- **Sistema**: -registro y login ahora funcionan completamente sin errores de JavaScript
 
 ### 🎯 **Sistema de Metas (Goals)**
 - **Frontend**: -corregido error "undefined is not an object (evaluating 'goals.length')" en Goals.jsx
