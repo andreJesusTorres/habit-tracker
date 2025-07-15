@@ -7,11 +7,12 @@
   "scripts": {
     "start": "node .",
     "inspect": "node --inspect-brk .",
-    "test": "node -r ./test.config.js node_modules/.bin/mocha logic/**/*.test.js --timeout 10000",
-    "test:watch": "node -r ./test.config.js node_modules/.bin/mocha logic/**/*.test.js --watch --timeout 10000",
-    "test:coverage": "node -r ./test.config.js node_modules/.bin/c8 --experimental-monocart --reporter=html --reporter=text mocha logic/**/*.test.js --timeout 20000",
-    "test:unit": "node -r ./test.config.js node_modules/.bin/mocha logic/**/*.test.js --grep 'unit' --timeout 10000",
-    "test:integration": "node -r ./test.config.js node_modules/.bin/mocha logic/**/*.test.js --grep 'integration' --timeout 15000"
+    "test": "node logic/users/registerUser.test.js",
+    "test:habit": "node logic/habits/addHabit.test.js",
+    "test:goal": "node logic/goals/addGoal.test.js",
+    "test:progress": "node logic/progress/addProgress.test.js",
+    "test:event": "node logic/events/addEvent.test.js",
+    "test:all": "node logic/users/registerUser.test.js && node logic/habits/addHabit.test.js && node logic/goals/addGoal.test.js && node logic/progress/addProgress.test.js && node logic/events/addEvent.test.js"
   },
   "keywords": [],
   "author": "",
@@ -27,10 +28,5 @@
     "mongoose": "^8.16.3"
   },
   "devDependencies": {
-    "c8": "^10.1.2",
-    "chai": "^5.1.2",
-    "chai-as-promised": "^8.0.0",
-    "mocha": "^10.8.2",
-    "monocart-coverage-reports": "^2.11.2"
   }
 }
