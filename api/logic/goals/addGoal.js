@@ -1,4 +1,4 @@
-import { Goal } from "../../../dat/models.js";
+import { Goal } from 'dat';
 
 export default async function addGoal(userId, habitId, goalData) {
     try {
