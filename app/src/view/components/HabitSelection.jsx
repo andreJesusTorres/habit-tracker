@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
 import addHabit from "../../logic/habits/addHabit";
 import useContext from '../useContext';
+import Header from "./Header";
 
 const habitsByCategory = {
     "salud-y-bienestar": [
@@ -43,10 +44,9 @@ const categoryMap = {
     "sociales": "sociales"
 };
 
-
 export default function HabitSelection() { 
     const { category } = useParams();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const { alert } = useContext();
     const habits = habitsByCategory[category] || [];
     const habitsHandlers= {
@@ -164,21 +164,23 @@ export default function HabitSelection() {
         }
     }
     return (
-        <main className="p-4">
-            <h1 className="text-center text-2xl font-bold capitalize">{category.split("-").join(" ")}</h1>
-            <ul className="mt-4 space-y-2">
-                {habits.map((habit, index) => (
-                    <li key={habit.name} className="p-3 border rounded-lg bg-white shadow-sm hover:shadow-md transition-shadow">
-                        <button 
-                            onClick={()=> handleClick(index)}
-                            className="w-full text-left flex items-center space-x-3 p-2 rounded hover:bg-gray-50"
-                        >
-                            <span className="text-2xl">{habit.emoji}</span>
-                            <span className="text-lg">{habit.name}</span>
-                        </button>
-                    </li>
-                ))}
-            </ul>
-        </main>
+        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+            <Header title={category.split("-").join(" ")} ArrowBack onBack={() => navigate('/habits/category')} />
+            <div className="p-4 max-w-lg mx-auto">
+                <ul className="space-y-4 mt-6">
+                    {habits.map((habit, index) => (
+                        <li key={habit.name} className="bg-white rounded-lg shadow-sm border-2 p-4 hover:shadow-md transition-all">
+                            <button 
+                                onClick={()=> handleClick(index)}
+                                className="w-full text-left flex items-center space-x-3 p-2 rounded hover:bg-gray-50 focus:outline-none"
+                            >
+                                <span className="text-2xl">{habit.emoji}</span>
+                                <span className="text-lg font-semibold text-gray-800">{habit.name}</span>
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
     );
 }

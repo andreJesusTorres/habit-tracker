@@ -127,7 +127,9 @@ export default function Diary() {
             <Header title="Diario" />
 
             <div className="flex-grow">
-                <Calendar onDateSelect={setSelectedDate} selectedDate={selectedDate} />
+                <div className="mt-8">
+                    <Calendar onDateSelect={setSelectedDate} selectedDate={selectedDate} />
+                </div>
                 
                 {error && (
                     <div className="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded">
