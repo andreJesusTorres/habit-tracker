@@ -3,7 +3,7 @@ import { Header, Footer } from './components';
 import addGoal from '../logic/goals/addGoal';
 import getGoals from '../logic/goals/getGoals';
 import getHabits from '../logic/habits/getHabits';
-import capitalize from './util/capitalize';
+import capitalize from '../util/capitalize';
 
 export default function Goals() {
     const [habits, setHabits] = useState([]);
