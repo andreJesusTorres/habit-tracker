@@ -3,6 +3,7 @@ import { Button } from "./library";
 import { Footer, DayCircle } from "./components";
 import { useNavigate } from "react-router-dom";
 import logic from "../logic";
+import capitalize from '../util/capitalize';
 
 export default function Habits() {
     const [habits, setHabits] = useState([]);
@@ -193,14 +194,14 @@ export default function Habits() {
             {/* Header */}
             <div className="bg-white shadow-sm border-b border-gray-200">
                 <div className="px-4 py-4">
-                    <h1 className="text-2xl font-bold text-gray-800 text-center">Mis Hábitos</h1>
+                    <h1 className="text-2xl font-bold text-gray-800 text-center">{capitalize('hábitos')}</h1>
                     <p className="text-sm text-gray-500 text-center mt-1">
-                        {selectedDate.toLocaleDateString('es-ES', { 
+                        {capitalize(selectedDate.toLocaleDateString('es-ES', { 
                             weekday: 'long', 
                             year: 'numeric', 
                             month: 'long', 
                             day: 'numeric' 
-                        })}
+                        }))}
                     </p>
                 </div>
             </div>
@@ -252,8 +253,8 @@ export default function Habits() {
                                     <div className="flex items-center space-x-3">
                                         <span className="text-2xl">{habit.emoji}</span>
                                         <div>
-                                            <h3 className="font-semibold text-gray-800">{habit.name}</h3>
-                                            <p className="text-sm text-gray-500">{habit.category}</p>
+                                            <h3 className="font-semibold text-gray-800">{capitalize(habit.name)}</h3>
+                                            <p className="text-sm text-gray-500">{capitalize(habit.category)}</p>
                                         </div>
                                     </div>
                                     <div className="flex items-center space-x-2">

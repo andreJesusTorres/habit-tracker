@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
+import capitalize from '../../util/capitalize';
 
 const categories = [
     { name: "Salud y Bienestar", icon: "🧘" },
@@ -26,7 +27,7 @@ export default function HabitCategory() {
                         >
                             <div className="flex items-center space-x-3">
                                 <span className="text-2xl">{category.icon}</span>
-                                <span className="font-semibold text-gray-800 text-lg">{category.name}</span>
+                                <span className="font-semibold text-gray-800 text-lg">{capitalize(category.name)}</span>
                             </div>
                             <span className="text-gray-400 text-xl group-hover:text-blue-500 transition-colors">→</span>
                         </li>

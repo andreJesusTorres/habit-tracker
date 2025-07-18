@@ -2,6 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import addHabit from "../../logic/habits/addHabit";
 import useContext from '../useContext';
 import Header from "./Header";
+import capitalize from '../../util/capitalize';
 
 const habitsByCategory = {
     "salud-y-bienestar": [
@@ -175,7 +176,7 @@ export default function HabitSelection() {
                                 className="w-full text-left flex items-center space-x-3 p-2 rounded hover:bg-gray-50 focus:outline-none"
                             >
                                 <span className="text-2xl">{habit.emoji}</span>
-                                <span className="text-lg font-semibold text-gray-800">{habit.name}</span>
+                                <span className="text-lg font-semibold text-gray-800">{capitalize(habit.name)}</span>
                             </button>
                         </li>
                     ))}

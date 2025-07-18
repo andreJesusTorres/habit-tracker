@@ -1,3 +1,5 @@
+import capitalize from '../../util/capitalize';
+
 export default function DayCircle({ date, isSelected, onClick }) {
     const isToday = date.toDateString() === new Date().toDateString();
     const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
@@ -33,7 +35,7 @@ export default function DayCircle({ date, isSelected, onClick }) {
     return (
         <div className="flex flex-col items-center" onClick={onClick}>
             <span className={getDayNameStyles()}>
-                {date.toLocaleDateString('es-ES', { weekday: 'short' })}
+                {capitalize(date.toLocaleDateString('es-ES', { weekday: 'short' }))}
             </span>
             <div className={getDayStyles()}>
                 {date.getDate()}

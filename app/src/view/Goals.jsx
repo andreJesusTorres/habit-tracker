@@ -3,6 +3,7 @@ import { Header, Footer } from './components';
 import addGoal from '../logic/goals/addGoal';
 import getGoals from '../logic/goals/getGoals';
 import getHabits from '../logic/habits/getHabits';
+import capitalize from './util/capitalize';
 
 export default function Goals() {
     const [habits, setHabits] = useState([]);
@@ -117,7 +118,7 @@ export default function Goals() {
                         <option value="">Selecciona un hábito</option>
                         {habits && habits.map(habit => (
                             <option key={habit._id} value={habit._id}>
-                                {habit.emoji} {habit.name} ({habit.category})
+                                {habit.emoji} {capitalize(habit.name)} ({capitalize(habit.category)})
                             </option>
                         ))}
                     </select>
@@ -129,8 +130,8 @@ export default function Goals() {
                         <div className="flex items-center space-x-3">
                             <span className="text-3xl">{selectedHabitData.emoji}</span>
                             <div>
-                                <h3 className="text-xl font-semibold text-blue-800">{selectedHabitData.name}</h3>
-                                <p className="text-blue-600 capitalize">{selectedHabitData.category}</p>
+                                <h3 className="text-xl font-semibold text-blue-800">{capitalize(selectedHabitData.name)}</h3>
+                                <p className="text-blue-600">{capitalize(selectedHabitData.category)}</p>
                             </div>
                         </div>
                     </div>
@@ -184,7 +185,7 @@ export default function Goals() {
 
                         <div className="bg-blue-100 border border-blue-300 rounded-lg p-3">
                             <p className="text-blue-800 text-sm">
-                                <strong>Meta:</strong> Completar {objective} veces "{selectedHabitData?.name}" en {targetDays} días
+                                <strong>Meta:</strong> Completar {objective} veces "{capitalize(selectedHabitData?.name)}" en {targetDays} días
                             </p>
                         </div>
 
@@ -208,7 +209,7 @@ export default function Goals() {
                                     <div className="flex items-center space-x-3">
                                         <span className="text-2xl">{goal.habit?.emoji}</span>
                                         <div>
-                                            <h4 className="font-semibold">{goal.name}</h4>
+                                            <h4 className="font-semibold">{capitalize(goal.name)}</h4>
                                             <p className="text-sm text-gray-600">
                                                 {goal.completedCount} de {goal.objective} completados
                                             </p>

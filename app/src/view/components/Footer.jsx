@@ -1,5 +1,6 @@
 import { useNavigate, useLocation } from "react-router-dom";
 import { Button } from "../library";
+import capitalize from '../../util/capitalize';
 
 const icons = {
     goals: '🎯',
@@ -51,7 +52,7 @@ export default function Footer() {
                             <span
                                 className={`text-xs font-medium transition-colors duration-200 ${isActive(path) ? 'text-blue-600 font-bold' : 'text-gray-500 group-hover:text-blue-500'}`}
                             >
-                                {labels[key]}
+                                {capitalize(labels[key])}
                             </span>
                         </button>
                     ))}
