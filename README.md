@@ -1,231 +1,656 @@
-## Cambios
+# Abel Habits - Análisis Educativo Completo
 
-### 🔐 **Sistema de Autenticación y Autorización**
-- **Backend**: -corregido middleware de autorización para extraer correctamente userId del token JWT
-- **Backend**: -corregidos handlers de eventos para usar req.user.id en lugar de req.userId
-- **Frontend**: -corregidas todas las funciones para usar localStorage.getItem('token') en lugar de localStorage.token
-- **Frontend**: -actualizadas funciones de autenticación: isUserLoggedIn, getUserId, getUserRole
-- **Backend**: -agregada validación de ownership en deleteEvent para asegurar que solo el propietario pueda eliminar eventos
-- **Backend**: -actualizado handler de autenticación para devolver token, userId y role en la respuesta
-- **Frontend**: -actualizada función loginUser para guardar userId y role en localStorage
-- **Frontend**: -actualizada función logoutUser para limpiar todos los datos de autenticación
-- **Frontend**: -actualizadas todas las funciones para usar localStorage.getItem('token') en lugar de localStorage.token
-- **Frontend**: -corregidas funciones de autenticación: isUserLoggedIn, getUserId, getUserRole, isUserRoleRegular, isUserRoleModerator
-- **Frontend**: -actualizadas funciones de hábitos y progreso para usar el nuevo formato de token
-- **Frontend**: -corregidas todas las funciones que usaban localStorage.token: deleteHabit, updateHabit, trackProgress, getProgress, deleteProgress, getUserName
-- **Frontend**: -actualizadas funciones para usar localStorage.getItem('token') consistentemente
-- **Backend**: -aumentado tiempo de expiración del JWT de 1h a 7d
-- **Frontend**: -agregado botón de logout en Settings
-- **Frontend**: -corregida URL de API en updateUser.js para usar http://localhost:3000/users/update en lugar de /api/users/update, solucionando error al guardar cambios en Settings
-- **Frontend**: -mejorados formularios de Login y Register con validaciones en tiempo real y mejor UX
-- **Frontend**: -agregados estados de carga con spinners en botones de Login y Register
-- **Frontend**: -implementado manejo de errores mejorado con bordes rojos en campos con errores
-- **Frontend**: -corregido conflicto de nombres entre errors de com y errors del estado local
-- **Frontend**: -actualizado componente Input para soportar formularios controlados (value, onChange, name, className)
-- **Frontend**: -actualizado componente PasswordInput para soportar formularios controlados
-- **Frontend**: -mejorado componente Button con múltiples variantes (primary, secondary, success, danger, outline, ghost) y tamaños
-- **Frontend**: -agregados efectos hover y transformaciones en botones para mejor UX
-- **Frontend**: -corregida URL de registro en frontend: http://localhost:3000/users/register en lugar de /users
-- **Backend**: -corregido createFunctionalHandler para enviar respuesta 201 cuando la operación es exitosa
-- **Frontend**: -corregido manejo de errores para soportar todos los tipos de errores del backend (DuplicityError, ValidationError, etc.)
-- **Frontend**: -cambiado sistema de alertas personalizado por alert básico del navegador (window.alert)
-- **Frontend**: -eliminado texto "Desarrollado con ❤️" del componente Settings
-- **Sistema**: -registro y login ahora funcionan completamente sin errores de JavaScript
+## Descripción del Proyecto
 
-### 🎯 **Sistema de Metas (Goals)**
-- **Frontend**: -corregido error "undefined is not an object (evaluating 'goals.length')" en Goals.jsx
-- **Frontend**: -agregadas verificaciones de seguridad para manejar arrays undefined/null
-- **Frontend**: -mejorado manejo de errores en loadGoals y loadHabits
-- **Frontend**: -corregida función getGoals para manejar respuestas del backend correctamente
-- **Frontend**: -corregida función getHabits para manejar respuestas del backend correctamente
-- **Frontend**: -corregidas funciones deleteGoal y updateGoal para usar localStorage.getItem('token')
-- **Sistema**: -metas ahora funcionan completamente sin errores de autenticación
-- **Frontend**: -actualizado componente Goals para mostrar todas las categorías de hábitos disponibles con emojis
-- **Frontend**: -mejorada interfaz de selección de hábitos en Goals con información visual del hábito seleccionado
-- **Frontend**: -agregada información de categoría en el selector de hábitos de Goals
-- **Backend**: -actualizado modelo Goal para incluir campos targetDays, startDate, endDate, completedCount
-- **Backend**: -creada función addGoal para crear metas con período personalizado y objetivo específico
-- **Backend**: -creada función getGoals para obtener metas con información de progreso calculada
-- **Backend**: -actualizados handlers de goals para manejar nuevas funcionalidades
-- **Frontend**: -implementado formulario completo para crear metas con nombre, días objetivo y veces a completar
-- **Frontend**: -agregada validación de formulario: objetivo no puede ser mayor que días, valores positivos
-- **Frontend**: -implementada lista de metas existentes con barras de progreso visuales
-- **Frontend**: -agregados indicadores de estado: Completada, Expirada, días restantes
-- **Frontend**: -barras de progreso con colores dinámicos según porcentaje (verde, amarillo, naranja, rojo)
-- **Frontend**: -integración completa entre metas y progreso de hábitos: las metas se actualizan automáticamente
-- **Frontend**: -corregido componente Goals para cargar hábitos dinámicamente desde la base de datos en lugar de usar array hardcodeado
-- **Frontend**: -eliminado array hardcodeado de hábitos en Goals.jsx que causaba errores de "Cast to ObjectId failed"
-- **Frontend**: -implementada carga dinámica de hábitos usando getHabits() en el componente Goals
-- **Frontend**: -corregida selección de hábitos para usar habit._id (ObjectId real) en lugar de habit.id (número)
-- **Frontend**: -agregada validación para asegurar que se seleccione un hábito antes de crear una meta
-- **Backend**: -sistema de metas ahora funciona correctamente con ObjectIds reales de hábitos
-- **Frontend**: -corregido error de "Cast to ObjectId failed for value '15'" al crear metas
-- **Sistema**: -integración completa entre progreso de hábitos y metas: marcar hábitos como "done" actualiza automáticamente el contador de metas relacionadas
-- **Backend**: -función getGoals calcula progreso en tiempo real contando registros de Progress con status 'done' dentro del período de la meta
-- **Frontend**: -contador de metas se actualiza automáticamente al recargar la página de Goals
-- **Sistema**: -metas ahora funcionan completamente: creación, visualización y seguimiento de progreso automático
-- **Backend**: -corregida función getGoals para filtrar metas con hábitos válidos (no null), solucionando error "Cannot read properties of null"
-- **Frontend**: -corregida llamada a getHabits en Goals.jsx para incluir fecha como parámetro requerido
-- **Backend**: -corregido handler addGoalHandler para extraer correctamente los parámetros del body de la petición
-- **Frontend**: -corregida función addGoal para no enviar userId duplicado (el backend lo obtiene del token)
-- **Sistema**: -creación de metas ahora funciona correctamente sin errores de SystemError
+**Abel Habits** es una aplicación web completa para la gestión de hábitos personales, desarrollada con tecnologías modernas y siguiendo las mejores prácticas de desarrollo. Este proyecto sirve como ejemplo educativo para estudiantes que quieren aprender desarrollo web full-stack.
 
-### 🗓️ **Sistema de Eventos (Diary)**
-- **Backend**: -corregido handler addEventHandler para usar req.user.id correctamente
-- **Backend**: -corregido handler deleteEventHandler para incluir userId en la validación
-- **Backend**: -agregada validación de ownership en deleteEvent
-- **Frontend**: -corregidas funciones addEvent, getEvents, deleteEvent, updateEvent para usar localStorage.getItem('token')
-- **Sistema**: -eventos ahora se crean y eliminan correctamente sin errores de validación
-- **Frontend**: -implementada funcionalidad completa del diario con vista de calendario y eventos por hora
-- **Frontend**: -agregado componente Calendar con navegación de fechas y selección de día específico
-- **Frontend**: -implementado formulario de agregar eventos con campos: nombre, descripción, fecha y hora de inicio
-- **Frontend**: -agregada validación de formulario: campos requeridos y formato de fecha/hora
-- **Frontend**: -implementada vista de eventos organizados por hora (00:00 a 23:00) en el diario
-- **Frontend**: -agregado botón de eliminar eventos (🗑️) con confirmación antes de eliminar
-- **Frontend**: -implementada función handleDeleteEvent con validación de ID y manejo de errores
-- **Backend**: -creado modelo Event con campos: name, description, startDate, endDate, frequency, user
-- **Backend**: -implementada función addEvent para crear eventos con validación de datos
-- **Backend**: -implementada función getEvents para obtener eventos del usuario por fecha
-- **Backend**: -implementada función deleteEvent para eliminar eventos con validación de ownership
-- **Backend**: -agregados handlers para eventos: addEventHandler, getEventsHandler, deleteEventHandler
-- **Backend**: -configuradas rutas de eventos: POST /events, GET /events, DELETE /events/:eventId
-- **Backend**: -corregida ruta de eliminación de eventos para usar parámetro :eventId en lugar de body
-- **Sistema**: -integración completa entre frontend y backend para gestión de eventos del diario
-- **Sistema**: -eventos se muestran visualmente en el horario correcto según fecha y hora de inicio
-- **Sistema**: -eliminación de eventos actualiza automáticamente la vista sin necesidad de recargar
-- **UX**: -interfaz intuitiva para agregar, visualizar y eliminar eventos del diario personal
-- **Frontend**: -corregido el solapamiento de eventos en el diario; ahora cada evento se muestra en su propio bloque y con separación visual
-- **Frontend**: -agregado padding inferior al área de horarios del diario para asegurar que la hora 23:00 siempre sea visible y no quede oculta tras el Footer
-- **Frontend**: -corregido problema de eventos que se guardaban en hora incorrecta (3 horas adelante) debido a conversión de zona horaria
-- **Frontend**: -implementado uso de Date.UTC() para crear fechas en UTC y evitar problemas de zona horaria
-- **Frontend**: -corregido problema de eventos con fechas inválidas que causaban warnings en consola
-- **Frontend**: -actualizado filtrado de eventos para usar startDate en lugar de startTime (coincide con backend)
-- **Frontend**: -corregido error de selectedDate.toISOString() que causaba TypeError
-- **Frontend**: -rediseñada completamente la interfaz del Diary: eliminado sistema de clics en slots de tiempo
-- **Frontend**: -implementado formulario tradicional para agregar eventos con campos: nombre, descripción, hora inicio, hora fin
-- **Frontend**: -agregada lista de eventos organizada por fecha con diseño de tarjetas
-- **Frontend**: -implementado botón de eliminar eventos con confirmación
-- **Frontend**: -agregada validación HTML5 nativa para todos los campos del formulario
-- **Frontend**: -implementado diseño responsivo con grid adaptativo para el formulario
-- **Frontend**: -agregado mensaje cuando no hay eventos para una fecha específica
-- **Frontend**: -corregido problema de actualización del frontend tras agregar eventos
-- **Frontend**: -implementada recarga automática de eventos tras agregar nuevo evento
-- **Frontend**: -corregido problema de desfase de fecha en el calendario (mostraba un día adelante)
-- **Frontend**: -actualizado componente Calendar para usar toLocaleDateString('en-CA') en lugar de toISOString()
-- **Frontend**: -sincronizado calendario con lista de eventos para mostrar fecha correcta
-- **Sistema**: -Diary completamente funcional con formulario intuitivo y sincronización perfecta entre calendario y eventos
+### Características Principales
 
-### 🧠 **Sistema de Hábitos (Habits)**
-- **Frontend**: -agregados emojis a todos los hábitos predefinidos
-- **Frontend**: -mejorada interfaz de selección de hábitos con emojis
-- **Frontend**: -corregido URL de API en addHabit.js, getHabits.js, deleteHabit.js, updateHabit.js
-- **Frontend**: -mejorado debugging en HabitSelection.jsx
-- **Frontend**: -agregado mensaje de éxito al agregar hábito
-- **Backend**: -permitido emojis de hasta 8 caracteres en la validación
-- **Frontend**: -corregido envío de categoría 'negativos' en vez de 'hábitos negativos' para hábitos negativos 
-- **Frontend**: -ahora todas las categorías de hábitos se envían exactamente como espera el backend (usando un categoryMap)
-- **Frontend**: -mejorado el manejo de errores al agregar hábitos, mostrando siempre el mensaje real del backend
-- **Frontend**: -tras agregar un hábito, la app recarga la página para asegurar que la lista se actualiza correctamente 
-- **Backend**: -agregado límite máximo de 10 hábitos por día (además del límite por usuario)
-- **Frontend**: -implementada funcionalidad de botones para completar (✔️) y eliminar (❌) hábitos 
-- **Frontend**: -corregida URL y parámetros de trackProgress para que funcione con el backend
-- **Frontend**: -mejorada actualización de lista de hábitos sin recargar toda la página 
-- **Frontend**: -corregida función addProgress para que coincida con la función del backend 
-- **Backend**: -corregido el endpoint DELETE de hábitos para que envíe respuesta HTTP tras eliminar, solucionando el bug de carga infinita en el frontend
-- **Backend**: -corregido el handler de progreso (POST /progress) para que envíe respuesta HTTP tras agregar progreso, solucionando el bug de carga infinita en el frontend
-- **Backend**: -aumentado límite de validación de emojis de 8 a 20 caracteres para permitir emojis compuestos
-- **Frontend**: -aumentado límite de entrada de emojis de 4 a 10 caracteres en el formulario
-- **Frontend**: -agregados mensajes de éxito consistentes "¡Hábito agregado exitosamente!" para todas las categorías de hábitos usando window.alert()
-- **Backend**: -corregido el handler de agregar hábitos (POST /habits) para que envíe respuesta HTTP con habitId, solucionando el problema de que no aparecían mensajes de éxito
-- **Frontend**: -removidos logs de debug del componente HabitSelection para limpiar la consola
-- **Backend**: -modificada función getHabits para incluir información de progreso y estado de completado por fecha
-- **Frontend**: -actualizada función getHabits para enviar fecha como parámetro de consulta
-- **Frontend**: -implementado sistema visual de hábitos completados: fondo verde, borde verde, texto verde y checkmark ✅
-- **Frontend**: -botón de completar se deshabilita cuando el hábito ya está completado
-- **Frontend**: -mejorados mensajes de alerta usando window.alert() para mayor confiabilidad
-- **Backend**: -agregado soporte para estado "missed" en la función getHabits
-- **Frontend**: -removida funcionalidad de eliminar hábitos
-- **Frontend**: -botón X ahora marca hábitos como "fallidos" (rojo) en lugar de eliminarlos
-- **Frontend**: -implementado sistema de tres estados: normal (gris), completado (verde), fallido (rojo)
-- **Frontend**: -botones se deshabilitan cuando el hábito ya está en ese estado
-- **Backend**: -mejorada función addProgress para actualizar progreso existente en lugar de crear duplicados usando findOneAndUpdate con upsert
-- **Frontend**: -mejorada validación para prevenir marcar hábitos que ya tienen estado asignado (completado o fallido)
-- **Frontend**: -ambos botones se deshabilitan cuando el hábito ya tiene un estado, mostrando mensaje de alerta
-- **Frontend**: -mejorado diseño visual: botones deshabilitados en gris con opacidad reducida
-- **Frontend**: -los símbolos de los botones de hábitos ahora son siempre ✅ y ❌, y solo se muestra uno según el estado (pendiente: ambos activos, completado: solo ✅, fallido: solo ❌)
-- **Backend**: -mensaje de error de límite de hábitos actualizado a 'Solo puedes tener hasta 10 hábitos activos por día'
-- **Frontend**: -agregada validación de fechas pasadas: no se puede marcar progreso en fechas anteriores a hoy
-- **Frontend**: -implementada función isDateInPast() para verificar si una fecha es anterior a la fecha actual
-- **Frontend**: -modificadas funciones handleCompleteHabit y handleFailHabit para validar fechas antes de permitir marcar progreso
-- **Frontend**: -agregada indicación visual de fechas pasadas: botones de días anteriores se muestran en gris pero permiten navegación
-- **Frontend**: -agregado mensaje informativo cuando se visualiza una fecha pasada: "Modo de solo lectura: Estás viendo una fecha pasada. Puedes ver el historial pero no marcar progreso"
-- **Frontend**: -mejorada función getDaysArray para incluir información sobre fechas pasadas (isPast)
-- **Frontend**: -actualizada navegación de días: fechas pasadas permiten navegación pero se muestran visualmente diferentes (colores grises, hover suave)
-- **Frontend**: -enviada fecha específica seleccionada al backend en lugar de usar fecha por defecto
-- **Frontend**: -mejorada experiencia de usuario: fechas pasadas permiten ver historial pero no marcar progreso
-- **Frontend**: -agregado botón de eliminar hábito (🗑️) en la página de Habits
-- **Frontend**: -implementada función handleDeleteHabit con confirmación antes de eliminar
-- **Frontend**: -botón de eliminar disponible en todos los estados del hábito (pendiente, completado, fallido)
-- **Frontend**: -agregados tooltips (title) a todos los botones para mejor UX
-- **Frontend**: -confirmación de eliminación muestra el nombre del hábito para mayor claridad
-- **Frontend**: -botón de eliminar con hover effect que cambia a rojo para indicar acción destructiva
-- **Frontend**: -mejorada funcionalidad de eliminar hábitos: ahora ofrece dos opciones según el estado del hábito
-- **Frontend**: -si el hábito tiene progreso (completado/fallido): opción de eliminar solo el progreso de esa fecha
-- **Frontend**: -si el hábito no tiene progreso: opción de eliminar el hábito completamente
-- **Frontend**: -mensajes de confirmación más claros y específicos según la acción a realizar
-- **Backend**: -modificada función getHabits para incluir progressId en la respuesta cuando hay progreso
-- **Frontend**: -implementadas funciones handleDeleteProgress y handleDeleteHabitCompletely para manejar las dos opciones
-- **Sistema**: -eliminación inteligente: distingue entre eliminar progreso específico y eliminar hábito completo
-- **Frontend**: -mejorado diálogo de eliminación: ahora ofrece 3 opciones claras usando window.prompt
-- **Frontend**: -opciones de eliminación: 1) Eliminar solo progreso de fecha específica, 2) Eliminar hábito completamente, 3) Cancelar
-- **Frontend**: -validación de entrada: verifica que el usuario escriba 1, 2 o 3, muestra error si es inválido
-- **Frontend**: -confirmación adicional para eliminación completa: doble verificación antes de eliminar hábito
-- **UX**: -interfaz más clara y flexible para diferentes necesidades de eliminación
-- **Frontend**: -corregida función deleteProgress para enviar tanto progressId como habitId al backend
-- **Backend**: -función deleteProgress requiere validación de ownership entre progressId y habitId
-- **Sistema**: -eliminación de progreso específico ahora funciona correctamente con validación de seguridad
-- **Backend**: -corregida función getHabits para buscar progresos por habit en lugar de user, solucionando el problema de que no se encontraban los progresos
-- **Backend**: -implementada búsqueda de progresos por rango de fechas (todo el día) en lugar de coincidencia exacta
-- **Backend**: -corregida consulta de progresos para usar $in con habitIds del usuario en lugar de buscar por user
-- **Sistema**: -funcionalidades de marcar hábitos como hecho (✅), no hecho (❌) y eliminar (🗑️) ahora funcionan completamente
-- **Sistema**: -integración completa entre frontend y backend: los cambios de estado de hábitos se reflejan inmediatamente en la interfaz
-- **Backend**: -mejorada función deleteHabit para devolver respuesta explícita tras eliminar hábito, asegurando actualización correcta del frontend
-- **Sistema**: -eliminación de hábitos ahora actualiza automáticamente la lista en el frontend sin necesidad de recargar la página
-- **Backend**: -corregido handler addHabitHandler para usar req.user.id en lugar de req.userId, solucionando error "invalid userId"
-- **Sistema**: -agregar hábitos ahora funciona correctamente sin errores de validación de userId
+- ✅ **Gestión de Hábitos**: Crear, editar y eliminar hábitos personalizados
+- 📊 **Seguimiento de Progreso**: Marcar hábitos como completados o fallidos
+- 🎯 **Sistema de Metas**: Establecer objetivos con períodos personalizados
+- 📅 **Agenda Personal**: Organizar eventos y actividades diarias
+- 📈 **Visualización de Progreso**: Calendario visual con estadísticas
+- 🔐 **Autenticación Segura**: Sistema de login/registro con JWT
+- 👥 **Roles de Usuario**: Regular y Admin con diferentes permisos
 
-### 📊 **Sistema de Progreso**
-- **Frontend**: -corregidas funciones addProgress, getProgress, deleteProgress para usar localStorage.getItem('token')
-- **Backend**: -corregido el handler de progreso (POST /progress) para que envíe respuesta HTTP tras agregar progreso, solucionando el bug de carga infinita en el frontend
-- **Frontend**: -corregida función addProgress para que coincida con la función del backend 
-- **Backend**: -mejorada función addProgress para actualizar progreso existente en lugar de crear duplicados usando findOneAndUpdate con upsert
-- **Frontend**: -corregida función deleteProgress para enviar tanto progressId como habitId al backend
-- **Backend**: -función deleteProgress requiere validación de ownership entre progressId y habitId
-- **Sistema**: -eliminación de progreso específico ahora funciona correctamente con validación de seguridad
+---
 
-### 📈 **Progress Tracker (Nuevo)**
-- **Frontend**: -implementado Progress Tracker completamente funcional con selección de hábitos y calendario visual
-- **Frontend**: -agregado selector de hábitos que carga dinámicamente desde la base de datos con emojis
-- **Frontend**: -implementado calendario mensual con navegación entre meses
-- **Frontend**: -agregado sistema de colores para fechas: verde (done), rojo (missed), blanco (sin progreso)
-- **Frontend**: -implementada leyenda visual para explicar los colores del calendario
-- **Frontend**: -agregada carga automática de progreso al cambiar hábito o mes
-- **Frontend**: -implementado manejo de errores y estados de carga
-- **Backend**: -actualizada función getProgress para soportar filtrado por habitId y rango de fechas
-- **Backend**: -actualizado handler getProgressHandler para manejar parámetros habitId, startDate, endDate
-- **Frontend**: -actualizada función getProgress para enviar parámetros de filtrado al backend
-- **Backend**: -corregida función getHabits para manejar casos cuando no se proporciona fecha (necesario para Progress Tracker)
-- **Sistema**: -integración completa entre frontend y backend para visualización de progreso por hábito
-- **UX**: -interfaz intuitiva que permite ver el progreso histórico de cualquier hábito en formato calendario
+## Arquitectura del Proyecto
 
-### 🧹 **Limpieza y Optimización de Código**
-- **Sistema**: -eliminados todos los logs de debug del backend y frontend
-- **Backend**: -limpiados logs de debug en authorizationHandler, addEventHandler, deleteEvent, addProgress
-- **Frontend**: -limpiados logs de debug en addEvent, getHabits, getGoals, addProgress, Goals.jsx
-- **Código**: -código más limpio y profesional sin logs de desarrollo
+### Estructura de Directorios
 
-### 📋 **Cambios Anteriores (Mantenidos)**
-- **Endpoints**: -registro
-- **Frontend**: -corregido error de tipeo en registerUser.js (metohd → method)
-- **Frontend**: -corregido campo password-repeat → passwordRepeat
-- **Frontend**: -corregido URL de API en loginUser.js
+```
+abel-habits/
+├── 📁 api/          # Backend - API REST con Express
+│   ├── 📁 logic/    # Lógica de negocio
+│   ├── 📁 routes/   # Definición de endpoints
+│   └── 📁 tests/    # Tests automatizados
+├── 📁 app/          # Frontend - Aplicación React
+│   ├── 📁 src/
+│   │   ├── 📁 logic/    # Lógica del cliente
+│   │   ├── 📁 view/     # Componentes React
+│   │   └── 📁 util/     # Utilidades
+│   └── 📁 public/   # Archivos estáticos
+├── 📁 dat/          # Base de Datos - Modelos MongoDB
+├── 📁 com/          # Común - Validaciones y utilidades
+└── 📁 doc/          # Documentación
+```
+
+### Patrón Arquitectónico
+
+El proyecto implementa una **arquitectura de tres capas** con patrón **MVC**:
+
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │   Backend       │    │   Base de       │
+│   (React)       │◄──►│   (Express)     │◄──►│   Datos         │
+│   - Vista       │    │   - Controlador │    │   (MongoDB)     │
+│   - Componentes │    │   - Lógica      │    │   - Modelos     │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+---
+
+##  Stack Tecnológico
+
+### Frontend
+- **React 18** - Biblioteca para interfaces de usuario
+- **React Router** - Navegación entre páginas
+- **Tailwind CSS** - Framework de estilos utilitarios
+- **Vite** - Herramienta de build rápida
+
+### Backend
+- **Node.js** - Runtime de JavaScript
+- **Express** - Framework web minimalista
+- **MongoDB** - Base de datos NoSQL
+- **Mongoose** - ODM para MongoDB
+- **JWT** - Autenticación basada en tokens
+- **bcrypt** - Hashing de contraseñas
+
+### Herramientas de Desarrollo
+- **ESLint** - Linter para JavaScript
+- **PostCSS** - Procesador de CSS
+- **Autoprefixer** - Agregar prefijos CSS automáticamente
+
+---
+
+## Análisis Detallado por Módulo
+
+### Backend (api/)
+
+#### Configuración Principal
+
+```javascript
+// api/index.js
+const server = express()
+server.use(cors())           // Permite peticiones desde el frontend
+server.use(express.json())   // Parsea JSON en las peticiones
+
+// Rutas organizadas por recurso
+server.use('/users', usersRouter)
+server.use('/habits', habitsRouter)
+server.use('/goals', goalsRouter)
+server.use('/progress', progressRouter)
+server.use('/events', eventsRouter)
+```
+
+**Conceptos Educativos:**
+- **Middleware**: Funciones que se ejecutan entre la petición y la respuesta
+- **CORS**: Cross-Origin Resource Sharing - permite comunicación entre dominios
+- **Routing**: Organización de endpoints por funcionalidad
+
+#### Sistema de Autenticación
+
+**Middleware de Autorización:**
+```javascript
+// api/routes/helpers/authorizationHandler.js
+export default (req, res, next) => {
+    try {
+        const token = req.headers.authorization?.slice(7)  // Remueve "Bearer "
+        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+        req.user = { id: userId }  // Agrega info del usuario a la petición
+        next()
+    } catch (error) {
+        next(new AuthorizationError(error.message))
+    }
+}
+```
+
+**Lógica de Autenticación:**
+```javascript
+// api/logic/users/authenticateUser.js
+export default (username, password) => {
+  validate.username(username);
+  validate.password(password);
+
+  return User.findOne({ username })
+    .then((user) => {
+      if (!user) throw new CredentialsError("credenciales incorrectas");
+      
+      return bcrypt.compare(password, user.password).then((match) => {
+        if (!match) throw new CredentialsError("credenciales incorrectas");
+        
+        return { id: user._id.toString(), role: user.role };
+      });
+    });
+};
+```
+
+**Conceptos Educativos:**
+- **JWT (JSON Web Token)**: Token que contiene información del usuario de forma segura
+- **Middleware de autorización**: Verifica que el usuario esté autenticado
+- **bcrypt**: Librería para comparar contraseñas hasheadas de forma segura
+- **Promesas**: Manejo asíncrono de operaciones de base de datos
+
+#### Endpoints de Hábitos
+
+**Rutas:**
+```javascript
+// api/routes/habits/index.js
+habitsRouter.post('/', authorizationHandler, jsonBodyParser, addHabitHandler);
+habitsRouter.get('/', authorizationHandler, getHabitsHandler);
+habitsRouter.patch('/:habitId', authorizationHandler, jsonBodyParser, updateHabitHandler);
+habitsRouter.delete('/:habitId', authorizationHandler, deleteHabitHandler);
+```
+
+**Lógica de Crear Hábito:**
+```javascript
+// api/logic/habits/addHabit.js
+export default (userId, name, category, subcategory, emoji) => {
+  // Validaciones
+  validate.id(userId, "userId");
+  validate.name(name);
+  validate.text(category);
+  validate.emoji(emoji);
+
+  return User.findById(userId)
+    .then((user) => {
+      if (!user) throw new NotFoundError("usuario no encontrado");
+
+      // Límites de negocio
+      return Promise.all([
+        Habit.countDocuments({ user: userId }),
+        Habit.countDocuments({ user: userId, createdAt: { $gte: today, $lt: tomorrow } })
+      ])
+        .then(([totalHabits, todayHabits]) => {
+          if (totalHabits >= 10) {
+            throw new ValidationError("Solo puedes tener hasta 10 hábitos activos por día");
+          }
+          
+          // Crear el hábito
+          const habit = new Habit({ name, emoji, category, subcategory, user: userId });
+          return habit.save();
+        });
+    });
+};
+```
+
+**Conceptos Educativos:**
+- **Validaciones de negocio**: Límites como máximo 10 hábitos por usuario
+- **Consultas agregadas**: `countDocuments()` para contar registros
+- **Filtros de fecha**: `$gte` (mayor o igual) y `$lt` (menor que)
+- **Transacciones**: Operaciones que deben ser atómicas
+
+### Frontend (app/)
+
+#### Configuración Principal
+
+```javascript
+// app/src/App.jsx
+export default function App() {
+    return (
+        <Context.Provider value={{ alert }}>
+            <div className="flex flex-col min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+                <main className="flex-grow pb-20">
+                    {!isUserLoggedIn() ? (
+                        <Routes>
+                            <Route path="/" element={<Navigate to="/register" replace />} />
+                            <Route path="/register" element={<Register />} />
+                            <Route path="/login" element={<Login onLoggedIn={handleGoToHabits} />} />
+                        </Routes>
+                    ) : (
+                        <Routes>
+                            <Route path="/" element={<Navigate to="/habits" replace />} />
+                            <Route path="/habits" element={<Habits />} />
+                            <Route path="/goals" element={<Goals />} />
+                            <Route path="/progress" element={<Progress />} />
+                            <Route path="/diary" element={<Diary />} />
+                            <Route path="/settings" element={<Settings />} />
+                        </Routes>
+                    )}
+                </main>
+                {isUserLoggedIn() && <Footer />}
+            </div>
+        </Context.Provider>
+    );
+}
+```
+
+**Conceptos Educativos:**
+- **React Router**: Navegación entre páginas sin recargar
+- **Renderizado condicional**: Diferentes rutas según estado de autenticación
+- **Context API**: Compartir estado global entre componentes
+- **Componentes funcionales**: Uso de hooks modernos de React
+
+#### Componente de Login
+
+```javascript
+// app/src/view/Login.jsx
+export default function Login(props) {
+    const [loading, setLoading] = useState(false);
+    const [formData, setFormData] = useState({ username: '', password: '' });
+    const [formErrors, setFormErrors] = useState({});
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        
+        if (!validateForm()) return;
+        
+        setLoading(true);
+        try {
+            await logic.loginUser(formData.username, formData.password);
+            props.onLoggedIn();
+        } catch (error) {
+            alert(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+}
+```
+
+**Conceptos Educativos:**
+- **Hooks de estado**: `useState` para manejar estado local
+- **Formularios controlados**: Estado sincronizado con inputs
+- **Validación en tiempo real**: Errores que se muestran mientras el usuario escribe
+- **Estados de carga**: Feedback visual durante operaciones asíncronas
+- **Manejo de errores**: Try-catch para capturar y mostrar errores
+
+#### Componente de Hábitos
+
+```javascript
+// app/src/view/Habits.jsx
+export default function Habits() {
+    const [habits, setHabits] = useState([]);
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        loadHabits();
+    }, [selectedDate]);
+
+    const handleCompleteHabit = async (habitId) => {
+        if (isDateInPast(selectedDate)) {
+            alert('No puedes marcar progreso en fechas pasadas.');
+            return;
+        }
+
+        try {
+            await logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'done');
+            await loadHabits(); // Recargar datos
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+}
+```
+
+**Conceptos Educativos:**
+- **useEffect**: Hook para efectos secundarios (cargar datos)
+- **Dependencias**: El efecto se ejecuta cuando cambia `selectedDate`
+- **Validaciones de UI**: No permitir acciones en fechas pasadas
+- **Actualización optimista**: Recargar datos después de cambios
+- **Manejo de estados**: Loading, error, success
+
+### Base de Datos (dat/)
+
+#### Modelos
+
+```javascript
+// dat/models.js
+const userSchema = new Schema({
+    name: { type: String, required: true, minLength: 2 },
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true,
+        match: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
+    },
+    username: { type: String, required: true, unique: true, minLength: 3, maxLength: 30 },
+    password: { type: String, required: true, minLength: 8 },
+    role: { type: String, required: true, enum: ["regular", "admin"], default: "regular" }
+});
+
+const habitSchema = new Schema({
+    name: { type: String, required: true },
+    emoji: { type: String },
+    user: { type: ObjectId, ref: "User", required: true },
+    category: { 
+        type: String, 
+        enum: ["salud y bienestar", "actividad física", "desarrollo personal", "negativos", "finanzas", "sociales"],
+        required: true 
+    },
+    createdAt: { type: Date, default: Date.now }
+});
+```
+
+**Conceptos Educativos:**
+- **Esquemas de Mongoose**: Definición de estructura de datos
+- **Validaciones**: `required`, `minLength`, `maxLength`
+- **Tipos de datos**: String, Date, ObjectId
+- **Referencias**: `ref: "User"` para relaciones entre colecciones
+- **Enums**: Valores permitidos para un campo
+- **Valores por defecto**: `default: Date.now`
+
+#### Relaciones entre Modelos
+
+```
+┌─────────────┐    ┌─────────────┐    ┌─────────────┐
+│    User     │    │    Habit    │    │  Progress   │
+│             │◄───┤             │◄───┤             │
+│ (1 usuario) │    │ (N hábitos) │    │ (N progreso)│
+└─────────────┘    └─────────────┘    └─────────────┘
+       │                   │
+       │                   │
+       ▼                   ▼
+┌─────────────┐    ┌─────────────┐
+│    Goal     │    │    Event    │
+│             │    │             │
+│ (N metas)   │    │ (N eventos) │
+└─────────────┘    └─────────────┘
+```
+
+**Conceptos Educativos:**
+- **Relaciones 1:N**: Un usuario tiene muchos hábitos
+- **Referencias**: ObjectId para conectar documentos
+- **Normalización**: Evitar duplicación de datos
+- **Integridad referencial**: Mantener consistencia entre colecciones
+
+### Lógica de Negocio
+
+#### Validaciones
+
+```javascript
+// com/validate.js
+const validateUsername = (username) => {
+  if (typeof username !== "string")
+    throw new ValidationError("nombre de usuario inválido");
+  if (username.length < 3 || username.length > 30)
+    throw new ValidationError("longitud de nombre de usuario inválida");
+};
+
+const validateEmail = (email) => {
+  if (typeof email !== "string") throw new ValidationError("email inválido");
+  if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i.test(email))
+    throw new ValidationError("email inválido");
+};
+```
+
+**Conceptos Educativos:**
+- **Validación de tipos**: Verificar que los datos sean del tipo correcto
+- **Expresiones regulares**: Patrones para validar formatos
+- **Errores personalizados**: Mensajes claros para el usuario
+- **Reutilización**: Funciones que se usan en frontend y backend
+
+#### Manejo de Errores
+
+```javascript
+// com/errors.js
+const createCustomError = name =>
+    class extends Error {
+        constructor(message) {
+            super(message)
+            this.name = name
+        }
+        static get name() { return name }
+    }
+
+const errors = {
+    ValidationError: createCustomError('Error de Validación'),
+    NotFoundError: createCustomError('Error de No Encontrado'),
+    DuplicityError: createCustomError('Error de Duplicidad'),
+    CredentialsError: createCustomError('Error de Credenciales'),
+    SystemError: createCustomError('Error del Sistema'),
+    AuthorizationError: createCustomError('Error de Autorización')
+}
+```
+
+**Conceptos Educativos:**
+- **Herencia de clases**: Extender la clase Error
+- **Factory functions**: Función que crea clases
+- **Errores específicos**: Diferentes tipos para diferentes situaciones
+- **Consistencia**: Mismos errores en frontend y backend
+
+---
+
+## Flujos de Datos
+
+### Autenticación y Autorización
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant F as Frontend
+    participant B as Backend
+    participant DB as Base de Datos
+
+    U->>F: Ingresa credenciales
+    F->>B: POST /users/auth
+    B->>DB: Buscar usuario por username
+    DB->>B: Usuario encontrado
+    B->>B: Verificar password con bcrypt
+    B->>F: JWT token + userId + role
+    F->>F: Guardar en localStorage
+    F->>F: Redirigir a /habits
+```
+
+**Conceptos Educativos:**
+- **JWT**: Token que contiene información del usuario
+- **localStorage**: Almacenamiento persistente en el navegador
+- **bcrypt**: Comparación segura de contraseñas hasheadas
+- **Redirección**: Cambio de ruta después de login exitoso
+
+### Creación de Hábito
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant F as Frontend
+    participant B as Backend
+    participant DB as Base de Datos
+
+    U->>F: Completa formulario de hábito
+    F->>F: Validar datos
+    F->>B: POST /habits (con token)
+    B->>B: Verificar token JWT
+    B->>B: Validar datos
+    B->>DB: Verificar límites de usuario
+    B->>DB: Crear nuevo hábito
+    DB->>B: Hábito creado
+    B->>F: Respuesta exitosa
+    F->>F: Mostrar mensaje de éxito
+    F->>F: Recargar lista de hábitos
+```
+
+**Conceptos Educativos:**
+- **Validación en capas**: Frontend y backend validan datos
+- **Autorización**: Token requerido para operaciones
+- **Límites de negocio**: Máximo 10 hábitos por usuario
+- **Feedback al usuario**: Mensajes de éxito/error
+
+### Seguimiento de Progreso
+
+```mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant F as Frontend
+    participant B as Backend
+    participant DB as Base de Datos
+
+    U->>F: Marca hábito como completado
+    F->>F: Validar fecha (no fechas pasadas)
+    F->>B: POST /progress
+    B->>B: Verificar ownership
+    B->>DB: Crear/actualizar progreso
+    DB->>B: Progreso guardado
+    B->>F: Respuesta exitosa
+    F->>F: Actualizar UI
+    F->>B: GET /habits (recargar)
+    B->>DB: Obtener hábitos con progreso
+    DB->>B: Datos actualizados
+    B->>F: Lista actualizada
+    F->>F: Mostrar estado visual
+```
+
+**Conceptos Educativos:**
+- **Validaciones de negocio**: No permitir fechas pasadas
+- **Ownership**: Verificar que el usuario sea dueño del recurso
+- **Actualización optimista**: Recargar datos después de cambios
+- **Estados visuales**: Diferentes colores según estado del hábito
+
+---
+
+## Configuración y Herramientas
+
+### Configuraciones Clave
+
+**Vite** (`app/vite.config.js`):
+```javascript
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    proxy: {
+      '/api': 'http://localhost:3000'  // Proxy para desarrollo
+    }
+  }
+})
+```
+
+**Tailwind** (`app/tailwind.config.js`):
+```javascript
+export default {
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Roboto Slab']
+      }
+    }
+  }
+}
+```
+
+### Testing y Calidad de Código
+
+**Estructura de Tests** (`api/runAllTests.js`):
+```javascript
+const tests = {
+    users: ['registerUser.test.js', 'authenticateUser.test.js'],
+    habits: ['addHabit.test.js', 'getHabits.test.js', 'updateHabit.test.js'],
+    goals: ['addGoal.test.js', 'getGoals.test.js'],
+    events: ['addEvent.test.js', 'getEvents.test.js'],
+    progress: ['addProgress.test.js', 'getProgress.test.js']
+};
+```
+
+**Ejemplo de Test**:
+```javascript
+// api/logic/users/authenticateUser.test.js
+db.connect(process.env.MONGO_URL_TEST)
+    .then(async () => {
+        await User.deleteOne({ email });
+        await registerUser('Test User', email, username, password, password);
+        const result = await authenticateUser(username, password);
+        console.log('✅ Usuario autenticado exitosamente:', result);
+    })
+    .finally(() => db.disconnect());
+```
+
+---
+
+## Conceptos Técnicos Explicados
+
+### Middleware
+```javascript
+// Función que se ejecuta entre la petición y la respuesta
+const authorizationHandler = (req, res, next) => {
+    // Verificar token
+    // Agregar info del usuario a req
+    next(); // Continuar al siguiente middleware
+};
+```
+
+### Hooks de React
+```javascript
+// useState: Manejar estado local
+const [habits, setHabits] = useState([]);
+
+// useEffect: Efectos secundarios
+useEffect(() => {
+    loadHabits();
+}, [selectedDate]); // Se ejecuta cuando cambia selectedDate
+```
+
+### Promesas y Async/Await
+```javascript
+// Manejo asíncrono de operaciones
+const loadHabits = async () => {
+    try {
+        const habitsData = await logic.getHabits(selectedDate);
+        setHabits(habitsData);
+    } catch (error) {
+        alert(error.message);
+    }
+};
+```
+
+### Validaciones
+```javascript
+// Validación de tipos y formatos
+const validateEmail = (email) => {
+    if (typeof email !== "string") 
+        throw new ValidationError("email inválido");
+    if (!/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/i.test(email))
+        throw new ValidationError("email inválido");
+};
+```
+
+---
+
+## ✅ Buenas Prácticas Implementadas
+
+### 1. Separación de Responsabilidades
+- ✅ Lógica de negocio separada de la presentación
+- ✅ Validaciones centralizadas en módulo `com`
+- ✅ Rutas organizadas por recurso
+
+### 2. Seguridad
+- ✅ Contraseñas hasheadas con bcrypt
+- ✅ Autenticación con JWT
+- ✅ Validación de ownership en operaciones
+- ✅ Sanitización de inputs
+
+### 3. Experiencia de Usuario
+- ✅ Validaciones en tiempo real
+- ✅ Estados de carga
+- ✅ Mensajes de error claros
+- ✅ Interfaz responsiva
+
+### 4. Mantenibilidad
+- ✅ Código modular y reutilizable
+- ✅ Nomenclatura consistente
+- ✅ Documentación en README
+- ✅ Tests automatizados
+
+---
+
+## Conclusión
+
+Este proyecto demuestra una implementación sólida de una aplicación web moderna con:
+
+- **Arquitectura bien estructurada** con separación clara de responsabilidades
+- **Tecnologías modernas** como React, Express, y MongoDB
+- **Buenas prácticas** de desarrollo y seguridad
+- **Experiencia de usuario** intuitiva y responsiva
+- **Código mantenible** y escalable

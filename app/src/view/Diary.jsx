@@ -63,8 +63,9 @@ export default function Diary() {
             const [startHour, startMinute] = eventDetails.startTime.split(':').map(Number);
             const [endHour, endMinute] = eventDetails.endTime.split(':').map(Number);
             
-            const startDateTime = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), startHour, startMinute));
-            const endDateTime = new Date(Date.UTC(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), endHour, endMinute));
+            // Crear fechas en la zona horaria local del usuario
+            const startDateTime = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), startHour, startMinute);
+            const endDateTime = new Date(dateObj.getFullYear(), dateObj.getMonth(), dateObj.getDate(), endHour, endMinute);
 
             await addEvent(
                 eventDetails.name,
@@ -98,11 +99,10 @@ export default function Diary() {
 
     const formatTime = (dateString) => {
         const date = new Date(dateString);
-        return date.toLocaleTimeString('en-US', { 
-            hour: '2-digit', 
-            minute: '2-digit',
-            hour12: false 
-        });
+        // Usar las horas locales directamente, sin conversión de zona horaria
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
     };
 
     // Filtrar eventos por fecha seleccionada
@@ -113,8 +113,9 @@ export default function Diary() {
                 return false;
             }
             
-            const eventDate = eventStart.toISOString().split('T')[0];
-            const selectedDateStr = new Date(selectedDate).toISOString().split('T')[0];
+            // Usar fechas locales para la comparación
+            const eventDate = eventStart.toLocaleDateString('en-CA'); // Formato YYYY-MM-DD
+            const selectedDateStr = new Date(selectedDate).toLocaleDateString('en-CA');
             
             return eventDate === selectedDateStr;
         } catch (error) {

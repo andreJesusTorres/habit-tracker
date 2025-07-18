@@ -13,12 +13,17 @@ export default async function getGoals(userId) {
         // Para cada meta válida, calcular el progreso actual
         const goalsWithProgress = await Promise.all(validGoals.map(async (goal) => {
             // Contar cuántas veces se ha completado el hábito desde la fecha de inicio de la meta
+            // Usar solo la fecha sin hora para la comparación
+            const startDateOnly = new Date(goal.startDate.toISOString().split('T')[0]);
+            const endDateOnly = new Date(goal.endDate.toISOString().split('T')[0]);
+            endDateOnly.setHours(23, 59, 59, 999); // Incluir todo el día final
+            
             const completedCount = await Progress.countDocuments({
                 habit: goal.habit._id,
                 status: 'done',
                 date: { 
-                    $gte: goal.startDate,
-                    $lte: goal.endDate
+                    $gte: startDateOnly,
+                    $lte: endDateOnly
                 }
             });
 
