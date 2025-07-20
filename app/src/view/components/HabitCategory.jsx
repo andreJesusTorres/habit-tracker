@@ -6,9 +6,7 @@ const categories = [
     { name: "Salud y Bienestar", icon: "🧘" },
     { name: "Actividad Física", icon: "🏋️" },
     { name: "Desarrollo Personal", icon: "📖" },
-    { name: "Hábitos Negativos", icon: "❌" },
-    { name: "Finanzas", icon: "📊" },
-    { name: "Sociales", icon: "👥" }
+    { name: "Hábitos Negativos", icon: "❌" }
 ];
 
 export default function HabitCategory() {

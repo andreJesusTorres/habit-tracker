@@ -28,14 +28,6 @@ const habitsByCategory = {
         { name: "No beber", emoji: "🚫" },
         { name: "No procrastinar", emoji: "⏰" },
         { name: "No comer comida basura", emoji: "🍔" }
-    ],
-    "finanzas": [
-        { name: "Ahorrar 10€", emoji: "💰" },
-        { name: "Controlar gastos", emoji: "📊" }
-    ],
-    "sociales": [
-        { name: "Llamar a un amigo", emoji: "📞" },
-        { name: "Pasar tiempo en familia", emoji: "👨‍👩‍👧‍👦" }
     ]
 };
 
@@ -43,9 +35,7 @@ const categoryMap = {
     "salud-y-bienestar": "salud y bienestar",
     "actividad-física": "actividad física",
     "desarrollo-personal": "desarrollo personal",
-    "hábitos-negativos": "negativos",
-    "finanzas": "finanzas",
-    "sociales": "sociales"
+    "hábitos-negativos": "negativos"
 };
 
 export default function HabitSelection() { 
@@ -161,14 +151,6 @@ export default function HabitSelection() {
             ()=>{ return addHabit("no beber", categoryMap[category], "text", "\ud83d\udeab").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
             ()=>{ return addHabit("no procrastinar", categoryMap[category], "text", "\u23f0").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
             ()=>{ return addHabit("no comer comida basura", categoryMap[category], "text", "\ud83c\udf54").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
-        ],
-        "finanzas": [
-            ()=>{ return addHabit("ahorrar 10€", categoryMap[category], "text", "\ud83d\udcb0").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
-            ()=>{ return addHabit("controlar gastos", categoryMap[category], "text", "\ud83d\udcca").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
-        ],
-        "sociales": [
-            ()=>{ return addHabit("llamar a un amigo", categoryMap[category], "text", "\ud83d\udcde").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
-            ()=>{ return addHabit("pasar tiempo en familia", categoryMap[category], "text", "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d\udc66").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
         ],
     }
     const handleClick = (index)=>{

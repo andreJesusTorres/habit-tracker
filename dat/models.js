@@ -46,8 +46,6 @@ const habitSchema = new Schema(
         "actividad física",
         "desarrollo personal",
         "negativos",
-        "finanzas",
-        "sociales",
       ],
       required: true,
     },

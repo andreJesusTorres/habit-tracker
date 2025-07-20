@@ -17,8 +17,7 @@ db.connect(process.env.MONGO_URL)
     .then(users => {
         const habitsData = [
             { name: 'Ejercicio diario', emoji: '🏋️', user: users[0]._id, category: 'actividad física' },
-            { name: 'Leer un libro', emoji: '📚', user: users[0]._id, category: 'desarrollo personal' },
-            { name: 'Controlar gastos', emoji: '💰', user: users[1]._id, category: 'finanzas' }
+            { name: 'Leer un libro', emoji: '📚', user: users[0]._id, category: 'desarrollo personal' }
         ]
 
         return Habit.insertMany(habitsData)
