@@ -6,25 +6,28 @@ import capitalize from '../../util/capitalize';
 
 const habitsByCategory = {
     "salud-y-bienestar": [
-        { name: "Higiene personal", emoji: "🛁" },
-        { name: "Comer saludable", emoji: "🥗" },
-        { name: "Dormir bien", emoji: "😴" },
-        { name: "Meditación", emoji: "🧘" },
         { name: "Beber agua", emoji: "💧" },
-        { name: "Cuidado corporal", emoji: "💆" }
+        { name: "Descansar", emoji: "😴" },
+        { name: "Meditar", emoji: "🧘" },
+        { name: "Comer saludable", emoji: "🥗" }
     ],
     "actividad-física": [
-        { name: "Entrenamiento diario", emoji: "🏋️" },
-        { name: "Caminar 10,000 pasos", emoji: "🚶" },
-        { name: "Ejercicio de flexibilidad", emoji: "🧘‍♀️" }
+        { name: "Ir al gimnasio", emoji: "🏋️" },
+        { name: "Ir a correr", emoji: "🏃" },
+        { name: "Salir a caminar", emoji: "🚶" },
+        { name: "Hacer deporte", emoji: "⚽" }
     ],
     "desarrollo-personal": [
-        { name: "Leer un libro", emoji: "📖" },
-        { name: "Aprender algo nuevo", emoji: "🎓" }
+        { name: "Leer", emoji: "📖" },
+        { name: "Estudiar", emoji: "📚" },
+        { name: "Ver contenido productivo", emoji: "📺" },
+        { name: "Aprender", emoji: "🎓" }
     ],
     "hábitos-negativos": [
-        { name: "Reducir tiempo en redes", emoji: "📱" },
-        { name: "No beber alcohol", emoji: "🚫" }
+        { name: "No fumar", emoji: "🚭" },
+        { name: "No beber", emoji: "🚫" },
+        { name: "No procrastinar", emoji: "⏰" },
+        { name: "No comer comida basura", emoji: "🍔" }
     ],
     "finanzas": [
         { name: "Ahorrar 10€", emoji: "💰" },
@@ -62,7 +65,7 @@ export default function HabitSelection() {
         "desarrollo-personal": [
             ()=>{
                 try {
-                    return addHabit("leer un libro", categoryMap[category], "text", "\ud83d\udcd6")
+                    return addHabit("leer", categoryMap[category], "text", "\ud83d\udcd6")
                         .then(()=>{
                             handleHabitSuccess();
                         })
@@ -74,7 +77,31 @@ export default function HabitSelection() {
                 }},
             ()=>{
                 try {
-                    return addHabit("aprender algo nuevo", categoryMap[category], "text", "\ud83c\udf93")
+                    return addHabit("estudiar", categoryMap[category], "text", "\ud83d\udcda")
+                        .then(()=>{
+                            handleHabitSuccess();
+                        })
+                        .catch(error=> {
+                            alert(error.message || error, 'error');
+                        })
+                } catch (error) {
+                    alert(error.message, 'error')
+                }},
+            ()=>{
+                try {
+                    return addHabit("ver contenido productivo", categoryMap[category], "text", "\ud83d\udcfa")
+                        .then(()=>{
+                            handleHabitSuccess();
+                        })
+                        .catch(error=> {
+                            alert(error.message || error, 'error');
+                        })
+                } catch (error) {
+                    alert(error.message, 'error')
+                }},
+            ()=>{
+                try {
+                    return addHabit("aprender", categoryMap[category], "text", "\ud83c\udf93")
                         .then(()=>{
                             handleHabitSuccess();
                         })
@@ -87,7 +114,25 @@ export default function HabitSelection() {
         ],
         "salud-y-bienestar": [
             ()=>{ 
-                return addHabit("higiene personal", categoryMap[category], "text", "\ud83d\udec1")
+                return addHabit("beber agua", categoryMap[category], "text", "\ud83d\udca7")
+                    .then(()=>{
+                        handleHabitSuccess();
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito', 'error');
+                    });
+            },
+            ()=>{ 
+                return addHabit("descansar", categoryMap[category], "text", "\ud83d\ude34")
+                    .then(()=>{
+                        handleHabitSuccess();
+                    })
+                    .catch(error=> {
+                        alert(error.message || 'Error al agregar hábito', 'error');
+                    });
+            },
+            ()=>{ 
+                return addHabit("meditar", categoryMap[category], "text", "\ud83e\uddd8")
                     .then(()=>{
                         handleHabitSuccess();
                     })
@@ -104,51 +149,18 @@ export default function HabitSelection() {
                         alert(error.message || 'Error al agregar hábito', 'error');
                     });
             },
-            ()=>{ 
-                return addHabit("dormir bien", categoryMap[category], "text", "\ud83d\ude34")
-                    .then(()=>{
-                        handleHabitSuccess();
-                    })
-                    .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito', 'error');
-                    });
-            },
-            ()=>{ 
-                return addHabit("meditación", categoryMap[category], "text", "\ud83e\uddd8")
-                    .then(()=>{
-                        handleHabitSuccess();
-                    })
-                    .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito', 'error');
-                    });
-            },
-            ()=>{ 
-                return addHabit("beber agua", categoryMap[category], "text", "\ud83d\udca7")
-                    .then(()=>{
-                        handleHabitSuccess();
-                    })
-                    .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito', 'error');
-                    });
-            },
-            ()=>{ 
-                return addHabit("cuidado corporal", categoryMap[category], "text", "\ud83d\udc86")
-                    .then(()=>{
-                        handleHabitSuccess();
-                    })
-                    .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito', 'error');
-                    });
-            },
         ],
         "actividad-física": [
-            ()=>{ return addHabit("entrenamiento diario", categoryMap[category], "text", "\ud83c\udfcb\ufe0f").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
-            ()=>{ return addHabit("caminar 10,000 pasos", categoryMap[category], "text", "\ud83d\udeb6").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
-            ()=>{ return addHabit("ejercicio de flexibilidad", categoryMap[category], "text", "\ud83e\uddd8\u200d\u2640\ufe0f").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("ir al gimnasio", categoryMap[category], "text", "\ud83c\udfcb\ufe0f").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("ir a correr", categoryMap[category], "text", "\ud83c\udfc3").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("salir a caminar", categoryMap[category], "text", "\ud83d\udeb6").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("hacer deporte", categoryMap[category], "text", "\u26bd").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
         ],
         "hábitos-negativos": [
-            ()=>{ return addHabit("reducir tiempo en redes", categoryMap[category], "text", "\ud83d\udcf1").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
-            ()=>{ return addHabit("no beber alcohol", categoryMap[category], "text", "\ud83d\udeab").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("no fumar", categoryMap[category], "text", "\ud83d\udead").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("no beber", categoryMap[category], "text", "\ud83d\udeab").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("no procrastinar", categoryMap[category], "text", "\u23f0").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("no comer comida basura", categoryMap[category], "text", "\ud83c\udf54").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
         ],
         "finanzas": [
             ()=>{ return addHabit("ahorrar 10€", categoryMap[category], "text", "\ud83d\udcb0").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },

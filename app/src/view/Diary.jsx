@@ -107,10 +107,17 @@ export default function Diary() {
             setError('');
             await deleteEvent(eventId);
             await loadEvents();
+            alert('Evento eliminado exitosamente', 'success');
         } catch (error) {
-            setError(error.message);
+            alert(error.message, 'error');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const confirmDelete = (eventId) => {
+        if (confirm('¿Estás seguro que quieres eliminar este evento?')) {
+            handleDeleteEvent(eventId);
         }
     };
 
@@ -261,11 +268,11 @@ export default function Diary() {
 
                 <div className="mt-8">
                     <h3 className="text-lg font-semibold mb-4">
-                        Events for {new Date(selectedDate).toLocaleDateString()}
+                        Eventos para {new Date(selectedDate).toLocaleDateString('es-ES')}
                     </h3>
                     
                     {filteredEvents.length === 0 ? (
-                        <p className="text-gray-500 text-center py-8">No events for this date</p>
+                        <p className="text-gray-500 text-center py-8">No hay eventos para esta fecha</p>
                     ) : (
                         <div className="space-y-3">
                             {filteredEvents.map((event) => (
@@ -284,15 +291,11 @@ export default function Diary() {
                                             )}
                                         </div>
                                         <button
-                                            onClick={() => {
-                                                if (window.confirm('¿Estás seguro que quieres eliminar este evento?')) {
-                                                    handleDeleteEvent(event._id);
-                                                }
-                                            }}
+                                            onClick={() => confirmDelete(event._id)}
                                             disabled={loading}
                                             className="ml-4 text-red-500 hover:text-red-700 disabled:opacity-50"
                                         >
-                                            Delete
+                                            Eliminar
                                         </button>
                                     </div>
                             </div>
