@@ -5,7 +5,7 @@ export default function DayCircle({ date, isSelected, onClick }) {
     const isPast = date < new Date(new Date().setHours(0, 0, 0, 0));
 
     const getDayStyles = () => {
-        let baseStyles = "w-12 h-12 flex items-center justify-center rounded-full border-2 font-medium transition-all duration-200 cursor-pointer";
+        let baseStyles = "w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center rounded-full border-2 font-medium transition-all duration-200 cursor-pointer text-sm sm:text-base";
         
         if (isSelected) {
             return `${baseStyles} bg-blue-500 text-white border-blue-500 shadow-lg transform scale-110`;
