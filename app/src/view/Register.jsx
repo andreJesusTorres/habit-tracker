@@ -2,14 +2,14 @@ import logic from '../logic';
 import { Anchor, Button, Input, PasswordInput } from './library';
 import { useNavigate } from 'react-router-dom';
 import { errors as comErrors } from 'com';
-import useContext from './useContext';
+import { useNotifications } from './hooks/useNotifications.jsx';
 import { useState } from 'react';
 
 const { SystemError } = comErrors;
 
 export default function Register(props) {
     const navigate = useNavigate();
-    const { alert } = useContext();
+    const { alert } = useNotifications();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
@@ -101,13 +101,13 @@ export default function Register(props) {
                 password: '',
                 passwordRepeat: ''
             });
-            alert('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.');
+            alert('¡Cuenta creada exitosamente! Ya puedes iniciar sesión.', 'success');
             navigate('/login');
         } catch (error) {
             if (error instanceof SystemError) {
-                alert('Error del servidor. Inténtalo más tarde.');
+                alert('Error del servidor. Inténtalo más tarde.', 'error');
             } else {
-                alert(error.message);
+                alert(error.message, 'error');
             }
         } finally {
             setLoading(false);
@@ -125,7 +125,7 @@ export default function Register(props) {
                 {/* Header con logo y título */}
                 <div className="text-center mb-8">
                     <div className="flex items-center justify-center space-x-4 mb-4">
-                        <h1 className="text-3xl font-bold text-gray-800">Hábitos</h1>
+                        <h1 className="text-3xl font-bold text-gray-800">Habíme</h1>
                         <img src="logo.png" alt="Logo de la app" className="w-16 h-16" />
                     </div>
                     <p className="text-gray-600">Únete a nosotros y comienza a mejorar tus hábitos</p>

@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Header, Footer } from './components';
 import { getHabits } from '../logic/habits';
 import { getProgress } from '../logic/progress';
+import { useNotifications } from './hooks/useNotifications.jsx';
 
 export default function Progress() {
+    const { alert } = useNotifications();
     const [habits, setHabits] = useState([]);
     const [selectedHabit, setSelectedHabit] = useState(null);
     const [progressData, setProgressData] = useState({});
@@ -32,7 +34,7 @@ export default function Progress() {
                 setSelectedHabit(habitsData[0]._id);
             }
         } catch (error) {
-            alert('Error al cargar hábitos: ' + error.message);
+            alert('Error al cargar hábitos: ' + error.message, 'error');
         } finally {
             setLoading(false);
         }

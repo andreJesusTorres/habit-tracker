@@ -14,10 +14,10 @@ export default (username, password) => {
       throw new SystemError(error.message);
     })
     .then((user) => {
-      if (!user) throw new CredentialsError("credenciales incorrectas");
+              if (!user) throw new CredentialsError("Credenciales incorrectas");
 
       return bcrypt.compare(password, user.password).then((match) => {
-        if (!match) throw new CredentialsError("credenciales incorrectas");
+        if (!match) throw new CredentialsError("Credenciales incorrectas");
 
         return {
           id: user._id.toString(),

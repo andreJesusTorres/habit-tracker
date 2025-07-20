@@ -18,6 +18,4 @@ export {
     HabitCategory,
     HabitItem,
     HabitSelection
-    
-    
 }

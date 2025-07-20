@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import addHabit from "../../logic/habits/addHabit";
-import useContext from '../useContext';
+import { useNotifications } from '../hooks/useNotifications.jsx';
 import Header from "./Header";
 import capitalize from '../../util/capitalize';
 
@@ -48,115 +48,115 @@ const categoryMap = {
 export default function HabitSelection() { 
     const { category } = useParams();
     const navigate = useNavigate();
-    const { alert } = useContext();
+    const { alert } = useNotifications();
     const habits = habitsByCategory[category] || [];
+
+    const handleHabitSuccess = () => {
+        alert('¡Hábito agregado exitosamente!', 'success');
+        // Usar setTimeout para que la notificación se muestre antes de navegar
+        setTimeout(() => {
+            navigate('/habits');
+        }, 1000);
+    };
     const habitsHandlers= {
         "desarrollo-personal": [
             ()=>{
                 try {
                     return addHabit("leer un libro", categoryMap[category], "text", "\ud83d\udcd6")
                         .then(()=>{
-                            alert('¡Hábito agregado exitosamente!');
-                            window.location.href = "/habits";
+                            handleHabitSuccess();
                         })
                         .catch(error=> {
-                            alert(error.message || error);
+                            alert(error.message || error, 'error');
                         })
                 } catch (error) {
-                    alert(error.message)
+                    alert(error.message, 'error')
                 }},
             ()=>{
                 try {
                     return addHabit("aprender algo nuevo", categoryMap[category], "text", "\ud83c\udf93")
                         .then(()=>{
-                            alert('¡Hábito agregado exitosamente!');
-                            window.location.href = "/habits";
+                            handleHabitSuccess();
                         })
                         .catch(error=> {
-                            alert(error.message || error);
+                            alert(error.message || error, 'error');
                         })
                 } catch (error) {
-                    alert(error.message)
+                    alert(error.message, 'error')
                 }},
         ],
         "salud-y-bienestar": [
             ()=>{ 
                 return addHabit("higiene personal", categoryMap[category], "text", "\ud83d\udec1")
                     .then(()=>{
-                        alert('¡Hábito agregado exitosamente!');
-                        window.location.href = "/habits";
+                        handleHabitSuccess();
                     })
                     .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito');
+                        alert(error.message || 'Error al agregar hábito', 'error');
                     });
             },
             ()=>{ 
                 return addHabit("comer saludable", categoryMap[category], "text", "\ud83e\udd57")
                     .then(()=>{
-                        alert('¡Hábito agregado exitosamente!');
-                        window.location.href = "/habits";
+                        handleHabitSuccess();
                     })
                     .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito');
+                        alert(error.message || 'Error al agregar hábito', 'error');
                     });
             },
             ()=>{ 
                 return addHabit("dormir bien", categoryMap[category], "text", "\ud83d\ude34")
                     .then(()=>{
-                        alert('¡Hábito agregado exitosamente!');
-                        window.location.href = "/habits";
+                        handleHabitSuccess();
                     })
                     .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito');
+                        alert(error.message || 'Error al agregar hábito', 'error');
                     });
             },
             ()=>{ 
                 return addHabit("meditación", categoryMap[category], "text", "\ud83e\uddd8")
                     .then(()=>{
-                        alert('¡Hábito agregado exitosamente!');
-                        window.location.href = "/habits";
+                        handleHabitSuccess();
                     })
                     .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito');
+                        alert(error.message || 'Error al agregar hábito', 'error');
                     });
             },
             ()=>{ 
                 return addHabit("beber agua", categoryMap[category], "text", "\ud83d\udca7")
                     .then(()=>{
-                        alert('¡Hábito agregado exitosamente!');
-                        window.location.href = "/habits";
+                        handleHabitSuccess();
                     })
                     .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito');
+                        alert(error.message || 'Error al agregar hábito', 'error');
                     });
             },
             ()=>{ 
                 return addHabit("cuidado corporal", categoryMap[category], "text", "\ud83d\udc86")
                     .then(()=>{
-                        alert('¡Hábito agregado exitosamente!');
-                        window.location.href = "/habits";
+                        handleHabitSuccess();
                     })
                     .catch(error=> {
-                        alert(error.message || 'Error al agregar hábito');
+                        alert(error.message || 'Error al agregar hábito', 'error');
                     });
             },
         ],
         "actividad-física": [
-            ()=>{ return addHabit("entrenamiento diario", categoryMap[category], "text", "\ud83c\udfcb\ufe0f").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
-            ()=>{ return addHabit("caminar 10,000 pasos", categoryMap[category], "text", "\ud83d\udeb6").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
-            ()=>{ return addHabit("ejercicio de flexibilidad", categoryMap[category], "text", "\ud83e\uddd8\u200d\u2640\ufe0f").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("entrenamiento diario", categoryMap[category], "text", "\ud83c\udfcb\ufe0f").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("caminar 10,000 pasos", categoryMap[category], "text", "\ud83d\udeb6").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("ejercicio de flexibilidad", categoryMap[category], "text", "\ud83e\uddd8\u200d\u2640\ufe0f").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
         ],
         "hábitos-negativos": [
-            ()=>{ return addHabit("reducir tiempo en redes", categoryMap[category], "text", "\ud83d\udcf1").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
-            ()=>{ return addHabit("no beber alcohol", categoryMap[category], "text", "\ud83d\udeab").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("reducir tiempo en redes", categoryMap[category], "text", "\ud83d\udcf1").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("no beber alcohol", categoryMap[category], "text", "\ud83d\udeab").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
         ],
         "finanzas": [
-            ()=>{ return addHabit("ahorrar 10€", categoryMap[category], "text", "\ud83d\udcb0").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
-            ()=>{ return addHabit("controlar gastos", categoryMap[category], "text", "\ud83d\udcca").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("ahorrar 10€", categoryMap[category], "text", "\ud83d\udcb0").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("controlar gastos", categoryMap[category], "text", "\ud83d\udcca").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
         ],
         "sociales": [
-            ()=>{ return addHabit("llamar a un amigo", categoryMap[category], "text", "\ud83d\udcde").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
-            ()=>{ return addHabit("pasar tiempo en familia", categoryMap[category], "text", "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d\udc66").then(()=>{alert('¡Hábito agregado exitosamente!');window.location.href = "/habits"}).catch(error=> alert(error.message || error)) },
+            ()=>{ return addHabit("llamar a un amigo", categoryMap[category], "text", "\ud83d\udcde").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
+            ()=>{ return addHabit("pasar tiempo en familia", categoryMap[category], "text", "\ud83d\udc68\u200d\ud83d\udc69\u200d\ud83d\udc67\u200d\ud83d\udc66").then(()=>{handleHabitSuccess()}).catch(error=> alert(error.message || error, 'error')) },
         ],
     }
     const handleClick = (index)=>{

@@ -4,8 +4,10 @@ import { Footer, DayCircle } from "./components";
 import { useNavigate } from "react-router-dom";
 import logic from "../logic";
 import capitalize from '../util/capitalize';
+import { useNotifications } from './hooks/useNotifications.jsx';
 
 export default function Habits() {
+    const { alert } = useNotifications();
     const [habits, setHabits] = useState([]);
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [loading, setLoading] = useState(true);
@@ -22,9 +24,9 @@ export default function Habits() {
             setHabits(habitsData);
         } catch (error) {
             if (error instanceof SystemError)
-                alert("Error: Inténtalo más tarde.");
+                alert("Error: Inténtalo más tarde.", 'error');
             else
-                alert(error.message);
+                alert(error.message, 'error');
         } finally {
             setLoading(false);
         }
@@ -40,33 +42,33 @@ export default function Habits() {
 
     const handleCompleteHabit = async (habitId) => {
         if (isDateInPast(selectedDate)) {
-            alert('No puedes marcar progreso en fechas pasadas.');
+            alert('No puedes marcar progreso en fechas pasadas.', 'warning');
             return;
         }
 
         try {
             const userId = logic.getUserId();
             await logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'done');
-            alert('¡Hábito marcado como completado!');
+            alert('¡Hábito marcado como completado!', 'success');
             await loadHabits();
         } catch (error) {
-            alert(error.message || 'Error al marcar hábito como completado');
+            alert(error.message || 'Error al marcar hábito como completado', 'error');
         }
     };
 
     const handleFailHabit = async (habitId) => {
         if (isDateInPast(selectedDate)) {
-            alert('No puedes marcar progreso en fechas pasadas.');
+            alert('No puedes marcar progreso en fechas pasadas.', 'warning');
             return;
         }
 
         try {
             const userId = logic.getUserId();
             await logic.addProgress(userId, habitId, selectedDate.toISOString().split('T')[0], 'missed');
-            alert('¡Hábito marcado como no completado!');
+            alert('¡Hábito marcado como no completado!', 'success');
             await loadHabits();
         } catch (error) {
-            alert(error.message || 'Error al marcar hábito como no completado');
+            alert(error.message || 'Error al marcar hábito como no completado', 'error');
         }
     };
 
@@ -103,7 +105,7 @@ export default function Habits() {
             } else if (option === '3') {
                 return;
             } else {
-                alert('Opción inválida. Por favor, escribe 1, 2 o 3.');
+                alert('Opción inválida. Por favor, escribe 1, 2 o 3.', 'warning');
             }
         } else {
             const confirmDelete = confirm(
@@ -124,25 +126,25 @@ export default function Habits() {
             const progressId = habit?.progressId;
             
             if (!progressId) {
-                alert('No se encontró el progreso para eliminar. ID de progreso es nulo o indefinido.');
+                alert('No se encontró el progreso para eliminar. ID de progreso es nulo o indefinido.', 'error');
                 return;
             }
             
             await logic.deleteProgress(progressId, habitId);
-            alert(`¡Progreso de "${habitName}" eliminado exitosamente!`);
+            alert(`¡Progreso de "${habitName}" eliminado exitosamente!`, 'success');
             await loadHabits();
         } catch (error) {
-            alert(error.message || 'Error al eliminar progreso');
+            alert(error.message || 'Error al eliminar progreso', 'error');
         }
     };
 
     const handleDeleteHabitCompletely = async (habitId, habitName) => {
         try {
             await logic.deleteHabit(habitId);
-            alert(`¡Hábito "${habitName}" eliminado completamente!`);
+            alert(`¡Hábito "${habitName}" eliminado completamente!`, 'success');
             await loadHabits();
         } catch (error) {
-            alert(error.message || 'Error al eliminar hábito');
+            alert(error.message || 'Error al eliminar hábito', 'error');
         }
     };
 

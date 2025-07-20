@@ -3,8 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import logoutUser from '../logic/users/logoutUser';
 import getUserDetails from '../logic/users/getUserDetails';
 import updateUser from '../logic/users/updateUser';
+import { useNotifications } from './hooks/useNotifications.jsx';
 
 export default function Settings() {
+    const { alert } = useNotifications();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
@@ -18,7 +20,7 @@ export default function Settings() {
             setName(user.name || '');
             setEmail(user.email || '');
         } catch (error) {
-            alert('No se pudieron cargar los datos del usuario');
+            alert('No se pudieron cargar los datos del usuario', 'error');
         } finally {
             setLoading(false);
         }
@@ -32,9 +34,9 @@ export default function Settings() {
         setSaving(true);
         try {
             await updateUser({ name, email });
-            alert('Datos actualizados correctamente');
+            alert('Datos actualizados correctamente', 'success');
         } catch (error) {
-            alert('No se pudo actualizar el usuario');
+            alert('No se pudo actualizar el usuario', 'error');
         } finally {
             setSaving(false);
         }

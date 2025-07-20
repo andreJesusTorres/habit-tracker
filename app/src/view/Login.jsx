@@ -1,14 +1,14 @@
-import { Anchor, Button, Input } from './library';
+import { Anchor, Button, Input, PasswordInput } from './library';
 import logic from '../logic';
 import { errors as comErrors } from 'com';
-import useContext from './useContext';
+import { useNotifications } from './hooks/useNotifications.jsx';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const { SystemError } = comErrors;
 
 export default function Login(props) {
-    const { alert } = useContext();
+    const { alert } = useNotifications();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -64,11 +64,7 @@ export default function Login(props) {
             setFormData({ username: '', password: '' });
             props.onLoggedIn();
         } catch (error) {
-            if (error instanceof SystemError) {
-                alert('Error del servidor. Inténtalo más tarde.');
-            } else {
-                alert(error.message);
-            }
+            alert(error.message, 'error');
         } finally {
             setLoading(false);
         }
@@ -85,7 +81,7 @@ export default function Login(props) {
                 {/* Header con logo y título */}
                 <div className="text-center mb-8">
                     <div className="flex items-center justify-center space-x-4 mb-4">
-                        <h1 className="text-3xl font-bold text-gray-800">Hábitos</h1>
+                        <h1 className="text-3xl font-bold text-gray-800">Habíme</h1>
                         <img src="logo.png" alt="Logo de la app" className="w-16 h-16" />
                     </div>
                     <p className="text-gray-600">Inicia sesión para continuar con tus hábitos</p>
@@ -98,11 +94,11 @@ export default function Login(props) {
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
                             <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                                Usuario o Email
+                                Usuario
                             </label>
                             <Input
                                 type="text"
-                                placeholder="Ingresa tu usuario o email"
+                                placeholder="Ingresa tu usuario"
                                 id="username"
                                 name="username"
                                 value={formData.username}
@@ -120,8 +116,7 @@ export default function Login(props) {
                             <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
                                 Contraseña
                             </label>
-                            <Input
-                                type="password"
+                            <PasswordInput
                                 placeholder="Ingresa tu contraseña"
                                 id="password"
                                 name="password"

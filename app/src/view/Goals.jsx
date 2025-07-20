@@ -4,8 +4,10 @@ import addGoal from '../logic/goals/addGoal';
 import getGoals from '../logic/goals/getGoals';
 import getHabits from '../logic/habits/getHabits';
 import capitalize from '../util/capitalize';
+import { useNotifications } from './hooks/useNotifications.jsx';
 
 export default function Goals() {
+    const { alert } = useNotifications();
     const [habits, setHabits] = useState([]);
     const [selectedHabit, setSelectedHabit] = useState('');
     const [targetDays, setTargetDays] = useState(22);
@@ -50,22 +52,22 @@ export default function Goals() {
 
     const handleCreateGoal = async () => {
         if (!goalName.trim()) {
-            alert('Por favor ingresa un nombre para la meta');
+            alert('Por favor ingresa un nombre para la meta', 'warning');
             return;
         }
 
         if (objective <= 0 || targetDays <= 0) {
-            alert('Los valores deben ser números positivos');
+            alert('Los valores deben ser números positivos', 'warning');
             return;
         }
 
         if (objective > targetDays) {
-            alert('El objetivo no puede ser mayor que el número de días');
+            alert('El objetivo no puede ser mayor que el número de días', 'warning');
             return;
         }
 
         if (!selectedHabit) {
-            alert('Por favor selecciona un hábito');
+            alert('Por favor selecciona un hábito', 'warning');
             return;
         }
 
@@ -79,7 +81,7 @@ export default function Goals() {
             };
 
             await addGoal(selectedHabit, goalData);
-            alert('¡Meta creada exitosamente!');
+            alert('¡Meta creada exitosamente!', 'success');
             
             // Limpiar formulario
             setGoalName('');
@@ -89,7 +91,7 @@ export default function Goals() {
             // Recargar metas
             await loadGoals();
         } catch (error) {
-            alert(error.message || 'Error al crear meta');
+            alert(error.message || 'Error al crear meta', 'error');
         } finally {
             setLoading(false);
         }

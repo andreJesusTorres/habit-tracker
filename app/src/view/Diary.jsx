@@ -3,8 +3,10 @@ import { Header, Footer, Calendar } from './components';
 import addEvent from '../logic/events/addEvent';
 import getEvents from '../logic/events/getEvents';
 import deleteEvent from '../logic/events/deleteEvent';
+import { useNotifications } from './hooks/useNotifications.jsx';
 
 export default function Diary() {
+    const { alert } = useNotifications();
     const [eventDetails, setEventDetails] = useState({ 
         name: '', 
         description: '', 
@@ -56,7 +58,7 @@ export default function Diary() {
             }
             // Validación de rango horario
             if (eventDetails.startTime >= eventDetails.endTime) {
-                alert('La hora de inicio debe ser menor a la de finalización');
+                alert('La hora de inicio debe ser menor a la de finalización', 'warning');
                 return;
             }
         }
