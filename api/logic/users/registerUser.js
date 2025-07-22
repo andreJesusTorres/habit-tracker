@@ -16,7 +16,7 @@ export default (name, email, username, password, passwordRepeat) => {
     .catch(error => { throw new SystemError(error.message) })
     .then(hash =>
         User.create({ name, email, username, password: hash })
-            .then(_ => { })
+            .then(user => user)
             .catch(error => {
                 if (error.code === 11000) throw new DuplicityError('el usuario ya existe')
 
