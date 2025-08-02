@@ -4,9 +4,11 @@ import logoutUser from '../logic/users/logoutUser';
 import getUserDetails from '../logic/users/getUserDetails';
 import updateUser from '../logic/users/updateUser';
 import { useNotifications } from './hooks/useNotifications.jsx';
+import { useAuth } from './hooks/useAuth.jsx';
 
 export default function Settings() {
     const { alert } = useNotifications();
+    const { logout } = useAuth();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
@@ -43,8 +45,7 @@ export default function Settings() {
     };
 
     const handleLogout = () => {
-        logoutUser();
-        navigate('/login');
+        logout();
     };
 
     return (

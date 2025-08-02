@@ -60,10 +60,16 @@ export default function Login(props) {
         setLoading(true);
 
         try {
+            // Limpiar localStorage antes del login para evitar conflictos
+            localStorage.removeItem('token');
+            localStorage.removeItem('userId');
+            localStorage.removeItem('userRole');
+            
             await logic.loginUser(formData.username, formData.password);
             setFormData({ username: '', password: '' });
             props.onLoggedIn();
         } catch (error) {
+            console.error('Error en login:', error);
             alert(error.message, 'error');
         } finally {
             setLoading(false);
@@ -85,6 +91,11 @@ export default function Login(props) {
                         <img src="logo.png" alt="Logo de la app" className="w-16 h-16" />
                     </div>
                     <p className="text-gray-600">Inicia sesión para continuar con tus hábitos</p>
+                    <div className="mt-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-sm text-blue-700">
+                            💡 <strong>Consejo:</strong> Siempre inicia sesión para acceder a tus hábitos de forma segura
+                        </p>
+                    </div>
                 </div>
 
                 {/* Formulario */}

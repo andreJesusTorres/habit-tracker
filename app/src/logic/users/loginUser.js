@@ -1,4 +1,4 @@
-import { validate, errors }  from 'com'
+import { validate, errors, handleApiError }  from 'com'
 
 const { SystemError } = errors
 
@@ -26,17 +26,13 @@ export default (username, password) => {
                     localStorage.setItem('userRole', data.role);
                     return data;
                 })
-
+        else
             return res.json()
                 .catch(error => { 
                     throw new SystemError(error.message) 
                 })
                 .then(({ error, message }) => { 
-                    if (errors[error]) {
-                        throw new errors[error](message);
-                    } else {
-                        throw new SystemError(message || 'Error desconocido');
-                    }
+                    handleApiError(error, message || 'Error desconocido');
                 })
     })
 }

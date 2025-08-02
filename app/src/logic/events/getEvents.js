@@ -1,4 +1,4 @@
-import { errors } from 'com';
+import { errors, handleApiError } from 'com';
 
 const { SystemError } = errors;
 
@@ -16,6 +16,6 @@ export default () => {
 
             return res.json()
                 .catch(error => { throw new SystemError(error.message); })
-                .then(({ error, message }) => { throw new errors[error](message); });
+                .then(({ error, message }) => { handleApiError(error, message); });
         });
 };

@@ -1,4 +1,4 @@
-import { validate, errors } from 'com';
+import { validate, errors, handleApiError } from 'com';
 
 const { SystemError } = errors;
 
@@ -31,7 +31,7 @@ export default (name, category, subcategory, emoji) => {
                     throw new SystemError(error.message); 
                 })
                 .then(({ error, message }) => { 
-                    throw new errors[error](message); 
+                    handleApiError(error, message);
                 });
         });
 };

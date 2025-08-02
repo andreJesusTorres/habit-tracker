@@ -1,4 +1,4 @@
-import { validate, errors }  from 'com'
+import { validate, errors, handleApiError }  from 'com'
 
 const { SystemError } = errors
 
@@ -28,11 +28,7 @@ export default (name, email, username, password, passwordRepeat) => {
                     throw new SystemError(error.message) 
                 })
                 .then(({ error, message}) => { 
-                    if (errors[error]) {
-                        throw new errors[error](message);
-                    } else {
-                        throw new SystemError(message || 'Error desconocido');
-                    }
+                    handleApiError(error, message || 'Error desconocido');
                 })
         })
 }

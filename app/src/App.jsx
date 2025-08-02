@@ -5,10 +5,35 @@ import { HabitCategory, Footer, HabitSelection } from './view/components';
 import { isUserLoggedIn } from './logic/users';
 import { Context } from './view/useContext';
 import { NotificationProvider, useNotifications } from './view/hooks/useNotifications.jsx';
+import { useAuth } from './view/hooks/useAuth.jsx';
 
 function AppContent() {
     const navigate = useNavigate();
     const { alert } = useNotifications();
+    const { logout } = useAuth();
+    
+    // Limpiar localStorage al cargar la app para prevenir problemas con tokens antiguos
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split('.')[1]));
+                const currentTime = Math.floor(Date.now() / 1000);
+                
+                if (!payload.id || !payload.exp || payload.exp < currentTime) {
+                    console.log('Token inválido detectado al cargar la app, limpiando localStorage');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('userRole');
+                }
+            } catch (error) {
+                console.log('Error al validar token al cargar la app, limpiando localStorage');
+                localStorage.removeItem('token');
+                localStorage.removeItem('userId');
+                localStorage.removeItem('userRole');
+            }
+        }
+    }, []);
     
     const handleGoToHabits = () => {
         navigate('/habits');
@@ -21,7 +46,7 @@ function AppContent() {
             <main className="flex-grow pb-20">
                 {!isUserLoggedIn() ? (
                     <Routes>
-                        <Route path="/" element={<Navigate to="/register" replace />} />
+                        <Route path="/" element={<Navigate to="/login" replace />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/login" element={<Login onLoggedIn={handleGoToHabits} />} />
                     </Routes>

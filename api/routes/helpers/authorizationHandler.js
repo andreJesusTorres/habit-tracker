@@ -6,7 +6,7 @@ const { AuthorizationError } = errors
 export default (req, res, next) => {
     try {
         const token = req.headers.authorization?.slice(7)
-        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+        const { id: userId } = jwt.verify(token, process.env.JWT_SECRET)
         req.user = { id: userId }
         next()
     } catch (error) {

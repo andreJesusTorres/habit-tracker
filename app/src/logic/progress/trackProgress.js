@@ -1,4 +1,4 @@
-import { validate, errors } from 'com';
+import { validate, errors, handleApiError } from 'com';
 import getUserId from '../users/getUserId.js';
 
 const { SystemError } = errors;
@@ -30,6 +30,6 @@ export default (habitId, progressDetails) => {
 
             return res.json()
                 .catch(error => { throw new SystemError(error.message); })
-                .then(({ error, message }) => { throw new errors[error](message); });
+                .then(({ error, message }) => { handleApiError(error, message); });
         });
 };
