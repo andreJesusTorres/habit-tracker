@@ -1,8 +1,8 @@
-# Nombre de la App
+# Habime - Aplicación de Hábitos
 
 ## Intro
 
-Esta aplicación está diseñada para ayudarte a gestionar y alcanzar tus objetivos personales de forma sencilla y eficiente. Su sección principal, Hábitos, te permite crear, personalizar y gestionar tus hábitos diarios desde cero. Incluye una Agenda Personal, donde puedes organizar tu día añadiendo actividades en bloques de tiempo especifícos. Además, cuenta con un apartado de Metas/Objetivos, donde puedes establecer tus propósitos a corto, medio y largo plazo (semanales, mensuales o anuales). Por último, la sección de Progreso te ofrece una vista detallada de tu desempeño, mostrando cuándo cumples tus hábitos, cuándo los fallas y tu avance general.
+Esta aplicación está diseñada para ayudarte a gestionar y alcanzar tus objetivos personales de forma sencilla y eficiente. Su sección principal, Hábitos, te permite crear, personalizar y gestionar tus hábitos diarios desde cero. Incluye una Agenda Personal, donde puedes organizar tu día añadiendo actividades en bloques de tiempo específicos. Además, cuenta con un apartado de Metas/Objetivos, donde puedes establecer tus propósitos a corto, medio y largo plazo (semanales, mensuales o anuales). Por último, la sección de Progreso te ofrece una vista detallada de tu desempeño, mostrando cuándo cumples tus hábitos, cuándo los fallas y tu avance general.
 
 ![../assets/LOGO.png]
 
@@ -10,7 +10,7 @@ Esta aplicación está diseñada para ayudarte a gestionar y alcanzar tus objeti
 
 ### Use Cases
 
-Regular (User)
+**Regular (User)**
 - Añadir un hábito.
 - Crear un hábito personalizado.
 - Eliminar hábito.
@@ -19,7 +19,7 @@ Regular (User)
 - Agendar tus actividades.
 - Cambiar su foto de perfil.
 
- Admin (User)
+**Admin (User)**
 - Añadir más hábitos predeterminados.
 
 ## UX/UI Design
@@ -29,38 +29,42 @@ Regular (User)
 
 ### Blocks
 
-- App (client-side application)
-- API (server-side API)
-- DB (database)
+- **App** (client-side application)
+- **API** (server-side API)
+- **DB** (database)
 
 ### Packages
 
-- doc (documentation)
-- app (client-side application)
-- api (server-side API)
-- dat (data model and driver)
-- com (common validations, utils, ...)
+- **doc** (documentation)
+- **app** (client-side application)
+- **api** (server-side API)
+- **dat** (data model and driver)
+- **com** (common validations, utils, ...)
 
 ### Techs
 
-- HTML/CSS/JS (...)
-- React (...)
-- Node (...)
-- Express (...)
-- Mongo (...)
-- Mongo & Chai (...)
-- [...]
+- **HTML/CSS/JS** (Frontend básico)
+- **React** (Biblioteca de UI)
+- **Node** (Runtime de JavaScript)
+- **Express** (Framework web)
+- **Mongo** (Base de datos NoSQL)
+- **Mongoose** (ODM para MongoDB)
+- **JWT** (Autenticación)
+- **bcrypt** (Encriptación)
+- **Tailwind CSS** (Framework de estilos)
+- **Vite** (Build tool)
+- **Axios** (Cliente HTTP)
 
 ### Data Model
 
-User
+**User**
 - id (UUID)
 - name (string)
 - email (string)
 - password (string)
 - role (string, enum: regular | admin)
 
-Habit
+**Habit**
 - id (UUID)
 - name (string)
 - emoji (string, maxlength 4)
@@ -69,21 +73,21 @@ Habit
 - category (string, enum: salud y bienestar | actividad fisica | desarrollo personal | negativos | finanzas | sociales)
 - subcategory (string, enum: salud y bienestar...)
 
-Goal
+**Goal**
 - id (UUID)
 - description (string)
 - period (string, enum: weekly | monthly | yearly)
 - objective (number)
 - user (User.id)
-- habit (Habit.id) ??
-
-Progress
-- id (UUID)
-- date (Date)
-- status (enum: done | missed | half-done )
 - habit (Habit.id)
 
-Event (agenda personal)
+**Progress**
+- id (UUID)
+- date (Date)
+- status (enum: done | missed | half-done)
+- habit (Habit.id)
+
+**Event** (agenda personal)
 - id (UUID)
 - name (string)
 - description (string)
@@ -96,4 +100,25 @@ Event (agenda personal)
 
 ### Test Coverage
 
-vacío
+**Tests Unitarios**
+- Tests de lógica de negocio por módulo
+- Tests de validación de datos
+- Tests de autenticación
+- Tests de base de datos
+
+**Tests de Integración**
+- Scripts shell para testing de endpoints
+- Tests de flujos completos de usuario
+- Validación de respuestas API
+
+**Cobertura de Tests**
+- Usuarios: 5 tests (register, login, getDetails, update, authenticate)
+- Hábitos: 3 tests (add, get, delete)
+- Metas: 3 tests (add, get, delete)
+- Progreso: 3 tests (add, get, delete)
+- Eventos: 3 tests (add, get, delete)
+
+**Scripts de Testing**
+- 16 scripts individuales para testing de endpoints
+- Tests de CRUD completo por entidad
+- Validación de respuestas y manejo de errores 
