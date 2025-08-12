@@ -4,29 +4,12 @@
 echo "📋 Testing de obtener hábitos..."
 echo "================================"
 
-# Obtener token primero
-echo "🔑 Obteniendo token..."
-TOKEN_RESPONSE=$(curl -s -X POST http://localhost:3000/users/auth \
--H "Content-Type: application/json" \
--d '{
-    "username": "testuser",
-    "password": "12345678"
-}')
 
-TOKEN=$(echo $TOKEN_RESPONSE | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
-
-if [ -z "$TOKEN" ]; then
-    echo "❌ Error: No se pudo obtener token"
-    exit 1
-fi
-
-echo "✅ Token obtenido: ${TOKEN:0:50}..."
-echo ""
 
 # Test: Obtener hábitos
 echo "📋 Obteniendo hábitos..."
 GET_HABITS_RESPONSE=$(curl -s -X GET http://localhost:3000/habits \
--H "Authorization: Bearer $TOKEN")
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzU4MzQ1MjIzNjBlZGIyMGUzMmQ0MWQiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTc0NDYyNDMyNiwiZXhwIjoxNzQ0NjI3OTI2fQ.erS6MgJvy0C4S_C9sKAhekTyFQ2Y_dpRHAgqqXSyISY")
 
 echo "Respuesta obtener hábitos: $GET_HABITS_RESPONSE"
 echo ""

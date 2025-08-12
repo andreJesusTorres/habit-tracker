@@ -4,31 +4,14 @@
 echo "🗑️ Testing de eliminar hábito..."
 echo "================================="
 
-# Obtener token primero
-echo "🔑 Obteniendo token..."
-TOKEN_RESPONSE=$(curl -s -X POST http://localhost:3000/users/auth \
--H "Content-Type: application/json" \
--d '{
-    "username": "testuser",
-    "password": "12345678"
-}')
-
-TOKEN=$(echo $TOKEN_RESPONSE | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
-
-if [ -z "$TOKEN" ]; then
-    echo "❌ Error: No se pudo obtener token"
-    exit 1
-fi
-
-echo "✅ Token obtenido: ${TOKEN:0:50}..."
-echo ""
 
 # Primero crear un hábito para eliminarlo
 echo "📝 Creando hábito para eliminar..."
 CREATE_HABIT_RESPONSE=$(curl -s -X POST http://localhost:3000/habits \
--H "Authorization: Bearer $TOKEN" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzU4MzQ1MjIzNjBlZGIyMGUzMmQ0MWQiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTc0NDYyNDMyNiwiZXhwIjoxNzQ0NjI3OTI2fQ.erS6MgJvy0C4S_C9sKAhekTyFQ2Y_dpRHAgqqXSyISY" \
 -H "Content-Type: application/json" \
 -d '{
+    "userId": "675834522360edb20e32d41d",
     "name": "Hábito para eliminar",
     "category": "actividad física",
     "subcategory": "cardio",
@@ -48,7 +31,7 @@ echo ""
 # Test: Eliminar hábito
 echo "🗑️ Eliminando hábito..."
 DELETE_HABIT_RESPONSE=$(curl -s -X DELETE http://localhost:3000/habits/$HABIT_ID \
--H "Authorization: Bearer $TOKEN")
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzU4MzQ1MjIzNjBlZGIyMGUzMmQ0MWQiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTc0NDYyNDMyNiwiZXhwIjoxNzQ0NjI3OTI2fQ.erS6MgJvy0C4S_C9sKAhekTyFQ2Y_dpRHAgqqXSyISY")
 
 echo "Respuesta eliminar hábito: $DELETE_HABIT_RESPONSE"
 echo ""

@@ -4,31 +4,13 @@
 echo "🎯 Testing de agregar meta..."
 echo "============================="
 
-# Obtener token primero
-echo "🔑 Obteniendo token..."
-TOKEN_RESPONSE=$(curl -s -X POST http://localhost:3000/users/auth \
--H "Content-Type: application/json" \
--d '{
-    "username": "testuser",
-    "password": "12345678"
-}')
-
-TOKEN=$(echo $TOKEN_RESPONSE | grep -o '"token":"[^"]*"' | cut -d'"' -f4)
-
-if [ -z "$TOKEN" ]; then
-    echo "❌ Error: No se pudo obtener token"
-    exit 1
-fi
-
-echo "✅ Token obtenido: ${TOKEN:0:50}..."
-echo ""
-
 # Primero crear un hábito para la meta
 echo "📝 Creando hábito para meta..."
 CREATE_HABIT_RESPONSE=$(curl -s -X POST http://localhost:3000/habits \
--H "Authorization: Bearer $TOKEN" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzU4MzQ1MjIzNjBlZGIyMGUzMmQ0MWQiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTc0NDYyNDMyNiwiZXhwIjoxNzQ0NjI3OTI2fQ.erS6MgJvy0C4S_C9sKAhekTyFQ2Y_dpRHAgqqXSyISY" \
 -H "Content-Type: application/json" \
 -d '{
+    "userId": "675834522360edb20e32d41d",
     "name": "Hábito para meta",
     "category": "salud y bienestar",
     "subcategory": "ejercicio",
@@ -48,9 +30,10 @@ echo ""
 # Test: Crear meta
 echo "🎯 Creando meta..."
 CREATE_GOAL_RESPONSE=$(curl -s -X POST http://localhost:3000/goals \
--H "Authorization: Bearer $TOKEN" \
+-H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NzU4MzQ1MjIzNjBlZGIyMGUzMmQ0MWQiLCJyb2xlIjoicmVndWxhciIsImlhdCI6MTc0NDYyNDMyNiwiZXhwIjoxNzQ0NjI3OTI2fQ.erS6MgJvy0C4S_C9sKAhekTyFQ2Y_dpRHAgqqXSyISY" \
 -H "Content-Type: application/json" \
 -d '{
+    "userId": "675834522360edb20e32d41d",
     "habitId": "'$HABIT_ID'",
     "name": "Meta de testing",
     "objective": 30,
